@@ -345,6 +345,7 @@ final_draft:`<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" fill=
 // ═══════════════════════════════════════════════════════
 // GAME DATA
 // ═══════════════════════════════════════════════════════
+const RESOURCE_LABELS={gra:'OLD',wax:'BRONZE',cha:'SILVER',gold:'GOLD',plat:'PLAT'};
 const CREATURES = [
   // ── TIER 1 — COMMON ────────────────────────────────
   {id:'hollow_wretch',name:'HOLLOW WRETCH',tag:'Nothing left but need.',atk:2,def:1.0,hp:10,count:null,rewards:{atk:0.12,gra:0.15},vicReq:5,new:false,tier:1,type:'scrap'},
@@ -811,7 +812,7 @@ function renderGallery(){
     const maxed=isMaxed(c);
     const isCurrent=S.currentCreature===c.id;
     const pct=Math.min(100,vic/c.vicReq*100);
-    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['gra','wax','cha'].includes(k)?'res':''}">${k.toUpperCase()} +${v}</span>`).join('');
+    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['gra','wax','cha'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${v}</span>`).join('');
     const countStr=c.count!=null?`<span style="margin-left:4px;color:var(--text3);">${c.count}</span>`:'';
     const rarityBadge=`<span style="position:absolute;top:4px;left:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${color};color:#fff;opacity:0.85;">${label}</span>`;
     const typeBadge=c.type&&c.type!=='scrap'?`<span style="position:absolute;bottom:4px;right:4px;font-size:7px;padding:1px 4px;background:${TYPE_COLORS[c.type]||'#555'};color:#fff;letter-spacing:1px;">${c.type.toUpperCase()}</span>`:'';
