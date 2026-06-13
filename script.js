@@ -1026,6 +1026,7 @@ function onLose(){
 
 // ── ACHIEVEMENTS ──────────────────────────────────────
 function checkAchievements(){
+  return;
   let newUnlocks=[];
   ACHIEVEMENTS.forEach(a=>{
     if(!S.achievements[a.id]&&a.check(S)){
