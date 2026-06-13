@@ -1508,6 +1508,13 @@ function renderFundamentals(){
 const TIER_COLORS={1:'#666',2:'#27ae60',3:'#2980b9',4:'#9b59b6',5:'#c0392b'};
 const TIER_LABELS={1:'COMMON',2:'UNCOMMON',3:'RARE',4:'EPIC',5:'LEGENDARY'};
 const TIER_BG={1:'rgba(80,80,80,0.15)',2:'rgba(39,174,96,0.12)',3:'rgba(41,128,185,0.12)',4:'rgba(155,89,182,0.14)',5:'rgba(192,57,43,0.15)'};
+const TIER_DESC={
+  1:'Weak but numerous. The rot made manifest.',
+  2:'Hardened survivors shaped by malice and conflict.',
+  3:'Formidable horrors that punish the unprepared.',
+  4:'Near-mythical entities. Few challengers endure.',
+  5:'The pinnacle of darkness. Unkillable. Unforgiving.',
+};
 const TYPE_COLORS={scrap:'#555',elite:'#8e44ad',boss:'#c0392b'};
 
 function renderGallery(){
@@ -1520,10 +1527,13 @@ function renderGallery(){
     const color=TIER_COLORS[tier]||'#555';
     const label=TIER_LABELS[tier]||'TIER '+tier;
     const unlocked=tierCreatures.filter(c=>getVictories(c.id)>0).length;
-    html+=`<div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:${tier>1?'20px':0} 0 8px;">
-      <div style="font-size:9px;font-weight:bold;letter-spacing:3px;color:${color};text-transform:uppercase;padding:2px 7px;border:1px solid ${color};opacity:0.9;">◆ ${label}</div>
-      <div style="font-size:8px;color:var(--text3);">${unlocked}/${tierCreatures.length} encountered</div>
-      <div style="flex:1;height:1px;background:${color};opacity:0.25;"></div>
+    html+=`<div style="grid-column:1/-1;margin:${tier>1?'24px':0} 0 8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:9px;font-weight:bold;letter-spacing:3px;color:${color};text-transform:uppercase;padding:2px 7px;border:1px solid ${color};opacity:0.9;">◆ ${label}</div>
+        <div style="font-size:8px;color:var(--text3);">${unlocked}/${tierCreatures.length} encountered</div>
+        <div style="flex:1;height:1px;background:${color};opacity:0.25;"></div>
+      </div>
+      <div style="font-size:8px;color:var(--text3);font-style:italic;margin-top:4px;padding-left:2px;">${TIER_DESC[tier]||''}</div>
     </div>`;
     html+=tierCreatures.map(c=>{
       const vic=getVictories(c.id);
