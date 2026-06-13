@@ -1399,6 +1399,8 @@ const DEFAULT_STATE = ()=>({
   settings:{lightMode:false,invertImg:false,showProtocols:true,combatLog:true,uiZoom:100,battleNav:'manual',numNotation:'mixed'},
   protocols:{autoChallenge:false,autoRetry:false},
   sessionRewards:{},
+  galleryUnlocked:[],
+  galleryQueue:[],
 });
 let S = DEFAULT_STATE();
 
@@ -1505,6 +1507,38 @@ function renderFundamentals(){
 // ═══════════════════════════════════════════════════════
 // GALLERY
 // ═══════════════════════════════════════════════════════
+// ── GALLERY QUEUE ─────────────────────────────────────
+function initGalleryQueue(){
+  // Build from scratch if missing or empty
+  if(!S.galleryUnlocked||S.galleryUnlocked.length===0){
+    const allIds=CREATURES.map(c=>c.id);
+    const withVic=allIds.filter(id=>(S.victories[id]||0)>0);
+    const remaining=allIds.filter(id=>!withVic.includes(id));
+    S.galleryUnlocked=[...withVic];
+    S.galleryQueue=[...remaining];
+    // Ensure at least 4 unlocked
+    while(S.galleryUnlocked.length<4&&S.galleryQueue.length>0){
+      S.galleryUnlocked.push(S.galleryQueue.shift());
+    }
+  }else{
+    // Ensure queue is clean (remove any IDs already unlocked)
+    S.galleryQueue=(S.galleryQueue||[]).filter(id=>!S.galleryUnlocked.includes(id));
+  }
+}
+function unlockNextCreature(){
+  if(!S.galleryQueue||S.galleryQueue.length===0)return;
+  const window=Math.min(4,S.galleryQueue.length);
+  const pick=Math.floor(Math.random()*window);
+  const id=S.galleryQueue.splice(pick,1)[0];
+  S.galleryUnlocked.push(id);
+  const c=getCreature(id);
+  if(c){
+    addLog(`<span style="color:var(--green)">◆ A new enemy has stepped forward: <b>${c.name}</b>.</span>`);
+    toast(`New foe: ${c.name}`,3000);
+  }
+}
+function isUnlocked(id){return S.galleryUnlocked&&S.galleryUnlocked.includes(id);}
+
 const TIER_COLORS={1:'#666',2:'#27ae60',3:'#2980b9',4:'#9b59b6',5:'#c0392b'};
 const TIER_LABELS={1:'COMMON',2:'UNCOMMON',3:'RARE',4:'EPIC',5:'LEGENDARY'};
 const TIER_BG={1:'rgba(80,80,80,0.15)',2:'rgba(39,174,96,0.12)',3:'rgba(41,128,185,0.12)',4:'rgba(155,89,182,0.14)',5:'rgba(192,57,43,0.15)'};
@@ -1522,8 +1556,10 @@ function renderGallery(){
   const tiers=[1,2,3,4,5];
   let html='';
   tiers.forEach(tier=>{
-    const tierCreatures=CREATURES.filter(c=>getTier(c)===tier);
-    if(!tierCreatures.length)return;
+    const tierCreatures=CREATURES.filter(c=>getTier(c)===tier&&isUnlocked(c.id));
+    const tierTotal=CREATURES.filter(c=>getTier(c)===tier).length;
+    const tierHidden=tierTotal-tierCreatures.length;
+    if(!tierCreatures.length&&!tierHidden)return;
     const color=TIER_COLORS[tier]||'#555';
     const label=TIER_LABELS[tier]||'TIER '+tier;
     const unlocked=tierCreatures.filter(c=>getVictories(c.id)>0).length;
@@ -1533,8 +1569,9 @@ function renderGallery(){
         <div style="font-size:8px;color:var(--text3);">${unlocked}/${tierCreatures.length} encountered</div>
         <div style="flex:1;height:1px;background:${color};opacity:0.25;"></div>
       </div>
-      <div style="font-size:8px;color:var(--text3);font-style:italic;margin-top:4px;padding-left:2px;">${TIER_DESC[tier]||''}</div>
+      <div style="font-size:8px;color:var(--text3);font-style:italic;margin-top:4px;padding-left:2px;">${TIER_DESC[tier]||''}${tierHidden>0?` <span style="color:${color};opacity:0.5;font-style:normal;">&nbsp;·&nbsp;${tierHidden} in the dark…</span>`:''}</div>
     </div>`;
+    if(!tierCreatures.length)return;
     html+=tierCreatures.map(c=>{
       const vic=getVictories(c.id);
       const maxed=isMaxed(c);
@@ -1691,7 +1728,9 @@ function onWin(){
   const c=B.creature;
   if(!S.victories[c.id])S.victories[c.id]=0;
   S.victories[c.id]++;
+  const justMaxed=S.victories[c.id]===c.vicReq;
   addLog(`<span class="log-win">✓ Defeated ${c.name}! (${S.victories[c.id]}/${c.vicReq})</span>`);
+  if(justMaxed) unlockNextCreature();
   const mult=calcGlossaryMult();
   const rewardMult=1+(S.redraws*0.05);
   Object.entries(c.rewards).forEach(([k,v])=>{
@@ -1774,10 +1813,8 @@ function renderAchievements(){
   });
 }
 function advanceAutoChallenge(){
-  const idx=CREATURES.findIndex(c=>c.id===B.creature.id);
-  if(idx<CREATURES.length-1){
-    startBattle(CREATURES[idx+1].id);
-  }
+  const next=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c)&&c.id!==B.creature.id);
+  if(next) startBattle(next.id);
 }
 function addLog(html){
   if(!S.settings.combatLog)return;
@@ -2017,7 +2054,7 @@ function setupToggles(){
     S.protocols.autoChallenge=!S.protocols.autoChallenge;
     updateAC();
     if(S.protocols.autoChallenge&&!B.active){
-      const first=CREATURES.find(c=>!isMaxed(c));
+      const first=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c));
       if(first)startBattle(first.id);
     }
   });
@@ -2165,6 +2202,7 @@ function setupSettings(){
       S=DEFAULT_STATE();
       B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
       synthRates={gra:0,wax:0,cha:0};
+      initGalleryQueue();
       renderAll();
       toast('Game has been reset.',3000);
     }
@@ -2202,8 +2240,11 @@ function setupSettings(){
     S.currentCreature=null;
     S.quintPending=0;
     S.sessionRewards={};
+    S.galleryUnlocked=[];
+    S.galleryQueue=[];
     B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
     synthRates={gra:0,wax:0,cha:0};
+    initGalleryQueue();
     renderAll();
   });
 }
@@ -2247,6 +2288,7 @@ function loadGame(){
       setTimeout(()=>toast(`Welcome back! +${fmt(offlineGra)} GRA, +${fmt(offlineWax)} WAX offline (${fmtTime(offline)})`,5000),500);
     }
   }catch(e){console.error('Load failed',e);}
+  initGalleryQueue();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2319,13 +2361,14 @@ function gameLoop(){
 // INIT
 // ═══════════════════════════════════════════════════════
 loadGame();
+initGalleryQueue();
 setupToggles();
 setupSettings();
 renderAll();
 checkAchievements();
 // Start autochallenge if was enabled
 if(S.protocols.autoChallenge&&!B.active){
-  const first=CREATURES.find(c=>!isMaxed(c));
+  const first=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c));
   if(first)startBattle(first.id);
 }
 requestAnimationFrame(gameLoop);
