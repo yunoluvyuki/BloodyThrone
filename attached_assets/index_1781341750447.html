@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Draft Throne</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#151515;--bg2:#1c1c1c;--bg3:#242424;--bg4:#2c2c2c;
+  --border:#2e2e2e;--border2:#3a3a3a;
+  --text:#c0c0c0;--text2:#888;--text3:#555;--text4:#3a3a3a;
+  --white:#f0f0f0;--red:#c0392b;--red2:#e74c3c;--green:#27ae60;
+  --blue:#2980b9;--purple:#8e44ad;--purple2:#9b59b6;
+  --yellow:#e67e22;--cyan:#1abc9c;--orange:#d35400;
+  --g-common:#888;--g-uncommon:#27ae60;--g-rare:#2980b9;--g-epic:#9b59b6;--g-legendary:#f0b429;
+}
+body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;font-size:11px;height:100vh;overflow:hidden;display:flex;flex-direction:column;user-select:none;}
+
+/* ── TOPBAR ─────────────────────────────────────────── */
+#topbar{height:36px;background:#0e0e0e;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;flex-shrink:0;gap:0;}
+#topbar .title{font-size:13px;font-weight:bold;color:var(--white);letter-spacing:2px;width:175px;flex-shrink:0;padding-left:4px;}
+#nav-tabs{display:flex;border-right:1px solid var(--border);margin-right:12px;}
+.nav-tab{padding:0 16px;height:36px;display:flex;align-items:center;cursor:pointer;text-transform:uppercase;letter-spacing:1px;font-size:10px;color:var(--text2);border-right:1px solid var(--border);position:relative;font-family:inherit;background:none;border-top:none;border-bottom:none;transition:color .15s;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{background:var(--white);color:#111;font-weight:bold;}
+#resources{display:flex;align-items:center;gap:2px;flex:1;}
+.res-block{display:flex;flex-direction:column;align-items:center;padding:0 10px;border-right:1px solid var(--border);min-width:70px;}
+.res-val{font-size:12px;color:var(--white);font-weight:bold;}
+.res-rate{font-size:9px;color:var(--text3);}
+.res-icon{font-size:8px;color:var(--text3);margin-bottom:1px;}
+#player-level-block{display:flex;flex-direction:column;align-items:center;padding:0 12px;border-right:1px solid var(--border);}
+#lv-label{font-size:8px;color:var(--text3);letter-spacing:1px;}
+#lv-val{font-size:13px;color:var(--yellow);font-weight:bold;}
+#lv-exp-bar{width:60px;height:3px;background:var(--bg4);margin-top:1px;}
+#lv-exp-fill{height:100%;background:var(--yellow);transition:width .3s;}
+#topbar .fps{margin-left:auto;color:var(--text3);font-size:10px;padding-right:4px;}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+#layout{display:flex;flex:1;overflow:hidden;}
+
+/* ── LEFT SIDEBAR ───────────────────────────────────── */
+#left-sidebar{width:195px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+#portrait-area{padding:8px;border-bottom:1px solid var(--border);}
+#portrait-box{width:100%;aspect-ratio:1;background:var(--white);border:1px solid #ccc;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#portrait-box svg{width:80%;height:80%;}
+#specs-header{padding:4px 8px 2px;display:flex;align-items:center;justify-content:space-between;}
+#specs-header .label{font-size:10px;color:var(--white);letter-spacing:1px;font-weight:bold;}
+.filter-tabs{display:flex;gap:1px;padding:2px 6px;flex-wrap:wrap;}
+.filter-tab{padding:2px 5px;font-size:9px;cursor:pointer;color:var(--text3);border:1px solid transparent;}
+.filter-tab.active{background:var(--bg4);color:var(--text);border-color:var(--border2);}
+.sort-bar{display:flex;align-items:center;gap:4px;padding:2px 6px;border-bottom:1px solid var(--border);}
+#stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:6px;}
+.stat-cell{background:var(--bg3);border:1px solid var(--border);padding:3px 5px;}
+.stat-name{font-size:8px;color:var(--text3);text-transform:uppercase;}
+.stat-val{font-size:12px;color:var(--white);font-weight:bold;line-height:1.2;}
+.stat-icon{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:2px;vertical-align:middle;}
+.si-hp{background:var(--red2);}.si-atk{background:var(--yellow);}.si-arm{background:#7fb3d3;}
+.si-spd{background:#5dade2;}.si-rgn{background:var(--green);}.si-dog{background:#48c9b0;}
+.si-crc{background:#f39c12;}.si-crd{background:#e74c3c;}.si-apn{background:#a569bd;}
+.si-blk{background:#7d6608;}.si-ctr{background:#1a9e7f;}
+#fund-section{border-top:1px solid var(--border);padding:4px 0;flex-shrink:0;}
+#fund-header{padding:3px 8px;display:flex;align-items:center;justify-content:space-between;}
+#fund-header .label{font-size:10px;color:var(--white);letter-spacing:1px;font-weight:bold;}
+#fund-values{padding:0 8px 6px;display:flex;flex-direction:column;gap:2px;}
+.fund-row{display:flex;justify-content:space-between;font-size:9px;}
+.fund-key{color:var(--text2);}
+.fund-val{color:var(--text);}
+
+/* ── CONTENT AREA ───────────────────────────────────── */
+#content-area{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg);}
+#content-area::-webkit-scrollbar{width:6px;}
+#content-area::-webkit-scrollbar-thumb{background:var(--bg4);}
+.tab-pane{display:none;padding:12px;}
+.tab-pane.active{display:block;}
+
+/* ── RIGHT SIDEBAR ──────────────────────────────────── */
+#right-sidebar{width:175px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;}
+#protocols-header{padding:8px 10px;border-bottom:1px solid var(--border);}
+#protocols-header .title{font-size:11px;font-weight:bold;letter-spacing:2px;color:var(--white);}
+.protocol-section{border-bottom:1px solid var(--border);padding:8px 10px;}
+.protocol-title{font-size:9px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.protocol-sub{font-size:8px;color:var(--text3);margin-bottom:4px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.toggle-label{font-size:9px;color:var(--text2);}
+.toggle-switch{width:32px;height:16px;background:var(--bg4);border:1px solid var(--border2);cursor:pointer;position:relative;display:flex;align-items:center;}
+.toggle-switch.on{background:#1a5c2e;border-color:var(--green);}
+.toggle-switch::after{content:'';width:12px;height:12px;background:var(--text3);position:absolute;left:1px;transition:left .15s;}
+.toggle-switch.on::after{left:17px;background:var(--green);}
+.protocol-val{font-size:9px;color:var(--text3);margin-top:2px;}
+#session-panel{padding:8px 10px;flex:1;overflow-y:auto;}
+#session-panel .label{font-size:9px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:3px;}
+.sess-row{display:flex;justify-content:space-between;font-size:9px;margin-bottom:2px;}
+.sess-key{color:var(--text2);}
+.sess-val{color:var(--green);}
+
+/* ── SLOT CARDS ─────────────────────────────────────── */
+#slot-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.monster-slot{background:var(--bg2);border:2px solid var(--border);cursor:pointer;padding:8px;position:relative;transition:border-color .15s;}
+.monster-slot:hover{border-color:var(--border2);}
+.monster-slot.active-slot{background:#0e1a0e;}
+.monster-slot.empty{opacity:0.4;cursor:default;}
+.slot-grade-badge{font-size:7px;font-weight:bold;letter-spacing:1px;padding:1px 5px;display:inline-block;margin-bottom:4px;}
+.slot-name{font-size:10px;color:var(--white);font-weight:bold;letter-spacing:1px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.slot-hp-wrap{margin-bottom:3px;}
+.slot-hp-bar{height:5px;background:var(--bg4);border:1px solid var(--border);}
+.slot-hp-fill{height:100%;background:var(--red2);transition:width .15s;}
+.slot-hp-text{font-size:8px;color:var(--text3);}
+.slot-vic-dots{display:flex;gap:3px;margin-top:4px;}
+.slot-vic-dot{width:7px;height:7px;border-radius:50%;border:1px solid var(--border2);}
+.slot-vic-dot.filled{background:var(--green);border-color:var(--green);}
+.slot-depleted{position:absolute;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);letter-spacing:2px;}
+/* Grade colors */
+.grade-common{border-color:#555;color:#888;}
+.grade-uncommon{border-color:var(--g-uncommon);color:var(--g-uncommon);}
+.grade-rare{border-color:var(--g-rare);color:var(--g-rare);}
+.grade-epic{border-color:var(--g-epic);color:var(--g-epic);}
+.grade-legendary{border-color:var(--g-legendary);color:var(--g-legendary);}
+.monster-slot.grade-uncommon{border-color:var(--g-uncommon);}
+.monster-slot.grade-rare{border-color:var(--g-rare);}
+.monster-slot.grade-epic{border-color:var(--g-epic);}
+.monster-slot.grade-legendary{border-color:var(--g-legendary);}
+
+/* ── BATTLE ─────────────────────────────────────────── */
+#battle-active{background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:10px;}
+#battle-name-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+#battle-enemy-name{font-size:15px;color:var(--white);font-weight:bold;letter-spacing:2px;}
+#battle-grade-label{font-size:9px;font-weight:bold;padding:2px 8px;letter-spacing:1px;}
+.hp-bar-wrap{margin-bottom:6px;}
+.hp-label{font-size:9px;color:var(--text2);display:flex;justify-content:space-between;margin-bottom:2px;}
+.hp-bar{height:8px;background:var(--bg4);border:1px solid var(--border2);}
+.hp-fill{height:100%;transition:width .1s;}
+.hp-fill.player{background:linear-gradient(90deg,var(--green),#52d68a);}
+.hp-fill.enemy{background:linear-gradient(90deg,var(--red),var(--red2));}
+#battle-timers{display:flex;gap:12px;margin:8px 0;}
+.timer-row{flex:1;display:flex;flex-direction:column;gap:2px;}
+.timer-label{font-size:8px;color:var(--text3);letter-spacing:1px;}
+.timer-bar-wrap{height:5px;background:var(--bg3);border:1px solid var(--border);}
+.timer-fill{height:100%;transition:width .1s linear;}
+.tfill-player{background:var(--red2);}
+.tfill-enemy{background:var(--purple2);}
+.timer-text{font-size:8px;color:var(--text2);}
+#battle-controls{display:flex;gap:8px;margin-top:8px;}
+.battle-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+.battle-btn:hover:not(:disabled){background:var(--bg4);}
+.battle-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.battle-btn.danger{border-color:var(--red);color:var(--red);}
+#battle-status-text{font-size:9px;color:var(--text3);margin-top:6px;letter-spacing:1px;}
+#battle-log{height:110px;overflow-y:auto;padding:6px;font-size:9px;color:var(--text2);background:var(--bg2);border:1px solid var(--border);}
+#battle-log::-webkit-scrollbar{width:4px;}
+#battle-log::-webkit-scrollbar-thumb{background:var(--bg4);}
+.log-entry{margin-bottom:2px;line-height:1.4;}
+.log-dmg{color:#e8a44a;}
+.log-crit{color:var(--red2);font-weight:bold;}
+.log-heal{color:var(--green);}
+.log-win{color:var(--purple2);font-weight:bold;}
+.log-die{color:var(--red2);}
+.log-info{color:var(--text3);}
+#death-overlay{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,0,0,0.95);border:1px solid var(--red);padding:20px 30px;text-align:center;z-index:100;display:none;}
+#death-overlay h2{color:var(--red2);font-size:16px;margin-bottom:8px;}
+#death-overlay .timer{font-size:24px;color:var(--white);font-weight:bold;}
+
+/* ── GALLERY ────────────────────────────────────────── */
+.gallery-tier-header{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:3px;margin:12px 0 8px;}
+.gallery-tier-header:first-child{margin-top:0;}
+#gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.type-card{background:var(--bg2);border:1px solid var(--border);padding:8px;cursor:default;}
+.type-card .tc-name{font-size:10px;color:var(--white);font-weight:bold;letter-spacing:1px;margin-bottom:3px;}
+.type-card .tc-lv{font-size:8px;color:var(--text3);margin-bottom:4px;}
+.type-card .tc-grades{display:flex;gap:3px;flex-wrap:wrap;}
+.tc-grade-pip{width:10px;height:10px;border-radius:50%;border:1px solid var(--border2);display:inline-block;}
+.tc-grade-pip.seen{border-width:2px;}
+.type-card .tc-stats{font-size:8px;color:var(--text3);margin-top:4px;}
+.type-card.locked{opacity:0.3;}
+
+/* ── SHOP ────────────────────────────────────────────── */
+#shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;}
+.shop-card{background:var(--bg2);border:1px solid var(--border);padding:10px;}
+.shop-name{font-size:10px;color:var(--white);font-weight:bold;margin-bottom:3px;}
+.shop-desc{font-size:9px;color:var(--text2);margin-bottom:5px;}
+.shop-effect{font-size:9px;color:var(--green);margin-bottom:4px;}
+.shop-cost{font-size:9px;color:var(--yellow);margin-bottom:5px;}
+.shop-own{font-size:8px;color:var(--text3);margin-bottom:5px;}
+.btn-buy{width:100%;padding:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+.btn-buy:hover{background:var(--bg4);}
+.btn-buy:disabled{color:var(--text4);cursor:default;border-color:var(--border);}
+
+/* ── ARCHIVE ────────────────────────────────────────── */
+.archive-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.arch-tab{padding:6px 16px;cursor:pointer;font-size:10px;color:var(--text2);border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:1px;}
+.arch-tab.active{color:var(--white);border-bottom-color:var(--white);}
+.arch-pane{display:none;}
+.arch-pane.active{display:block;}
+#gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;}
+.gloss-card{background:var(--bg2);border:1px solid var(--border);aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;overflow:hidden;}
+.gloss-card.unlocked{background:#0a1a0a;border-color:var(--green);}
+.gloss-name{font-size:7px;color:var(--text3);text-align:center;padding:2px 4px;letter-spacing:1px;}
+.gloss-icon{font-size:22px;}
+
+/* ── SETTINGS ────────────────────────────────────────── */
+#settings-layout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.settings-section{background:var(--bg2);border:1px solid var(--border);padding:12px;}
+.settings-section.active-section{border-color:var(--yellow);}
+.settings-title{font-size:10px;font-weight:bold;color:var(--white);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.settings-btn{width:100%;padding:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;text-align:center;}
+.settings-btn:hover{background:var(--bg4);}
+.settings-btn.danger{border-color:var(--red);color:var(--red);}
+.settings-btn.danger:hover{background:#2a0a0a;}
+.settings-check-row{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px;cursor:pointer;}
+.settings-check-row input[type=checkbox]{accent-color:var(--green);cursor:pointer;margin-top:1px;flex-shrink:0;}
+.settings-check-label{font-size:9px;color:var(--text2);line-height:1.4;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.settings-row-label{font-size:9px;color:var(--text2);}
+.settings-row-val{font-size:9px;color:var(--text);}
+.danger-zone-header{margin-top:10px;padding:5px 8px;background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.3);font-size:8px;color:var(--red2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:4px;margin-bottom:6px;}
+
+/* ── MISC ────────────────────────────────────────────── */
+.section-header{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.notification-toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);padding:8px 16px;font-size:10px;color:var(--white);z-index:200;pointer-events:none;opacity:0;transition:opacity .3s;}
+.notification-toast.show{opacity:1;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--bg4);}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="title">DRAFT THRONE</div>
+  <div id="nav-tabs">
+    <button class="nav-tab active" data-tab="battle">BATTLE</button>
+    <button class="nav-tab" data-tab="gallery">GALLERY</button>
+    <button class="nav-tab" data-tab="shop">SHOP</button>
+    <button class="nav-tab" data-tab="archive">ARCHIVE</button>
+    <button class="nav-tab" data-tab="settings">SETTINGS</button>
+  </div>
+  <div id="resources">
+    <div id="player-level-block">
+      <div id="lv-label">LEVEL</div>
+      <div id="lv-val">1</div>
+      <div id="lv-exp-bar"><div id="lv-exp-fill" style="width:0%"></div></div>
+    </div>
+    <div class="res-block">
+      <div class="res-icon">▲ GRAPHITE</div>
+      <div class="res-val" id="res-gra">0</div>
+      <div class="res-rate" id="res-gra-rate">+0/s</div>
+    </div>
+    <div class="res-block">
+      <div class="res-icon">◆ WAX</div>
+      <div class="res-val" id="res-wax">0</div>
+      <div class="res-rate" id="res-wax-rate">+0/s</div>
+    </div>
+    <div class="res-block">
+      <div class="res-icon">● CHARCOAL</div>
+      <div class="res-val" id="res-cha">0</div>
+      <div class="res-rate" id="res-cha-rate">+0/s</div>
+    </div>
+  </div>
+  <div class="fps" id="fps-display">FPS 60</div>
+</div>
+
+<!-- LAYOUT -->
+<div id="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <div id="left-sidebar">
+    <div id="portrait-area">
+      <div id="portrait-box">
+        <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222" stroke-linecap="round">
+          <path d="M38,30 L38,18 Q38,6 50,6 Q62,6 62,18 L62,30 Q62,38 50,38 Q38,38 38,30Z" stroke-width="2.5"/>
+          <path d="M38,22 L32,22 L32,32 L38,32" stroke-width="2"/>
+          <path d="M62,22 L68,22 L68,32 L62,32" stroke-width="2"/>
+          <line x1="38" y1="26" x2="62" y2="26" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="50" y1="38" x2="50" y2="90" stroke-width="2.5"/>
+          <line x1="50" y1="55" x2="22" y2="72" stroke-width="2.5"/>
+          <line x1="22" y1="72" x2="16" y2="68" stroke-width="2"/>
+          <line x1="50" y1="55" x2="76" y2="60" stroke-width="2.5"/>
+          <line x1="76" y1="60" x2="90" y2="40" stroke-width="2"/>
+          <line x1="80" y1="55" x2="86" y2="58" stroke-width="2"/>
+          <line x1="50" y1="90" x2="34" y2="128" stroke-width="2.5"/>
+          <line x1="34" y1="128" x2="26" y2="126" stroke-width="2"/>
+          <line x1="50" y1="90" x2="66" y2="128" stroke-width="2.5"/>
+          <line x1="66" y1="128" x2="74" y2="126" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+    <div id="specs-header">
+      <span class="label">CURRENT STATS</span>
+    </div>
+    <div class="filter-tabs" id="spec-filters">
+      <span class="filter-tab active" data-spec="all">ALL</span>
+      <span class="filter-tab" data-spec="offense">OFF</span>
+      <span class="filter-tab" data-spec="defense">DEF</span>
+      <span class="filter-tab" data-spec="chance">CHN</span>
+    </div>
+    <div id="stat-grid"></div>
+    <div id="fund-section">
+      <div id="fund-header"><span class="label">FUNDAMENTALS</span></div>
+      <div id="fund-values"></div>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div id="content-area">
+
+    <!-- BATTLE TAB -->
+    <div class="tab-pane active" id="tab-battle">
+      <!-- 4 Monster Slots -->
+      <div id="slot-row">
+        <div class="monster-slot empty" id="slot-0" data-slot="0"><div class="slot-name">—</div></div>
+        <div class="monster-slot empty" id="slot-1" data-slot="1"><div class="slot-name">—</div></div>
+        <div class="monster-slot empty" id="slot-2" data-slot="2"><div class="slot-name">—</div></div>
+        <div class="monster-slot empty" id="slot-3" data-slot="3"><div class="slot-name">—</div></div>
+      </div>
+      <!-- Active Battle -->
+      <div id="battle-active">
+        <div id="battle-name-row">
+          <div id="battle-enemy-name">SELECT A SLOT</div>
+          <div id="battle-grade-label"></div>
+        </div>
+        <div class="hp-bar-wrap">
+          <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
+          <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
+        </div>
+        <div class="hp-bar-wrap">
+          <div class="hp-label"><span>YOUR HP</span><span id="player-hp-text">—</span></div>
+          <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
+        </div>
+        <div id="battle-timers">
+          <div class="timer-row">
+            <div class="timer-label">YOUR TURN</div>
+            <div class="timer-bar-wrap"><div class="timer-fill tfill-player" id="ptimer-bar" style="width:0%"></div></div>
+            <div class="timer-text" id="ptimer-text">—</div>
+          </div>
+          <div class="timer-row">
+            <div class="timer-label">ENEMY TURN</div>
+            <div class="timer-bar-wrap"><div class="timer-fill tfill-enemy" id="etimer-bar" style="width:0%"></div></div>
+            <div class="timer-text" id="etimer-text">—</div>
+          </div>
+        </div>
+        <div id="battle-controls">
+          <button class="battle-btn danger" id="btn-flee">FLEE</button>
+        </div>
+        <div id="battle-status-text">Click a slot above to begin fighting.</div>
+      </div>
+      <div class="section-header">COMBAT LOG</div>
+      <div id="battle-log"></div>
+    </div>
+
+    <!-- GALLERY TAB -->
+    <div class="tab-pane" id="tab-gallery">
+      <div id="gallery-grid"></div>
+    </div>
+
+    <!-- SHOP TAB -->
+    <div class="tab-pane" id="tab-shop">
+      <div class="section-header">SHOP</div>
+      <div id="shop-grid"></div>
+    </div>
+
+    <!-- ARCHIVE TAB -->
+    <div class="tab-pane" id="tab-archive">
+      <div class="archive-tabs">
+        <span class="arch-tab active" data-arch="achievements">ACHIEVEMENTS</span>
+        <span class="arch-tab" data-arch="glossary">BESTIARY</span>
+      </div>
+      <div class="arch-pane active" id="arch-achievements"></div>
+      <div class="arch-pane" id="arch-glossary">
+        <div id="gloss-grid"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="tab-pane" id="tab-settings">
+      <div id="settings-layout">
+        <div class="settings-section active-section">
+          <div class="settings-title">⚙ INTERFACE</div>
+          <label class="settings-check-row">
+            <input type="checkbox" id="chk-combat-log" checked>
+            <div class="settings-check-label">Show combat log</div>
+          </label>
+          <label class="settings-check-row">
+            <input type="checkbox" id="chk-auto-tab">
+            <div class="settings-check-label">Switch to Battle tab on fight start</div>
+          </label>
+        </div>
+        <div class="settings-section">
+          <div class="settings-title">▲ PROFILE</div>
+          <div id="profile-stats"></div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-title">! DANGER ZONE</div>
+          <div class="danger-zone-header">⚠ IRREVERSIBLE</div>
+          <button class="settings-btn danger" id="btn-reset">RESET ALL PROGRESS</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div id="right-sidebar">
+    <div id="protocols-header"><div class="title">PROTOCOLS</div></div>
+    <div class="protocol-section">
+      <div class="protocol-title">AUTO-CHALLENGE</div>
+      <div class="protocol-sub" id="ac-details">DISABLED</div>
+      <div class="toggle-row">
+        <span class="toggle-label">DISABLED</span>
+        <div class="toggle-switch" id="ac-toggle"></div>
+        <span class="toggle-label">ENABLED</span>
+      </div>
+    </div>
+    <div class="protocol-section">
+      <div class="protocol-title">AUTO-RETRY</div>
+      <div class="toggle-row">
+        <span class="toggle-label">DISABLED</span>
+        <div class="toggle-switch" id="ar-toggle"></div>
+        <span class="toggle-label">ENABLED</span>
+      </div>
+    </div>
+    <div id="session-panel">
+      <div class="label">SESSION REWARDS</div>
+      <div id="sess-rewards-list"><div style="color:var(--text3);font-size:9px;">No rewards yet.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DEATH OVERLAY -->
+<div id="death-overlay">
+  <h2>DEFEATED</h2>
+  <div class="timer" id="death-timer">10</div>
+  <div style="font-size:9px;color:var(--text2);margin-top:8px;">Recovering...</div>
+</div>
+
+<!-- TOAST -->
+<div class="notification-toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// MONSTER TYPES
+// ═══════════════════════════════════════════════════════
+function cS(lv,hM,aM,dM){
+  const L=lv;
+  return{
+    hp:  Math.round(100*Math.pow(L,1.12)*hM),
+    atk: Math.round(10 *Math.pow(L,1.08)*aM),
+    def: Math.round(2  *Math.pow(L,1.04)*dM),
+    gra: Math.round(18 *Math.pow(L,1.22)),
+    aRew:parseFloat((0.5*Math.pow(L,1.1)).toFixed(2)),
+    exp: Math.round(22 *Math.pow(L,1.18)),
+  };
+}
+// [id, name, unlockLv, hpMod, atkMod, defMod]
+const MT_RAW=[
+  // ── LV 1 (10) ──────────────────────────
+  ['goblin',          'GOBLIN',          1, 0.80,1.10,0.70],
+  ['rat',             'RAT',             1, 0.48,0.75,0.50],
+  ['slime',           'SLIME',           1, 1.50,0.55,1.20],
+  ['bat',             'BAT',             1, 0.60,1.20,0.50],
+  ['zombie',          'ZOMBIE',          1, 1.40,0.80,0.90],
+  ['skeleton',        'SKELETON',        1, 1.00,1.10,0.85],
+  ['spider',          'SPIDER',          1, 0.75,1.00,0.70],
+  ['wolf',            'WOLF',            1, 0.90,1.30,0.60],
+  ['mushroom_man',    'MUSHROOM MAN',    1, 1.60,0.55,1.40],
+  ['cave_leech',      'CAVE LEECH',      1, 0.65,0.90,0.60],
+  // ── LV 5 (5) ───────────────────────────
+  ['orc',             'ORC',             5, 1.10,1.20,1.00],
+  ['ghost',           'GHOST',           5, 0.70,1.40,0.40],
+  ['dark_bat',        'DARK BAT',        5, 0.80,1.35,0.55],
+  ['stone_crab',      'STONE CRAB',      5, 2.00,0.65,1.80],
+  ['lizardman',       'LIZARDMAN',       5, 1.00,1.00,1.00],
+  // ── LV 10 (5) ──────────────────────────
+  ['troll',           'TROLL',          10, 1.50,1.00,0.90],
+  ['werewolf',        'WEREWOLF',       10, 1.10,1.40,0.70],
+  ['undead_knight',   'UNDEAD KNIGHT',  10, 1.30,0.95,1.30],
+  ['harpy',           'HARPY',          10, 0.90,1.50,0.65],
+  ['sand_wyrm',       'SAND WYRM',      10, 1.70,0.85,1.00],
+  // ── LV 15 (5) ──────────────────────────
+  ['dark_knight',     'DARK KNIGHT',    15, 1.20,1.10,1.20],
+  ['vampire',         'VAMPIRE',        15, 1.00,1.30,0.75],
+  ['plague_zombie',   'PLAGUE ZOMBIE',  15, 1.80,0.85,1.00],
+  ['ice_elemental',   'ICE ELEMENTAL',  15, 1.10,1.25,0.80],
+  ['fire_imp',        'FIRE IMP',       15, 0.75,1.55,0.60],
+  // ── LV 20 (5) ──────────────────────────
+  ['ogre',            'OGRE',           20, 1.80,1.10,0.90],
+  ['banshee',         'BANSHEE',        20, 1.00,1.50,0.60],
+  ['frost_troll',     'FROST TROLL',    20, 1.60,0.90,1.40],
+  ['corrupted_treant','CORRUPTED TREANT',20,2.20,0.75,1.60],
+  ['hellhound',       'HELLHOUND',      20, 0.95,1.60,0.70],
+  // ── LV 25 (5) ──────────────────────────
+  ['shadow_stalker',  'SHADOW STALKER', 25, 1.10,1.45,0.80],
+  ['stone_golem',     'STONE GOLEM',    25, 2.50,0.70,2.20],
+  ['blood_knight',    'BLOOD KNIGHT',   25, 1.50,1.30,1.00],
+  ['necromancer',     'NECROMANCER',    25, 1.20,1.55,0.65],
+  ['void_wraith',     'VOID WRAITH',    25, 0.95,1.65,0.55],
+  // ── LV 30 (5) ──────────────────────────
+  ['ancient_zombie',  'ANCIENT ZOMBIE', 30, 2.00,0.90,1.20],
+  ['chaos_elemental', 'CHAOS ELEMENTAL',30, 1.30,1.50,0.75],
+  ['cursed_templar',  'CURSED TEMPLAR', 30, 1.60,1.20,1.40],
+  ['nightmare_hound', 'NIGHTMARE HOUND',30, 1.20,1.60,0.80],
+  ['abyssal_bat',     'ABYSSAL BAT',    30, 1.00,1.70,0.60],
+  // ── LV 35 (4) ──────────────────────────
+  ['dread_colossus',  'DREAD COLOSSUS', 35, 2.20,1.10,1.50],
+  ['soul_reaper',     'SOUL REAPER',    35, 1.40,1.65,0.80],
+  ['plague_chimera',  'PLAGUE CHIMERA', 35, 1.80,1.35,1.10],
+  ['dark_specter',    'DARK SPECTER',   35, 1.10,1.80,0.65],
+  // ── LV 40 (4) ──────────────────────────
+  ['iron_golem',      'IRON GOLEM',     40, 2.60,0.95,2.50],
+  ['lich',            'LICH',           40, 1.50,1.75,0.85],
+  ['ancient_dragon',  'ANCIENT DRAGON', 40, 2.00,1.50,1.30],
+  ['void_titan',      'VOID TITAN',     40, 1.80,1.45,1.20],
+  // ── LV 50 (3) ──────────────────────────
+  ['death_knight',    'DEATH KNIGHT',   50, 2.20,1.50,1.60],
+  ['ancient_lich',    'ANCIENT LICH',   50, 1.80,1.90,1.00],
+  ['plague_dragon',   'PLAGUE DRAGON',  50, 2.50,1.35,1.40],
+  // ── LV 60 (3) ──────────────────────────
+  ['eternal_colossus','ETERNAL COLOSSUS',60,2.80,1.55,2.00],
+  ['abyss_dragon',    'ABYSS DRAGON',   60, 2.20,1.80,1.30],
+  ['chaos_titan',     'CHAOS TITAN',    60, 2.50,1.65,1.70],
+  // ── LV 70 (2) ──────────────────────────
+  ['ancient_god',     'ANCIENT GOD',    70, 2.80,1.80,1.80],
+  ['void_god',        'VOID GOD',       70, 2.50,2.00,1.60],
+  // ── LV 80 (2) ──────────────────────────
+  ['void_leviathan',  'VOID LEVIATHAN', 80, 3.00,1.90,1.90],
+  ['eternal_king',    'ETERNAL KING',   80, 2.70,2.00,2.00],
+  // ── LV 100 (2) ─────────────────────────
+  ['the_end',         'THE END',        100,3.50,2.20,2.20],
+  ['oblivion_titan',  'OBLIVION TITAN', 100,4.00,2.00,2.50],
+];
+const MONSTER_TYPES=MT_RAW.map(([id,name,lv,hM,aM,dM])=>({id,name,lv,...cS(lv,hM,aM,dM)}));
+
+// ═══════════════════════════════════════════════════════
+// GRADES
+// ═══════════════════════════════════════════════════════
+const GRADES={
+  common:   {label:'COMMON',   color:'#888',   mult:1.0, weight:60, graMult:1.0,  expMult:1.0},
+  uncommon: {label:'UNCOMMON', color:'#27ae60',mult:1.2, weight:25, graMult:1.5,  expMult:1.2},
+  rare:     {label:'RARE',     color:'#2980b9',mult:1.5, weight:10, graMult:3.0,  expMult:1.5},
+  epic:     {label:'EPIC',     color:'#9b59b6',mult:2.0, weight:4,  graMult:8.0,  expMult:2.0},
+  legendary:{label:'LEGENDARY',color:'#f0b429',mult:3.0, weight:1,  graMult:20.0, expMult:3.0},
+};
+const GRADE_KEYS=['common','uncommon','rare','epic','legendary'];
+
+// ═══════════════════════════════════════════════════════
+// SHOP ITEMS
+// ═══════════════════════════════════════════════════════
+const SHOP_ITEMS=[
+  {id:'iron_quill',   name:'IRON QUILL',    desc:'A sharpened writing instrument.',  effect:'ATK +5',  cost:{gra:50},  statBonus:{atk:5}},
+  {id:'sketch_shield',name:'SKETCH SHIELD', desc:'Hastily drawn, surprisingly solid.',effect:'ARM +2',  cost:{gra:80},  statBonus:{arm:2}},
+  {id:'ink_flesh',    name:'INK FLESH',     desc:'Regenerative ink soaks the body.',  effect:'HP +25',  cost:{gra:120}, statBonus:{hp:25}},
+  {id:'quick_brush',  name:'QUICK BRUSH',   desc:'Faster strikes, faster kills.',     effect:'APN +0.2',cost:{gra:200}, statBonus:{apn:0.2}},
+  {id:'void_lens',    name:'VOID LENS',     desc:'See through the dark.',             effect:'DOG +2%', cost:{gra:150}, statBonus:{dog:0.02}},
+  {id:'blood_quill',  name:'BLOOD QUILL',   desc:'Every hit counts.',                 effect:'CRC +2%', cost:{gra:180}, statBonus:{crc:0.02}},
+  {id:'steel_graft',  name:'STEEL GRAFT',   desc:'Armor that becomes you.',           effect:'ARM +5',  cost:{gra:250}, statBonus:{arm:5}},
+  {id:'regen_ink',    name:'REGEN INK',     desc:'The body reknits between blows.',   effect:'RGN +1',  cost:{gra:300}, statBonus:{rgn:1}},
+  {id:'sharp_edge',   name:'SHARP EDGE',    desc:'Cuts through everything.',          effect:'ATK +12', cost:{gra:400}, statBonus:{atk:12}},
+  {id:'ward_script',  name:'WARD SCRIPT',   desc:'Written protection.',               effect:'BLK +3%', cost:{gra:350}, statBonus:{blk:0.03}},
+  {id:'vital_rune',   name:'VITAL RUNE',    desc:'Carved for survival.',              effect:'HP +80',  cost:{gra:600}, statBonus:{hp:80}},
+  {id:'fury_mark',    name:'FURY MARK',     desc:'Crit multiplier etched in blood.',  effect:'CRD +0.2x',cost:{gra:500},statBonus:{crd:0.2}},
+  {id:'counter_glyph',name:'COUNTER GLYPH',desc:'Strike back on reflex.',            effect:'CTR +3%', cost:{gra:450}, statBonus:{ctr:0.03}},
+  {id:'titan_plate',  name:'TITAN PLATE',   desc:'Forged from colossus bone.',        effect:'ARM +15', cost:{gra:1200},statBonus:{arm:15}},
+  {id:'war_quill',    name:'WAR QUILL',     desc:'The pen is mightier.',              effect:'ATK +30', cost:{gra:1500},statBonus:{atk:30}},
+];
+
+// ═══════════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════════════════
+const ACHIEVEMENTS=[
+  {id:'first_kill',  name:'FIRST BLOOD',      desc:'Win your first battle.',              icon:'✏', cat:'progress', check:s=>s.totalKills>=1},
+  {id:'kills_10',    name:'GETTING STARTED',   desc:'Win 10 battles.',                     icon:'⚔', cat:'progress', check:s=>s.totalKills>=10},
+  {id:'kills_100',   name:'THE GRIND BEGINS',  desc:'Win 100 battles.',                    icon:'💀', cat:'progress', check:s=>s.totalKills>=100},
+  {id:'kills_1000',  name:'INK SOAKED',        desc:'Win 1,000 battles.',                  icon:'🌑', cat:'progress', check:s=>s.totalKills>=1000},
+  {id:'lv5',         name:'RISING',            desc:'Reach level 5.',                      icon:'⬆', cat:'progress', check:s=>s.playerLevel>=5},
+  {id:'lv10',        name:'SEASONED',          desc:'Reach level 10.',                     icon:'🔥', cat:'progress', check:s=>s.playerLevel>=10},
+  {id:'lv25',        name:'VETERAN',           desc:'Reach level 25.',                     icon:'⭐', cat:'progress', check:s=>s.playerLevel>=25},
+  {id:'lv50',        name:'ELITE',             desc:'Reach level 50.',                     icon:'💎', cat:'progress', check:s=>s.playerLevel>=50},
+  {id:'rare_first',  name:'INTO THE BLUE',     desc:'Defeat a Rare grade monster.',        icon:'🌘', cat:'collect',  check:s=>(s.gradeKills&&s.gradeKills.rare||0)>=1},
+  {id:'epic_first',  name:'PURPLE REIGN',      desc:'Defeat an Epic grade monster.',       icon:'🔮', cat:'collect',  check:s=>(s.gradeKills&&s.gradeKills.epic||0)>=1},
+  {id:'legend_first',name:'GOD SLAYER',        desc:'Defeat a Legendary grade monster.',   icon:'👑', cat:'collect',  check:s=>(s.gradeKills&&s.gradeKills.legendary||0)>=1},
+  {id:'types_5',     name:'FIELD RESEARCHER',  desc:'Encounter 5 different monster types.',icon:'📖', cat:'collect',  check:s=>Object.keys(s.seen||{}).length>=5},
+  {id:'types_20',    name:'MONSTER SCHOLAR',   desc:'Encounter 20 different types.',       icon:'🗂', cat:'collect',  check:s=>Object.keys(s.seen||{}).length>=20},
+  {id:'atk_50',      name:'SHARP EDGE',        desc:'Reach ATK 50.',                       icon:'🗡', cat:'stats',    check:s=>s.stats.atk>=50},
+  {id:'atk_200',     name:'MASTERFUL STROKE',  desc:'Reach ATK 200.',                      icon:'⚡', cat:'stats',    check:s=>s.stats.atk>=200},
+  {id:'arm_30',      name:'THICK SKIN',        desc:'Reach ARM 30.',                       icon:'🛡', cat:'stats',    check:s=>s.stats.arm>=30},
+  {id:'hp_500',      name:'IRON CONSTITUTION', desc:'Reach HP 500.',                       icon:'❤', cat:'stats',    check:s=>s.stats.hp>=500},
+  {id:'gra_1k',      name:'INK STAINED',       desc:'Earn 1,000 Graphite lifetime.',       icon:'▲', cat:'economy',  check:s=>s.lifeGra>=1000},
+  {id:'gra_100k',    name:'GRAPHITE HOARD',    desc:'Earn 100,000 Graphite lifetime.',     icon:'◆', cat:'economy',  check:s=>s.lifeGra>=100000},
+  {id:'death_10',    name:'CRITIQUE ACCEPTED', desc:'Be defeated 10 times.',               icon:'💔', cat:'meta',     check:s=>s.deaths>=10},
+];
+
+// ═══════════════════════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════════════════════
+const DEFAULT_STATE=()=>({
+  stats:{hp:300,atk:20,mxd:1.0,spd:2000,rgn:0,dog:0,crc:0,crd:1.0,arm:0,apn:1.0,blk:0,ctr:0},
+  resources:{gra:0,wax:0,cha:0},
+  slots:[null,null,null,null],
+  activeSlot:-1,
+  playerLevel:1,
+  playerExp:0,
+  totalKills:0,
+  deaths:0,
+  lifeGra:0,
+  seen:{},
+  gradeKills:{common:0,uncommon:0,rare:0,epic:0,legendary:0},
+  achievements:{},
+  shopOwned:{},
+  settings:{combatLog:true,autoTab:false},
+  protocols:{autoChallenge:false,autoRetry:false},
+  sessionRewards:{gra:0,atk:0,arm:0,hp:0,wax:0},
+  activeTime:0,
+  offlineTime:0,
+  lastSave:Date.now(),
+});
+let S=DEFAULT_STATE();
+
+// ═══════════════════════════════════════════════════════
+// BATTLE STATE
+// ═══════════════════════════════════════════════════════
+let B={
+  active:false,slotIdx:-1,type:null,grade:null,
+  playerHP:0,enemyHP:0,maxEnemyHP:0,
+  playerTimer:2000,enemyTimer:2000,
+  dying:false,deathStart:0,
+  turnCount:0,
+};
+
+// ═══════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════
+function fmt(n){
+  if(n===undefined||n===null)return'0';
+  if(n>=1e12)return(n/1e12).toFixed(2)+'T';
+  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(2)+'K';
+  if(n%1===0)return n.toFixed(0);
+  return n.toFixed(2);
+}
+function fmtTime(s){
+  if(s<60)return Math.floor(s)+'s';
+  if(s<3600)return Math.floor(s/60)+'m '+Math.floor(s%60)+'s';
+  return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m';
+}
+function toast(msg,dur=2500){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+function addLog(html){
+  if(!S.settings.combatLog)return;
+  const log=document.getElementById('battle-log');
+  if(!log)return;
+  const div=document.createElement('div');
+  div.className='log-entry';
+  div.innerHTML=html;
+  log.insertBefore(div,log.firstChild);
+  while(log.children.length>60)log.removeChild(log.lastChild);
+}
+function maxHP(){return S.stats.hp;}
+
+// ═══════════════════════════════════════════════════════
+// GRADE / SPAWN
+// ═══════════════════════════════════════════════════════
+function randomGrade(){
+  const weights=GRADE_KEYS.map(k=>GRADES[k].weight);
+  const total=weights.reduce((a,b)=>a+b,0);
+  let r=Math.random()*total;
+  for(let i=0;i<GRADE_KEYS.length;i++){r-=weights[i];if(r<=0)return GRADE_KEYS[i];}
+  return'common';
+}
+function getUnlockedTypes(){
+  return MONSTER_TYPES.filter(m=>m.lv<=S.playerLevel);
+}
+function computeSlotStats(type,grade){
+  const m=GRADES[grade].mult;
+  return{
+    hp:Math.round(type.hp*m),
+    atk:Math.round(type.atk*m),
+    def:Math.round(type.def*m),
+    gra:Math.round(type.gra*GRADES[grade].graMult),
+    aRew:parseFloat((type.aRew*m).toFixed(2)),
+    exp:Math.round(type.exp*GRADES[grade].expMult),
+  };
+}
+function spawnSlot(idx){
+  const pool=getUnlockedTypes();
+  if(!pool.length)return;
+  const type=pool[Math.floor(Math.random()*pool.length)];
+  const grade=randomGrade();
+  const cs=computeSlotStats(type,grade);
+  S.slots[idx]={
+    typeId:type.id,
+    grade,
+    victories:0,
+    currentHp:cs.hp,
+    maxHp:cs.hp,
+  };
+}
+function initSlots(){
+  for(let i=0;i<4;i++){
+    if(!S.slots[i])spawnSlot(i);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PLAYER LEVEL
+// ═══════════════════════════════════════════════════════
+function expToNext(lv){return Math.round(200*Math.pow(lv,1.35));}
+function gainExp(amount){
+  S.playerExp+=amount;
+  while(S.playerExp>=expToNext(S.playerLevel)){
+    S.playerExp-=expToNext(S.playerLevel);
+    S.playerLevel++;
+    toast(`Level up! Now level ${S.playerLevel}`,3000);
+    addLog(`<span class="log-win">▲ LEVEL UP — Now level ${S.playerLevel}!</span>`);
+  }
+}
+function renderLevelBar(){
+  document.getElementById('lv-val').textContent=S.playerLevel;
+  const pct=(S.playerExp/expToNext(S.playerLevel)*100).toFixed(1);
+  document.getElementById('lv-exp-fill').style.width=pct+'%';
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS DISPLAY
+// ═══════════════════════════════════════════════════════
+const STAT_DEFS=[
+  {key:'hp',  label:'HP',  icon:'si-hp',  cat:'defense', fmt:'n'},
+  {key:'atk', label:'ATK', icon:'si-atk', cat:'offense', fmt:'n'},
+  {key:'arm', label:'ARM', icon:'si-arm', cat:'defense', fmt:'n'},
+  {key:'spd', label:'SPD', icon:'si-spd', cat:'utility', fmt:'n'},
+  {key:'apn', label:'APN', icon:'si-apn', cat:'offense', fmt:'x'},
+  {key:'rgn', label:'RGN', icon:'si-rgn', cat:'defense', fmt:'n'},
+  {key:'dog', label:'DOG', icon:'si-dog', cat:'chance',  fmt:'pct'},
+  {key:'crc', label:'CRC', icon:'si-crc', cat:'chance',  fmt:'pct'},
+  {key:'crd', label:'CRD', icon:'si-crd', cat:'offense', fmt:'x'},
+  {key:'blk', label:'BLK', icon:'si-blk', cat:'chance',  fmt:'pct'},
+  {key:'ctr', label:'CTR', icon:'si-ctr', cat:'chance',  fmt:'pct'},
+];
+function fmtStat(key,val){
+  const d=STAT_DEFS.find(x=>x.key===key);
+  if(!d)return(val||0).toFixed(2);
+  if(d.fmt==='pct')return((val||0)*100).toFixed(2)+'%';
+  if(d.fmt==='x')return(val||0).toFixed(2)+'x';
+  return(val||0).toFixed(d.fmt==='n'?0:2);
+}
+let currentSpecFilter='all';
+function renderStats(){
+  const g=document.getElementById('stat-grid');
+  const defs=currentSpecFilter==='all'?STAT_DEFS:STAT_DEFS.filter(d=>d.cat===currentSpecFilter);
+  g.innerHTML=defs.map(d=>`
+    <div class="stat-cell">
+      <div class="stat-name"><span class="stat-icon ${d.icon}"></span>${d.label}</div>
+      <div class="stat-val">${fmtStat(d.key,S.stats[d.key]??0)}</div>
+    </div>`).join('');
+}
+function renderFundamentals(){
+  const el=document.getElementById('fund-values');
+  el.innerHTML=[
+    ['LEVEL',    S.playerLevel],
+    ['KILLS',    fmt(S.totalKills)],
+    ['DEATHS',   S.deaths],
+    ['LIFE GRA', fmt(S.lifeGra)],
+    ['PLAY TIME',fmtTime(S.activeTime||0)],
+  ].map(([k,v])=>`<div class="fund-row"><span class="fund-key">${k}</span><span class="fund-val">${v}</span></div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// RESOURCES BAR
+// ═══════════════════════════════════════════════════════
+function updateResources(){
+  document.getElementById('res-gra').textContent=fmt(S.resources.gra);
+  document.getElementById('res-wax').textContent=fmt(S.resources.wax);
+  document.getElementById('res-cha').textContent=fmt(S.resources.cha);
+  renderLevelBar();
+}
+
+// ═══════════════════════════════════════════════════════
+// SLOT RENDERING
+// ═══════════════════════════════════════════════════════
+function renderSlots(){
+  for(let i=0;i<4;i++){
+    const el=document.getElementById('slot-'+i);
+    const slot=S.slots[i];
+    if(!slot){
+      el.className='monster-slot empty';
+      el.innerHTML='<div class="slot-name" style="color:var(--text3)">EMPTY</div>';
+      continue;
+    }
+    const type=MONSTER_TYPES.find(m=>m.id===slot.typeId);
+    const grade=GRADES[slot.grade];
+    const hpPct=(slot.currentHp/slot.maxHp*100).toFixed(1);
+    const isActive=(i===S.activeSlot&&B.active);
+    el.className=`monster-slot grade-${slot.grade}${isActive?' active-slot':''}`;
+    el.innerHTML=`
+      <div class="slot-grade-badge grade-${slot.grade}">${grade.label}</div>
+      <div class="slot-name">${type?type.name:'???'}</div>
+      <div class="slot-hp-wrap">
+        <div class="slot-hp-bar"><div class="slot-hp-fill" style="width:${hpPct}%"></div></div>
+        <div class="slot-hp-text">${fmt(slot.currentHp)} / ${fmt(slot.maxHp)}</div>
+      </div>
+      <div class="slot-vic-dots">${[0,1,2,3,4].map(n=>`<div class="slot-vic-dot${n<slot.victories?' filled':''}"></div>`).join('')}</div>
+    `;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// BATTLE FUNCTIONS
+// ═══════════════════════════════════════════════════════
+function startSlotBattle(slotIdx){
+  const slot=S.slots[slotIdx];
+  if(!slot)return;
+  const type=MONSTER_TYPES.find(m=>m.id===slot.typeId);
+  if(!type)return;
+  S.activeSlot=slotIdx;
+  B.active=true;
+  B.dying=false;
+  B.slotIdx=slotIdx;
+  B.type=type;
+  B.grade=slot.grade;
+  B.playerHP=maxHP();
+  B.enemyHP=slot.currentHp;
+  B.maxEnemyHP=slot.maxHp;
+  B.playerTimer=S.stats.spd/(S.stats.apn||1);
+  B.enemyTimer=S.stats.spd;
+  B.turnCount=0;
+  const gd=GRADES[slot.grade];
+  addLog(`<span class="log-info">⚔ Challenging ${type.name} [${gd.label}] — Round ${slot.victories+1}/5</span>`);
+  if(S.settings.autoTab)switchTab('battle');
+  renderSlots();
+  updateBattleUI();
+}
+function stopBattle(){
+  B.active=false;
+  S.activeSlot=-1;
+  B.type=null;
+  renderSlots();
+  updateBattleUI();
+}
+function updateBattleUI(){
+  if(!B.active||!B.type){
+    document.getElementById('battle-enemy-name').textContent='SELECT A SLOT';
+    document.getElementById('battle-grade-label').textContent='';
+    document.getElementById('enemy-hp-text').textContent='—';
+    document.getElementById('player-hp-text').textContent='—';
+    document.getElementById('enemy-hp-bar').style.width='0%';
+    document.getElementById('player-hp-bar').style.width='100%';
+    document.getElementById('ptimer-bar').style.width='0%';
+    document.getElementById('ptimer-text').textContent='—';
+    document.getElementById('etimer-bar').style.width='0%';
+    document.getElementById('etimer-text').textContent='—';
+    document.getElementById('battle-status-text').textContent='Click a slot above to begin fighting.';
+    return;
+  }
+  const slot=S.slots[B.slotIdx];
+  const gd=GRADES[B.grade];
+  document.getElementById('battle-enemy-name').textContent=B.type.name;
+  const lbl=document.getElementById('battle-grade-label');
+  lbl.textContent=gd.label;
+  lbl.style.cssText=`color:${gd.color};border:1px solid ${gd.color};background:rgba(0,0,0,0.4);`;
+  document.getElementById('enemy-hp-text').textContent=`${fmt(B.enemyHP)} / ${fmt(B.maxEnemyHP)}`;
+  document.getElementById('player-hp-text').textContent=`${fmt(B.playerHP)} / ${fmt(maxHP())}`;
+  document.getElementById('enemy-hp-bar').style.width=Math.max(0,B.enemyHP/B.maxEnemyHP*100).toFixed(1)+'%';
+  document.getElementById('player-hp-bar').style.width=Math.max(0,B.playerHP/maxHP()*100).toFixed(1)+'%';
+  const pInterval=S.stats.spd/(S.stats.apn||1);
+  const ePct=Math.max(0,1-B.enemyTimer/S.stats.spd)*100;
+  const pPct=Math.max(0,1-B.playerTimer/pInterval)*100;
+  document.getElementById('ptimer-bar').style.width=pPct.toFixed(1)+'%';
+  document.getElementById('ptimer-text').textContent=(B.playerTimer/1000).toFixed(1)+'s';
+  document.getElementById('etimer-bar').style.width=ePct.toFixed(1)+'%';
+  document.getElementById('etimer-text').textContent=(B.enemyTimer/1000).toFixed(1)+'s';
+  if(slot)document.getElementById('battle-status-text').textContent=
+    `Round ${slot.victories+1}/5 — ${fmt(B.enemyHP)} HP remaining`;
+}
+function battleTick(){
+  if(B.dying){
+    const elapsed=(Date.now()-B.deathStart)/1000;
+    const rem=Math.max(0,10-elapsed);
+    document.getElementById('death-timer').textContent=Math.ceil(rem);
+    if(rem<=0){
+      document.getElementById('death-overlay').style.display='none';
+      B.dying=false;
+      if(S.protocols.autoRetry&&B.slotIdx>=0&&S.slots[B.slotIdx]){
+        startSlotBattle(B.slotIdx);
+      } else {
+        B.active=false;
+        S.activeSlot=-1;
+        updateBattleUI();
+      }
+    }
+    return;
+  }
+  if(!B.active||!B.type)return;
+  const now=Date.now();
+  const dt=Math.min(now-(B.lastTick||now),500);
+  B.lastTick=now;
+  B.playerTimer-=dt;
+  B.enemyTimer-=dt;
+  if(B.playerTimer<=0){
+    firePlayerTurn();
+    if(!B.active)return;
+    B.playerTimer=Math.max(200,S.stats.spd/(S.stats.apn||1));
+  }
+  if(!B.active)return;
+  if(B.enemyTimer<=0){
+    fireEnemyTurn();
+    if(!B.active)return;
+    B.enemyTimer=Math.max(200,S.stats.spd);
+  }
+}
+function firePlayerTurn(){
+  const st=S.stats;
+  B.turnCount++;
+  const t=B.turnCount;
+  const slot=S.slots[B.slotIdx];
+  if(!slot)return;
+  const cs=computeSlotStats(B.type,B.grade);
+  const isMiss=Math.random()>(st.acc??1);
+  if(isMiss){
+    addLog(`<span class="log-info">Turn ${t}: Miss!</span>`);
+    return;
+  }
+  const isCrit=Math.random()<(st.crc||0);
+  const base=Math.max(0.5,(st.atk*(st.mxd??1))-cs.def);
+  const dmg=Math.round(base*(isCrit?(st.crd||1):1)*10)/10;
+  B.enemyHP=Math.max(0,B.enemyHP-dmg);
+  slot.currentHp=B.enemyHP;
+  if(isCrit){
+    addLog(`<span class="log-crit">Turn ${t}: ✦ CRIT — ${dmg} to ${B.type.name}!</span>`);
+  } else {
+    addLog(`<span class="log-info">Turn ${t}: You deal ${dmg} to ${B.type.name}.</span>`);
+  }
+  if(st.rgn>0) B.playerHP=Math.min(maxHP(),B.playerHP+(st.rgn||0));
+  if(B.enemyHP<=0) onWin();
+}
+function fireEnemyTurn(){
+  const st=S.stats;
+  const cs=computeSlotStats(B.type,B.grade);
+  const isDodge=Math.random()<(st.dog||0);
+  if(isDodge){
+    addLog(`<span class="log-info">↳ ${B.type.name} attacks — dodge!</span>`);
+    return;
+  }
+  const rawDmg=Math.max(1,cs.atk/(1+(st.arm||0)*0.15));
+  const isBlock=Math.random()<(st.blk||0);
+  const dmg=Math.round((isBlock?Math.max(0,rawDmg-5):rawDmg)*10)/10;
+  const isCounter=Math.random()<(st.ctr||0);
+  const counterDmg=isCounter?Math.round(Math.max(0.1,(st.atk*0.4)-cs.def)*10)/10:0;
+  B.playerHP=Math.max(0,B.playerHP-dmg);
+  if(counterDmg>0) B.enemyHP=Math.max(0,B.enemyHP-counterDmg);
+  let msg=`↳ ${B.type.name} hits for ${dmg}`;
+  if(isBlock) msg+=' <span style="color:var(--text3)">(blocked)</span>';
+  if(counterDmg>0) msg+=`. <span class="log-crit">↩ COUNTER ${counterDmg}!</span>`;
+  addLog(`<span class="log-die">${msg}.</span>`);
+  if(B.playerHP<=0) onLose();
+}
+function onWin(){
+  const slot=S.slots[B.slotIdx];
+  if(!slot)return;
+  const type=B.type;
+  const grade=B.grade;
+  const cs=computeSlotStats(type,grade);
+  const vics=slot.victories; // 0-indexed fight (before increment)
+  // ATK reward degrades: fight 0=100%, 1=80%, 2=60%, 3=40%, 4=20%
+  const atkFade=Math.max(0,(4-vics)/4);
+  const atkGain=parseFloat((cs.aRew*atkFade).toFixed(2));
+  // GRA reward (no degrade)
+  S.resources.gra+=cs.gra;
+  S.lifeGra+=cs.gra;
+  S.sessionRewards.gra=(S.sessionRewards.gra||0)+cs.gra;
+  // Small WAX from uncommon+
+  if(grade!=='common'){
+    const waxGain=Math.round(cs.gra*0.05);
+    S.resources.wax+=waxGain;
+    S.sessionRewards.wax=(S.sessionRewards.wax||0)+waxGain;
+  }
+  // ATK stat reward
+  if(atkGain>0){
+    S.stats.atk+=atkGain;
+    S.sessionRewards.atk=(S.sessionRewards.atk||0)+atkGain;
+  }
+  // Small ARM reward per kill
+  const armGain=parseFloat((cs.aRew*atkFade*0.1).toFixed(2));
+  if(armGain>0){
+    S.stats.arm+=armGain;
+    S.sessionRewards.arm=(S.sessionRewards.arm||0)+armGain;
+  }
+  // EXP
+  gainExp(cs.exp);
+  // Tracking
+  S.totalKills=(S.totalKills||0)+1;
+  S.seen=S.seen||{};
+  S.seen[type.id]=(S.seen[type.id]||0)+1;
+  S.gradeKills=S.gradeKills||{};
+  S.gradeKills[grade]=(S.gradeKills[grade]||0)+1;
+  slot.victories++;
+  addLog(`<span class="log-win">✓ ${type.name} defeated! ATK +${atkGain} | +${fmt(cs.gra)} GRA (Round ${slot.victories}/5)</span>`);
+  checkAchievements();
+  renderSessionRewards();
+  if(slot.victories>=5){
+    // Slot depleted — respawn
+    addLog(`<span class="log-info">Slot ${B.slotIdx+1} depleted. Spawning new monster...</span>`);
+    const depSlot=B.slotIdx;
+    stopBattle();
+    setTimeout(()=>{
+      spawnSlot(depSlot);
+      renderSlots();
+      if(S.protocols.autoChallenge) startNextAutoSlot();
+    },800);
+  } else {
+    // Reset HP for next round
+    slot.currentHp=slot.maxHp;
+    B.enemyHP=slot.currentHp;
+    B.maxEnemyHP=slot.maxHp;
+    B.playerHP=maxHP();
+    B.lastTick=Date.now();
+    B.turnCount=0;
+    B.playerTimer=S.stats.spd/(S.stats.apn||1);
+    B.enemyTimer=S.stats.spd;
+    renderSlots();
+    if(S.protocols.autoChallenge) {} // keep fighting same slot
+  }
+}
+function onLose(){
+  B.active=false;
+  B.dying=true;
+  B.deathStart=Date.now();
+  S.deaths=(S.deaths||0)+1;
+  document.getElementById('death-overlay').style.display='block';
+  addLog(`<span class="log-die">✗ Defeated by ${B.type?B.type.name:'???'}. (Deaths: ${S.deaths})</span>`);
+  checkAchievements();
+}
+function startNextAutoSlot(){
+  // Find any slot that isn't depleted (victories < 5)
+  const available=S.slots.map((s,i)=>({s,i})).filter(({s})=>s&&s.victories<5);
+  if(available.length>0){
+    const pick=available[Math.floor(Math.random()*available.length)];
+    startSlotBattle(pick.i);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// GALLERY
+// ═══════════════════════════════════════════════════════
+function renderGallery(){
+  const el=document.getElementById('gallery-grid');
+  // Group by unlock level
+  const byLv={};
+  MONSTER_TYPES.forEach(t=>{
+    if(!byLv[t.lv])byLv[t.lv]=[];
+    byLv[t.lv].push(t);
+  });
+  let html='';
+  Object.keys(byLv).sort((a,b)=>a-b).forEach(lv=>{
+    const unlocked=parseInt(lv)<=S.playerLevel;
+    html+=`<div class="gallery-tier-header">LEVEL ${lv} ${unlocked?'':'🔒'}</div>`;
+    byLv[lv].forEach(t=>{
+      const seen=(S.seen||{})[t.id]||0;
+      const locked=t.lv>S.playerLevel;
+      const pips=GRADE_KEYS.map(g=>`<div class="tc-grade-pip${(S.gradeKills&&S.gradeKills[g]&&seen)?' seen':''}" style="border-color:${GRADES[g].color};${seen?'background:'+GRADES[g].color+'40':''}" title="${g}"></div>`).join('');
+      html+=`<div class="type-card${locked?' locked':''}">
+        <div class="tc-name">${t.name}</div>
+        <div class="tc-lv">LV ${t.lv} — ${seen?seen+' kills':'undiscovered'}</div>
+        <div class="tc-grades">${pips}</div>
+        <div class="tc-stats">HP:${fmt(t.hp)} ATK:${fmt(t.atk)} DEF:${t.def}</div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+// SHOP
+// ═══════════════════════════════════════════════════════
+function canBuy(item){
+  return Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
+}
+function buyItem(item){
+  if(!canBuy(item))return;
+  Object.entries(item.cost).forEach(([k,v])=>{S.resources[k]-=v;});
+  Object.entries(item.statBonus).forEach(([k,v])=>{S.stats[k]=(S.stats[k]||0)+v;});
+  S.shopOwned[item.id]=(S.shopOwned[item.id]||0)+1;
+  toast(`Purchased: ${item.name}`,2000);
+  renderShop();renderStats();updateResources();
+}
+function renderShop(){
+  const el=document.getElementById('shop-grid');
+  el.innerHTML=SHOP_ITEMS.map(item=>{
+    const owned=S.shopOwned[item.id]||0;
+    const affordable=canBuy(item);
+    const costStr=Object.entries(item.cost).map(([k,v])=>`${fmt(v)} ${k.toUpperCase()}`).join(', ');
+    return`<div class="shop-card">
+      <div class="shop-name">${item.name}</div>
+      <div class="shop-desc">${item.desc}</div>
+      <div class="shop-effect">${item.effect}</div>
+      <div class="shop-cost">Cost: ${costStr}</div>
+      ${owned?`<div class="shop-own">Owned: ${owned}</div>`:''}
+      <button class="btn-buy" ${affordable?'':'disabled'} onclick="buyItem(SHOP_ITEMS.find(x=>x.id==='${item.id}'))">${affordable?'BUY':'INSUFFICIENT'}</button>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// SESSION REWARDS
+// ═══════════════════════════════════════════════════════
+function renderSessionRewards(){
+  const el=document.getElementById('sess-rewards-list');
+  const r=S.sessionRewards||{};
+  const rows=[
+    ['GRA',fmt(r.gra||0)],
+    ['WAX',fmt(r.wax||0)],
+    ['ATK',fmt(r.atk||0)],
+    ['ARM',fmt(r.arm||0)],
+  ].filter(([,v])=>v!=='0');
+  if(!rows.length){
+    el.innerHTML='<div style="color:var(--text3);font-size:9px;">No rewards yet.</div>';
+    return;
+  }
+  el.innerHTML=rows.map(([k,v])=>`<div class="sess-row"><span class="sess-key">${k}</span><span class="sess-val">+${v}</span></div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════════════════
+function checkAchievements(){
+  let any=false;
+  ACHIEVEMENTS.forEach(a=>{
+    if(!S.achievements[a.id]&&a.check(S)){
+      S.achievements[a.id]={unlocked:true,at:Date.now()};
+      toast(`🏆 Achievement: ${a.name}`,3500);
+      addLog(`<span class="log-win">🏆 Achievement: ${a.name}</span>`);
+      any=true;
+    }
+  });
+  if(any)renderAchievements();
+}
+function renderAchievements(){
+  const el=document.getElementById('arch-achievements');
+  if(!el)return;
+  const cats=['progress','collect','stats','economy','meta'];
+  const catLabels={progress:'PROGRESSION',collect:'COLLECTION',stats:'STATS',economy:'ECONOMY',meta:'META'};
+  const unlocked=ACHIEVEMENTS.filter(a=>S.achievements[a.id]).length;
+  let html=`<div style="font-size:9px;color:var(--text2);margin-bottom:10px;">Unlocked: <b style="color:var(--white)">${unlocked} / ${ACHIEVEMENTS.length}</b></div>`;
+  cats.forEach(cat=>{
+    const group=ACHIEVEMENTS.filter(a=>a.cat===cat);
+    html+=`<div style="font-size:9px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:10px 0 5px;border-bottom:1px solid var(--border);padding-bottom:3px;">${catLabels[cat]}</div>`;
+    group.forEach(a=>{
+      const done=!!S.achievements[a.id];
+      html+=`<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;opacity:${done?1:0.4};">
+        <div style="font-size:14px;flex-shrink:0;">${a.icon}</div>
+        <div>
+          <div style="font-size:9px;color:${done?'var(--white)':'var(--text2)'};font-weight:bold;">${a.name}</div>
+          <div style="font-size:8px;color:var(--text3);">${a.desc}</div>
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+// BESTIARY (GLOSSARY)
+// ═══════════════════════════════════════════════════════
+function renderGlossary(){
+  const el=document.getElementById('gloss-grid');
+  if(!el)return;
+  el.innerHTML=MONSTER_TYPES.map(t=>{
+    const seen=!!(S.seen&&S.seen[t.id]);
+    return`<div class="gloss-card${seen?' unlocked':''}">
+      <div class="gloss-icon">${seen?'⚔':'?'}</div>
+      <div class="gloss-name">${seen?t.name:'UNKNOWN'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════════════
+function setupSettings(){
+  document.getElementById('chk-combat-log').checked=S.settings.combatLog!==false;
+  document.getElementById('chk-auto-tab').checked=!!S.settings.autoTab;
+  document.getElementById('chk-combat-log').addEventListener('change',e=>{S.settings.combatLog=e.target.checked;});
+  document.getElementById('chk-auto-tab').addEventListener('change',e=>{S.settings.autoTab=e.target.checked;});
+  document.getElementById('btn-reset').addEventListener('click',()=>{
+    if(!confirm('Reset all progress? This cannot be undone.'))return;
+    localStorage.removeItem('draft_throne_v2');
+    location.reload();
+  });
+  document.getElementById('profile-stats').innerHTML=[
+    ['Kills',S.totalKills],
+    ['Deaths',S.deaths],
+    ['Level',S.playerLevel],
+    ['Life GRA',fmt(S.lifeGra)],
+  ].map(([k,v])=>`<div class="fund-row"><span class="fund-key">${k}</span><span class="fund-val">${v}</span></div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════
+function switchTab(name){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
+  if(name==='gallery')renderGallery();
+  if(name==='shop')renderShop();
+  if(name==='archive'){renderAchievements();renderGlossary();}
+}
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+// Archive sub-tabs
+document.querySelectorAll('.arch-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.arch-tab').forEach(x=>x.classList.toggle('active',x===t));
+    document.querySelectorAll('.arch-pane').forEach(p=>p.classList.toggle('active',p.id==='arch-'+t.dataset.arch));
+    if(t.dataset.arch==='achievements')renderAchievements();
+    if(t.dataset.arch==='glossary')renderGlossary();
+  });
+});
+
+// Stat filter tabs
+document.querySelectorAll('#spec-filters .filter-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('#spec-filters .filter-tab').forEach(x=>x.classList.toggle('active',x===t));
+    currentSpecFilter=t.dataset.spec;
+    renderStats();
+  });
+});
+
+// Slot click handlers
+for(let i=0;i<4;i++){
+  document.getElementById('slot-'+i).addEventListener('click',()=>{
+    const slot=S.slots[i];
+    if(!slot)return;
+    if(B.active&&B.slotIdx===i)return; // already fighting this slot
+    if(B.active)stopBattle();
+    startSlotBattle(i);
+  });
+}
+
+// Flee
+document.getElementById('btn-flee').addEventListener('click',()=>{
+  if(!B.active)return;
+  addLog(`<span class="log-info">You flee the battle.</span>`);
+  stopBattle();
+});
+
+// Protocol toggles
+(function setupToggles(){
+  const ac=document.getElementById('ac-toggle');
+  const ar=document.getElementById('ar-toggle');
+  function updateAC(){
+    ac.classList.toggle('on',S.protocols.autoChallenge);
+    document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
+  }
+  function updateAR(){ar.classList.toggle('on',S.protocols.autoRetry);}
+  ac.addEventListener('click',()=>{
+    S.protocols.autoChallenge=!S.protocols.autoChallenge;
+    updateAC();
+    if(S.protocols.autoChallenge&&!B.active)startNextAutoSlot();
+  });
+  ar.addEventListener('click',()=>{S.protocols.autoRetry=!S.protocols.autoRetry;updateAR();});
+  updateAC();updateAR();
+})();
+
+// ═══════════════════════════════════════════════════════
+// SAVE / LOAD
+// ═══════════════════════════════════════════════════════
+const SAVE_KEY='draft_throne_v2';
+function saveGame(){
+  S.lastSave=Date.now();
+  localStorage.setItem(SAVE_KEY,JSON.stringify(S));
+}
+function loadGame(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return;
+    const loaded=JSON.parse(raw);
+    const def=DEFAULT_STATE();
+    S=Object.assign(def,loaded);
+    S.stats=Object.assign(def.stats,loaded.stats||{});
+    S.resources=Object.assign({gra:0,wax:0,cha:0},loaded.resources||{});
+    S.settings=Object.assign(def.settings,loaded.settings||{});
+    S.protocols=Object.assign({autoChallenge:false,autoRetry:false},loaded.protocols||{});
+    S.achievements=Object.assign({},loaded.achievements||{});
+    S.shopOwned=Object.assign({},loaded.shopOwned||{});
+    S.seen=Object.assign({},loaded.seen||{});
+    S.gradeKills=Object.assign({common:0,uncommon:0,rare:0,epic:0,legendary:0},loaded.gradeKills||{});
+    S.sessionRewards=Object.assign({gra:0,atk:0,arm:0,hp:0,wax:0},loaded.sessionRewards||{});
+    S.slots=loaded.slots||[null,null,null,null];
+    S.activeSlot=-1; // don't restore active battle
+    S.playerLevel=loaded.playerLevel||1;
+    S.playerExp=loaded.playerExp||0;
+    S.totalKills=loaded.totalKills||0;
+    S.deaths=loaded.deaths||0;
+    S.lifeGra=loaded.lifeGra||0;
+    // Offline progress
+    const offline=Math.min((Date.now()-(loaded.lastSave||Date.now()))/1000,86400);
+    if(offline>10){
+      S.offlineTime=(S.offlineTime||0)+offline;
+      const rate=0.5;
+      const graGain=Math.round(offline*rate);
+      S.resources.gra+=graGain;
+      S.lifeGra+=graGain;
+      setTimeout(()=>toast(`Welcome back! +${fmt(graGain)} GRA offline (${fmtTime(offline)})`,5000),500);
+    }
+  }catch(e){console.error('Load failed',e);}
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════════════════════════
+function renderAll(){
+  renderStats();renderFundamentals();renderSlots();renderShop();
+  renderAchievements();updateResources();renderSessionRewards();
+}
+
+// ═══════════════════════════════════════════════════════
+// GAME LOOP
+// ═══════════════════════════════════════════════════════
+let frameCount=0,fpsTimer=0,lastFrame=performance.now();
+function gameLoop(){
+  const now=performance.now();
+  const dt=(now-lastFrame)/1000;
+  lastFrame=now;
+  frameCount++;fpsTimer+=dt;
+  if(fpsTimer>=1){
+    document.getElementById('fps-display').textContent='FPS '+frameCount;
+    frameCount=0;fpsTimer=0;
+  }
+  if(!B.lastTick)B.lastTick=Date.now();
+  battleTick();
+  S.activeTime=(S.activeTime||0)+dt;
+  if(frameCount%3===0){
+    updateBattleUI();
+    updateResources();
+  }
+  if(frameCount%30===0){
+    renderStats();renderFundamentals();renderSlots();
+    checkAchievements();
+    if(document.getElementById('tab-gallery').classList.contains('active'))renderGallery();
+    if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
+    saveGame();
+  }
+  requestAnimationFrame(gameLoop);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+loadGame();
+initSlots();
+setupSettings();
+renderAll();
+checkAchievements();
+if(S.protocols.autoChallenge&&!B.active)startNextAutoSlot();
+requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>
