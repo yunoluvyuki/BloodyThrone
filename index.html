@@ -1796,13 +1796,22 @@ function firePlayerTurn(){
     addLog(`<span class="log-info">Turn ${t}: You swing at <b>${c.name}</b> — MISS!</span>`);
   } else {
     const isCrit=Math.random()<(st.crc??0);
-    const base = Math.max(st.mnd, (st.atk * (st.mxd ?? 1)) - c.def);
-    const dmg=base*(isCrit?(st.crd??1):1);
-    B.enemyHP=Math.max(0,B.enemyHP-dmg);
+    const base=st.atk - c.def;
+    const minDmg=Math.max(st.mnd??0.7, base);
+    const maxDmg=Math.max(minDmg, base*(st.mxd??1));
+    let totalDmg=0;
+    let hits=0;
+    do {
+      const rolled=minDmg + Math.random()*(maxDmg-minDmg);
+      totalDmg+=rolled*(isCrit?(st.crd??1):1);
+      hits++;
+    } while(Math.random()<(st.mth??0) && hits<10);
+    B.enemyHP=Math.max(0,B.enemyHP-totalDmg);
+    const hitStr=hits>1?` <span style="color:var(--cyan)">(${hits} hits!)</span>`:'';
     if(isCrit){
-      addLog(`<span class="log-crit">Turn ${t}: ✦ CRIT — <b>${dmg.toFixed(1)}</b> to ${c.name}!</span>`);
+      addLog(`<span class="log-crit">Turn ${t}: ✦ CRIT — <b>${totalDmg.toFixed(1)}</b> to ${c.name}!${hitStr}</span>`);
     } else {
-      addLog(`<span class="log-info">Turn ${t}: You deal <b>${dmg.toFixed( 1)}</b> to <b>${c.name}</b>.</span>`);
+      addLog(`<span class="log-info">Turn ${t}: You deal <b>${totalDmg.toFixed(1)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
     }
   }
   if((st.rgn??0)>0) B.playerHP=Math.min(maxHP(),B.playerHP+(st.rgn*2));
