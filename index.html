@@ -1746,8 +1746,12 @@ function onWin(){
   B.playerHP=maxHP();
   B.enemyHP=c.hp;
   B.lastTick=Date.now();
-  if(isMaxed(c)&&S.protocols.autoChallenge){
-    advanceAutoChallenge();
+  if(isMaxed(c)){
+    if(S.protocols.autoChallenge){
+      advanceAutoChallenge();
+    } else {
+      stopBattle();
+    }
   }
 }
 function onLose(){
