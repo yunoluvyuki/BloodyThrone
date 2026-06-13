@@ -731,7 +731,6 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
           </div>
           <button class="settings-btn" id="btn-switch-slot">SWITCH SAVE SLOT</button>
           <button class="settings-btn" id="btn-save">SAVE &amp; QUIT</button>
-          <button class="settings-btn" id="btn-reset-tutorials">RESET TUTORIALS</button>
 
           <div class="danger-zone-header">⚠ DANGER ZONE</div>
           <button class="settings-btn danger" id="btn-hard-reset">HARD RESET GAME</button>
@@ -2293,19 +2292,9 @@ document.querySelectorAll('.arch-tab').forEach(t=>{
 // ═══════════════════════════════════════════════════════
 // SETTINGS LOGIC
 // ═══════════════════════════════════════════════════════
-function setupTutorial(){
-  const overlay=document.getElementById('tutorial-overlay');
-  document.querySelector('.nav-tab[data-tab="settings"]').addEventListener('click',()=>{
-    if(!localStorage.getItem('rd_tutorial_done'))overlay.style.display='flex';
-  },{once:true});
-  function closeTutorial(){overlay.style.display='none';localStorage.setItem('rd_tutorial_done','1');}
-  document.getElementById('tut-finish').addEventListener('click',closeTutorial);
-  document.getElementById('tut-skip').addEventListener('click',closeTutorial);
-}
 
 function setupSettings(){
-  // Tutorial
-  setupTutorial();
+
 
   // Interface buttons
   document.getElementById('btn-light-mode').addEventListener('click',()=>{
@@ -2434,10 +2423,6 @@ function setupSettings(){
     toast('Save slot switching not available in single-slot build.',3000);
   });
   document.getElementById('btn-save').addEventListener('click',()=>{saveGame();toast('Game saved!');});
-  document.getElementById('btn-reset-tutorials').addEventListener('click',()=>{
-    localStorage.removeItem('rd_tutorial_done');
-    toast('Tutorials reset. Revisit Settings to see them again.');
-  });
   document.getElementById('btn-hard-reset').addEventListener('click',()=>{
     if(confirm('HARD RESET: All progress will be permanently lost. Are you absolutely sure?')){
       localStorage.removeItem('rejected_draft_save');
