@@ -1796,7 +1796,6 @@ function firePlayerTurn(){
     addLog(`<span class="log-info">Turn ${t}: You swing at <b>${c.name}</b> — MISS!</span>`);
   } else {
     const isCrit=Math.random()<(st.crc??0);
-    const base=st.atk - c.def;
     const minDmg=st.atk*(st.mnd??0.7);
     const maxDmg=st.atk*(st.mxd??1.0);
     let totalDmg=0;
@@ -2007,7 +2006,6 @@ function updateBattleStats(){
   const n1=v=>v.toFixed(1);
   // Derived offensive values
   const enemyEffAtk=c?Math.max(0.5,c.atk/(1+st.arm*0.15)):0;
-  const base=c?st.atk-c.def:st.atk;
   const pMinDmg=st.atk*(st.mnd??0.7);
   const pMaxDmg=st.atk*(st.mxd??1.0);
   const eMinDmg=c?enemyEffAtk*0.8:0;
