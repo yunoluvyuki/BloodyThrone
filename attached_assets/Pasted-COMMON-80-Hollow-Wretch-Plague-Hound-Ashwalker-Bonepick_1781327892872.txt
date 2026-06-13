@@ -1,0 +1,19 @@
+COMMON (80)
+
+Hollow Wretch, Plague Hound, Ashwalker, Bonepicker, Grave Rat, Mudborn, Corpse Crawler, Rotting Serf, Blighted Husk, Soot Fiend, Wretched Thrall, Festering Vagrant, Hollow Eye, Dungeon Tick, Gravel Ghoul, Bile Spawn, Mossrot, Scab Crawler, Charnel Fly, Skinless Beggar, Weeping Hollow, Maggot Knight, Cinder Wretch, Sallow Shade, Mud Ghoul, Bonegnaw, Ashen Tramp, Foul Creeper, Plague Bearer, Tallow Shade, Rot Worm, Filth Shambler, Corpse Leech, Bleached Lurker, Grave Digger, Putrid Wisp, Wailing Husk, Dustbone, Sludge Spawn, Tomb Rat, Cracked Skull, Pale Shambler, Rotfen Cur, Ash Crawler, Bonedust Wretch, Famine Shade, Cobweb Ghoul, Soot Crawler, Charred Beggar, Hollow Pup, Mire Fiend, Ditch Ghoul, Scorch Wretch, Festering Hound, Gutter Shade, Bog Lurker, Cinder Rat, Dried Husk, Brackish Spawn, Sunken Wretch, Tallow Ghoul, Blister Fiend, Gravel Rat, Mudwater Shade, Pale Crawler, Crumbling Thrall, Fen Ghoul, Ashen Cur, Charnel Rat, Bone Fly, Sour Shade, Rot Pup, Crypt Tick, Damp Husk, Scab Fiend, Hollow Stray, Cobweb Wretch, Silt Shambler, Dusty Ghoul
+
+UNCOMMON (50)
+
+Cursed Knight, Plague Archer, Blighted Halberdier, Hollow Sergeant, Rot Shaman, Ashbound Soldier, Bonecage Warrior, Gravewarden, Fetid Executioner, Rusted Templar, Ironblight Monk, Crypt Sentinel, Void Hound, Soulless Pikeman, Charnel Blade, Flayed Scout, Worm Priest, Ashgrave Guardian, Mournful Specter, Marrow Stalker, Duskblade Revenant, Smoldering Footman, Blight Ranger, Accursed Legionnaire, Dead Eye Marksman, Tomb Warden, Sable Crow, Ironrot Berserker, Plague Monk, Blighted Squire, Hollow Cavalier, Gravebound Duelist, Withered Inquisitor, Shroud Knight, Bone Arbalist, Ash Zealot, Saltblood Soldier, Dread Footman, Ruinborn Warden, Forsaken Outrider, Hollow Deacon, Plaguetouched Guard, Ashbound Archer, Rotted Templar, Crypt Duelist, Marrow Shaman, Blighted Warden, Soulchain Monk, Forsaken Blade, Dusk Sentinel
+
+RARE (35)
+
+Bonegrinder, Voidborn Witch, Weeping Shade, Soul Eater, Dread Colossus, Flesh Sculptor, Blighted Hydra, Pale Stalker, Abyssal Hound, Marrow Golem, Gravemind Thrall, Soulrend Fiend, Crypt Behemoth, Ashen Revenant, Hollow Titan, Plague Chimera, Bone Leviathan, Wretched Oracle, Dusk Warden, Voidtouched Wraith, Ironblight Giant, Charnel Hydra, Nightmare Shade, Graveworm Matron, Soul Harvester, Blighted Cyclops, Desecrated Giant, Moonblood Specter, Gravesinger, Blight Behemoth, Hollow Seraph, Ashen Stalker, Marrowcage Beast, Sorrow Wraith, Dread Amalgam
+
+EPIC (20)
+
+Lich Sovereign, Ashen Seraph, Dread Overlord, Plague Archon, Voidborn Tyrant, Hollow God-Husk, Soulweaver Ancient, Desecrated Archangel, Bonelord Eternal, Maelstrom Wraith, Abyssal Monarch, Gravemind Elder, Bloodbound Colossus, Cursed Demigod, Pale Dominion, Hollow Primarch, Forsaken Titan, Sorrow Sovereign, Shattered Deity, Ironblight Colossus
+
+LEGENDARY (10)
+
+The Devourer, Nameless King, He Who Unravels, Throne of Ash, The Pale Hunger, Godrot, The Unfinished, Womb of Plague, Bleeding Throne, The Hollow Crown
