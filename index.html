@@ -394,7 +394,6 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 <div id="topbar">
   <div class="title">Draft Throne</div>
   <div id="nav-tabs">
-    <button class="nav-tab" data-tab="battle">BATTLE</button>
     <button class="nav-tab active" data-tab="gallery">WORLD<span class="dot" id="gallery-dot" style="display:none"></span></button>
     <button class="nav-tab" data-tab="inventory">INVENTORY</button>
     <button class="nav-tab" data-tab="shop">SHOP</button>
@@ -437,16 +436,20 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
   <!-- CONTENT AREA -->
   <div id="content-area">
 
-    <!-- BATTLE TAB -->
-    <div class="tab-pane" id="tab-battle">
-      <div id="battle-area">
+    <!-- GALLERY / WORLD TAB (includes battle below) -->
+    <div class="tab-pane active" id="tab-gallery">
+
+      <div id="gallery-grid"></div>
+
+      <!-- BATTLE SECTION (embedded in World tab) -->
+      <div id="battle-area" style="margin-top:12px;">
         <div id="battle-main">
           <div id="battle-creature-display">
             <div id="battle-top">
               <div id="battle-art"></div>
               <div id="battle-meta">
                 <div id="battle-creature-name">SELECT A CREATURE</div>
-                <div id="battle-creature-tag">Go to Gallery to challenge a creature.</div>
+                <div id="battle-creature-tag">Challenge a creature above to begin.</div>
                 <div class="hp-bar-wrap" style="margin-top:10px;">
                   <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
                   <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
@@ -492,12 +495,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
           <div id="bsp-def"></div>
         </div>
       </div>
-    </div>
 
-    <!-- GALLERY TAB -->
-    <div class="tab-pane active" id="tab-gallery">
-
-      <div id="gallery-grid"></div>
     </div>
 
     <!-- SHOP TAB -->
@@ -1688,7 +1686,7 @@ function startBattle(creatureId){
   B.enemyTimer=3000;
   updateBattleUI();
   addLog(`<span class="log-info">⚔ Battle started: ${c.name}</span>`);
-  if(S.settings.battleNav==='always') switchTab('battle');
+  if(S.settings.battleNav==='always') switchTab('gallery');
   else if(S.settings.battleNav==='manual') {} // stay
   renderGallery();
   document.getElementById('ac-details').textContent=c.name;
