@@ -587,6 +587,17 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
             <button class="settings-btn" id="zoom-reset" style="flex:1;margin:0 0 0 4px;padding:2px 6px;">RESET</button>
           </div>
 
+          <div class="settings-row" style="margin-top:6px;">
+            <span class="settings-row-label">FONT SIZE</span>
+            <span class="settings-row-val" style="font-size:8px;color:var(--text3);">Adjust text size globally.</span>
+          </div>
+          <div class="zoom-controls">
+            <button class="zoom-btn" id="fs-minus">-</button>
+            <span class="zoom-val" id="fs-val">13px</span>
+            <button class="zoom-btn" id="fs-plus">+</button>
+            <button class="settings-btn" id="fs-reset" style="flex:1;margin:0 0 0 4px;padding:2px 6px;">RESET</button>
+          </div>
+
           <label class="settings-check-row">
             <input type="checkbox" id="chk-protocols" checked>
             <div><div class="settings-check-label">SHOW PROTOCOL SIDEBAR</div><div class="settings-check-sublabel">Active protocols (and Docked Notifications) on the right.</div></div>
@@ -1458,7 +1469,7 @@ const DEFAULT_STATE = ()=>({
   lifeGra:0,
   achievements:{},
   lastSave:Date.now(),
-  settings:{lightMode:false,invertImg:false,showProtocols:true,combatLog:true,uiZoom:100,battleNav:'manual',numNotation:'mixed'},
+  settings:{lightMode:false,invertImg:false,showProtocols:true,combatLog:true,uiZoom:100,battleNav:'manual',numNotation:'mixed',fontSize:13},
   protocols:{autoChallenge:false,autoRetry:false},
   sessionRewards:{},
   galleryUnlocked:[],
@@ -2234,6 +2245,20 @@ function setupSettings(){
   document.getElementById('zoom-minus').addEventListener('click',()=>{zoom=Math.max(50,zoom-10);applyZoom(zoom);});
   document.getElementById('zoom-plus').addEventListener('click',()=>{zoom=Math.min(200,zoom+10);applyZoom(zoom);});
   document.getElementById('zoom-reset').addEventListener('click',()=>{zoom=100;applyZoom(zoom);});
+
+  // Font Size
+  const FS_DEFAULT=13, FS_MIN=8, FS_MAX=24, FS_STEP=1;
+  let fs=S.settings.fontSize||FS_DEFAULT;
+  function applyFontSize(size){
+    S.settings.fontSize=size;
+    document.documentElement.style.setProperty('--fs',size+'px');
+    document.body.style.fontSize=size+'px';
+    document.getElementById('fs-val').textContent=size+'px';
+  }
+  applyFontSize(fs);
+  document.getElementById('fs-minus').addEventListener('click',()=>{fs=Math.max(FS_MIN,fs-FS_STEP);applyFontSize(fs);});
+  document.getElementById('fs-plus').addEventListener('click',()=>{fs=Math.min(FS_MAX,fs+FS_STEP);applyFontSize(fs);});
+  document.getElementById('fs-reset').addEventListener('click',()=>{fs=FS_DEFAULT;applyFontSize(fs);});
 
   // Checkboxes
   document.getElementById('chk-protocols').addEventListener('change',function(){
