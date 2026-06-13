@@ -2007,8 +2007,9 @@ function updateBattleStats(){
   const n1=v=>v.toFixed(1);
   // Derived offensive values
   const enemyEffAtk=c?Math.max(0.5,c.atk/(1+st.arm*0.15)):0;
-  const pMinDmg=c?Math.max(0,st.atk-c.def):st.atk;
-  const pMaxDmg=c?Math.max(0,st.atk*st.mxd-c.def):st.atk*st.mxd;
+  const base=c?st.atk-c.def:st.atk;
+  const pMinDmg=Math.max(st.mnd??0.7, base);
+  const pMaxDmg=Math.max(pMinDmg, base*(st.mxd??1));
   const eMinDmg=c?enemyEffAtk*0.8:0;
   const eMaxDmg=c?enemyEffAtk*1.2:0;
   const offRows=[
