@@ -595,7 +595,7 @@ function getVic(s,id){return s.victories[id]||0;}
 // ═══════════════════════════════════════════════════════
 const DEFAULT_STATE = ()=>({
   stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:100,rgn:0,dog:0,crc:0,crd:1.0,arm:0,apn:1.0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
-  resources:{gra:0,wax:0,cha:0},
+  resources:{gra:0,wax:0,cha:0,gold:0,plat:0},
   victories:{},
   shopOwned:{},
   currentCreature:null,
@@ -703,7 +703,7 @@ const FUND_DEFS={
     {key:'flee_pen',label:'FLEE PENALTY',val:()=>'5s',cat:'stats'},
     {key:'feat_base',label:'FEAT MEDAL BASE',val:()=>'1.01x',cat:'rarity'},
     {key:'feat_mult',label:'FEAT MULT',val:()=>'1.02x',cat:'rarity'},
-    {key:'quint',label:'QUINTESSENCE',val:()=>fmt(S.quintLifetime),cat:'economy'},
+    {key:'quint',label:'BLOOD COIN',val:()=>fmt(S.quintLifetime),cat:'economy'},
   ]
 };
 function calcGlossaryMult(){
@@ -1236,18 +1236,26 @@ function renderSessionRewards(){
 // CONCEPTUAL SYNTHESIZER
 // ═══════════════════════════════════════════════════════
 const SYNTH_CONCEPTS=[
-  {id:'gra',name:'Graphite',sub:'Quintessence Gain',milestone:1618,baseRate:0},
-  {id:'wax',name:'Wax',sub:'Produces Graphite Concept',milestone:1618,baseRate:0},
-  {id:'cha',name:'Charcoal',sub:'Produces Wax Concept',milestone:1618,baseRate:0},
+  {id:'gra',name:'Old Coin',sub:'Blood Coin Gain',milestone:1618,baseRate:0},
+  {id:'wax',name:'Bronze Coin',sub:'Produces Old Coin',milestone:1618,baseRate:0},
+  {id:'cha',name:'Silver Coin',sub:'Produces Bronze Coin',milestone:1618,baseRate:0},
+  {id:'gold',name:'Gold Coin',sub:'Produces Silver Coin',milestone:1618,baseRate:0},
+  {id:'plat',name:'Platinum Coin',sub:'Produces Gold Coin',milestone:1618,baseRate:0},
 ];
-let synthRates={gra:0,wax:0,cha:0};
+let synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
 function synthTick(dt){
-  const chaRate=S.victories['contrast_crusher']||0;
+  const platRate=S.victories['contrast_crusher']||0;
+  const goldRate=S.resources.plat*0.002;
+  const chaRate=S.resources.gold*0.002;
   const waxRate=S.resources.cha*0.002;
   const graRate=S.resources.wax*0.005;
+  synthRates.plat=platRate;
+  synthRates.gold=goldRate;
   synthRates.cha=chaRate;
   synthRates.wax=waxRate;
   synthRates.gra=graRate;
+  S.resources.plat+=platRate*dt;
+  S.resources.gold+=goldRate*dt;
   S.resources.cha+=chaRate*dt;
   S.resources.wax+=waxRate*dt;
   S.resources.gra+=graRate*dt;
@@ -1337,15 +1345,19 @@ function buyShopItem(id){
 // ═══════════════════════════════════════════════════════
 // RESOURCES DISPLAY
 // ═══════════════════════════════════════════════════════
-let lastResources={gra:0,wax:0,cha:0};
-let resRates={gra:0,wax:0,cha:0};
+let lastResources={gra:0,wax:0,cha:0,gold:0,plat:0};
+let resRates={gra:0,wax:0,cha:0,gold:0,plat:0};
 function updateResources(){
   document.getElementById('res-gra').textContent=fmt(S.resources.gra);
   document.getElementById('res-wax').textContent=fmt(S.resources.wax);
   document.getElementById('res-cha').textContent=fmt(S.resources.cha);
+  document.getElementById('res-gold').textContent=fmt(S.resources.gold);
+  document.getElementById('res-plat').textContent=fmt(S.resources.plat);
   document.getElementById('res-gra-rate').textContent=(synthRates.gra>0?'+':'')+synthRates.gra.toFixed(3)+'/s';
   document.getElementById('res-wax-rate').textContent=(synthRates.wax>0?'+':'')+synthRates.wax.toFixed(3)+'/s';
   document.getElementById('res-cha-rate').textContent=(synthRates.cha>0?'+':'')+synthRates.cha.toFixed(3)+'/s';
+  document.getElementById('res-gold-rate').textContent=(synthRates.gold>0?'+':'')+synthRates.gold.toFixed(3)+'/s';
+  document.getElementById('res-plat-rate').textContent=(synthRates.plat>0?'+':'')+synthRates.plat.toFixed(3)+'/s';
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1584,7 +1596,7 @@ function setupSettings(){
       localStorage.removeItem('rd_tutorial_done');
       S=DEFAULT_STATE();
       B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
-      synthRates={gra:0,wax:0,cha:0};
+      synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
       initGalleryQueue();
       renderAll();
       toast('Game has been reset.',3000);
@@ -1619,14 +1631,14 @@ function setupSettings(){
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.victories={};
-    S.resources={gra:0,wax:0,cha:0};
+    S.resources={gra:0,wax:0,cha:0,gold:0,plat:0};
     S.currentCreature=null;
     S.quintPending=0;
     S.sessionRewards={};
     S.galleryUnlocked=[];
     S.galleryQueue=[];
     B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
-    synthRates={gra:0,wax:0,cha:0};
+    synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
     initGalleryQueue();
     renderAll();
   });
@@ -1647,7 +1659,7 @@ function loadGame(){
     const def=DEFAULT_STATE();
     S=Object.assign(def,loaded);
     S.stats=Object.assign(DEFAULT_STATE().stats,loaded.stats||{});
-    S.resources=Object.assign({gra:0,wax:0,cha:0},loaded.resources||{});
+    S.resources=Object.assign({gra:0,wax:0,cha:0,gold:0,plat:0},loaded.resources||{});
     S.settings=Object.assign(def.settings,loaded.settings||{});
     S.protocols=Object.assign({autoChallenge:false,autoRetry:false},loaded.protocols||{});
     S.achievements=Object.assign({},loaded.achievements||{});
