@@ -320,6 +320,62 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .section-header{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:4px;}
 .notification-toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);padding:8px 16px;font-size:10px;color:var(--white);z-index:200;pointer-events:none;opacity:0;transition:opacity .3s;}
 .notification-toast.show{opacity:1;}
+
+/* ── INVENTORY ───────────────────────────────────────── */
+#tab-inventory{padding:12px 16px;}
+.inv-wrap{
+  display:inline-block;
+  background:
+    radial-gradient(ellipse at 20% 20%,#2a2a2a 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 80%,#1a1a1a 0%,transparent 60%),
+    linear-gradient(145deg,#252525,#1a1a1a,#222);
+  border:3px solid #3a3020;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.7),0 0 0 1px #111,0 4px 16px rgba(0,0,0,.8);
+  padding:10px;
+  border-radius:2px;
+}
+.inv-label{font-size:8px;letter-spacing:2px;color:#7a6a40;text-align:center;margin-bottom:8px;text-transform:uppercase;}
+.inv-grid{
+  display:grid;
+  grid-template-columns:repeat(5,64px);
+  grid-auto-rows:64px;
+  gap:4px;
+}
+.inv-cell{
+  position:relative;
+  width:64px;height:64px;
+  background:linear-gradient(145deg,#0e0e0e,#1a1814);
+  border:1px solid #2a2420;
+  box-shadow:inset 2px 2px 6px rgba(0,0,0,.8),inset -1px -1px 3px rgba(80,60,30,.08);
+  display:flex;align-items:center;justify-content:center;
+  cursor:default;
+  overflow:visible;
+}
+.inv-cell.has-item{
+  border-color:#3a3020;
+  background:linear-gradient(145deg,#141210,#1e1c18);
+  cursor:pointer;
+}
+.inv-cell.has-item:hover{border-color:#7a6a30;box-shadow:inset 2px 2px 6px rgba(0,0,0,.7),0 0 6px rgba(180,140,40,.2);}
+.inv-icon{font-size:28px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8));}
+.inv-qty{
+  position:absolute;bottom:3px;right:4px;
+  font-size:8px;font-weight:bold;color:#c0a050;
+  text-shadow:0 1px 2px #000;
+}
+.inv-tooltip{
+  display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#0e0d0b;border:1px solid #5a4a20;
+  padding:6px 9px;min-width:130px;z-index:50;
+  box-shadow:0 4px 12px rgba(0,0,0,.9);
+  pointer-events:none;
+}
+.inv-cell.has-item:hover .inv-tooltip{display:block;}
+.inv-tooltip-name{font-size:9px;font-weight:bold;letter-spacing:1px;color:#d4aa50;margin-bottom:3px;}
+.inv-tooltip-desc{font-size:8px;color:#888;margin-bottom:3px;}
+.inv-tooltip-effect{font-size:8px;color:#5a9a50;}
+.inv-tooltip-qty{font-size:8px;color:#666;margin-top:2px;}
+.inv-empty-msg{color:var(--text3);font-size:11px;padding:20px 0;}
 </style>
 </head>
 <body>
@@ -2067,24 +2123,45 @@ function setupToggles(){
 // ═══════════════════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════════════════
+const ITEM_ICONS={
+  iron_quill:'🗡',sketch_shield:'🛡',ink_vial:'⚗',wax_seal:'💎',
+  charcoal_blade:'⚔',draft_armor:'🧥',perspective_lens:'🔮',phantom_step:'👟',
+  wax_tablet:'📜',charcoal_sigil:'✦',bone_quill:'🦴',ink_reservoir:'🫙',
+  void_fragment:'💠',master_palette:'🎨',draft_crown:'👑',
+};
+const INV_SLOTS=35;
 function renderInventory(){
   const g=document.getElementById('inventory-grid');
   const owned=SHOP_ITEMS.filter(item=>(S.shopOwned[item.id]||0)>0);
-  if(!owned.length){
-    g.innerHTML=`<div style="color:var(--text3);font-size:11px;padding:20px 0;">No items yet. Visit the Shop to purchase upgrades.</div>`;
-    return;
+  // Build flat slot list: each owned item occupies 1 slot (qty shown as badge)
+  const slots=[];
+  owned.forEach(item=>slots.push(item));
+  const totalSlots=Math.max(INV_SLOTS,Math.ceil(slots.length/5)*5);
+  let cells='';
+  for(let i=0;i<totalSlots;i++){
+    const item=slots[i];
+    if(item){
+      const qty=S.shopOwned[item.id]||0;
+      const icon=ITEM_ICONS[item.id]||'✦';
+      cells+=`<div class="inv-cell has-item">
+        <div class="inv-icon">${icon}</div>
+        ${qty>1?`<div class="inv-qty">×${qty}</div>`:''}
+        <div class="inv-tooltip">
+          <div class="inv-tooltip-name">${item.name}</div>
+          <div class="inv-tooltip-desc">${item.desc}</div>
+          <div class="inv-tooltip-effect">${item.effect}</div>
+          ${qty>1?`<div class="inv-tooltip-qty">Owned: ${qty}</div>`:''}
+        </div>
+      </div>`;
+    } else {
+      cells+=`<div class="inv-cell"></div>`;
+    }
   }
-  g.innerHTML=owned.map(item=>{
-    const qty=S.shopOwned[item.id]||0;
-    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--bg4);margin-bottom:6px;background:var(--bg2);">
-      <div style="flex:1;">
-        <div style="font-size:10px;font-weight:bold;letter-spacing:1px;color:var(--text1);">${item.name}</div>
-        <div style="font-size:9px;color:var(--text3);margin-top:2px;">${item.desc}</div>
-      </div>
-      <div style="font-size:9px;color:var(--green);white-space:nowrap;">${item.effect}</div>
-      <div style="font-size:10px;color:var(--text2);min-width:28px;text-align:right;">×${qty}</div>
-    </div>`;
-  }).join('');
+  g.innerHTML=`<div class="inv-wrap">
+    <div class="inv-label">— Bag —</div>
+    <div class="inv-grid">${cells}</div>
+    ${owned.length===0?`<div class="inv-empty-msg" style="text-align:center;padding:12px 0;">Empty. Visit the Shop.</div>`:''}
+  </div>`;
 }
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
