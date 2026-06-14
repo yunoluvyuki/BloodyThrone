@@ -288,7 +288,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .profile-info{font-size:9px;color:var(--text2);margin-bottom:6px;}
 .profile-row{display:flex;justify-content:space-between;margin-bottom:3px;}
 .slot-val{color:var(--text);font-weight:bold;}
-.stat-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;}
+.stat-profile-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-top:6px;}
 .stat-profile-item{font-size:8px;color:var(--text2);}
 .stat-profile-item span{color:var(--text);font-weight:bold;}
 .notation-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:6px;}
