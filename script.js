@@ -1034,7 +1034,7 @@ function onWin(){
   // Auto Challenge or Stop
   if(isMaxed(c)){
     if(S.protocols.autoChallenge){
-      advanceAutoChallenge();
+      AutoChallenge();
     } else {
       stopBattle();
       return; // ✅ exit before reset
@@ -1120,7 +1120,7 @@ function buyMasteryUpgrade(id){
   toast(`${up.label} → Lv ${S.masteryUpgrades[id]}`,2000);
 }
 
-function advanceAutoChallenge(){
+function AutoChallenge(){
   const next=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c)&&c.id!==B.creature.id);
   if(next) startBattle(next.id);
 }
@@ -1318,30 +1318,41 @@ function updateResources(){
 // ═══════════════════════════════════════════════════════
 // PROTOCOLS / TOGGLES
 // ═══════════════════════════════════════════════════════
-function setupToggles(){
-  const ac=document.getElementById('toggle-ac');
-  const ar=document.getElementById('toggle-ar');
+  function setupToggles(){
+    const ac = document.getElementById('toggle-ac');
+    const ar = document.getElementById('toggle-ar');
+
   function updateAC(){
-    ac.classList.toggle('on',S.protocols.autoChallenge);
-    document.getElementById('ac-details').textContent=
-      S.protocols.autoChallenge?(S.currentCreature||'NEXT CREATURE'):'DISABLED';
+    ac.classList.toggle('on', S.protocols.autoChallenge);
+    document.getElementById('ac-details').textContent = 
+      S.protocols.autoChallenge ? 'AUTO FIGHT ON' : 'DISABLED';
   }
+
   function updateAR(){
-    ar.classList.toggle('on',S.protocols.autoRetry);
-    document.getElementById('ar-details').textContent=S.protocols.autoRetry?'ENABLED':'DISABLED';
+    ar.classList.toggle('on', S.protocols.autoRetry);
+    document.getElementById('ar-details').textContent = 
+      S.protocols.autoRetry ? 'AUTO RETRY ON' : 'DISABLED';
   }
-  ac.addEventListener('click',()=>{
-    S.protocols.autoChallenge=!S.protocols.autoChallenge;
-    updateAC();
-    if(S.protocols.autoChallenge&&!B.active){
-      const first=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c));
-      if(first)startBattle(first.id);
+
+  // Auto Challenge — auto refight same monster, stop when maxed
+    ac.addEventListener('click', () => {
+      S.protocols.autoChallenge = !S.protocols.autoChallenge;
+      updateAC();
+  // Start battle if toggled on and no battle running
+    if(S.protocols.autoChallenge && !B.active && S.currentCreature){
+      startBattle(S.currentCreature);
     }
   });
-  ar.addEventListener('click',()=>{S.protocols.autoRetry=!S.protocols.autoRetry;updateAR();});
-  updateAC();updateAR();
-}
 
+  // Auto Retry — refight same monster after losing
+    ar.addEventListener('click', () => {
+      S.protocols.autoRetry = !S.protocols.autoRetry;
+    updateAR();
+  });
+
+  updateAC();
+  updateAR();
+}
 // ═══════════════════════════════════════════════════════
 // INVENTORY
 // ═══════════════════════════════════════════════════════
