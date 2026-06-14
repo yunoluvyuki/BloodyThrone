@@ -816,7 +816,7 @@ function renderBattle(){
 }
 
 // ═══════════════════════════════════════════════════════
-// BATTLE
+// battle
 // ═══════════════════════════════════════════════════════
 function startBattle(creatureId){
   const c=getCreature(creatureId);
@@ -838,6 +838,7 @@ function startBattle(creatureId){
   renderBattle();
   document.getElementById('ac-details').textContent=c.name;
 }
+
 function stopBattle(){
   B.active=false;
   S.currentCreature=null;
@@ -846,6 +847,7 @@ function stopBattle(){
   updateBattleUI();
   document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
 }
+
 function battleTick(){
   if(B.dying){
     const elapsed = (Date.now() - B.deathStart) / 1000;
@@ -882,6 +884,13 @@ function battleTick(){
     B.enemyTimer = 3000;
   }
 }
+
+function regenTick(){
+  if(!B.active || B.dying) return;
+  if((S.stats.rgn ?? 0) <= 0) return;
+  B.playerHP = Math.min(maxHP(), B.playerHP + S.stats.rgn);
+}
+
 function firePlayerTurn(){
   const c = B.creature;
   const st = S.stats;
@@ -1757,3 +1766,4 @@ if(S.protocols.autoChallenge&&!B.active){
   if(first)startBattle(first.id);
 }
 requestAnimationFrame(gameLoop);
+setInterval(regenTick, 1000);
