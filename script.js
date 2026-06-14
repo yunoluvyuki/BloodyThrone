@@ -1116,10 +1116,6 @@ function buyMasteryUpgrade(id){
   toast(`${up.label} → Lv ${S.masteryUpgrades[id]}`,2000);
 }
 
-function AutoChallenge(){
-  const next=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c)&&c.id!==B.creature.id);
-  if(next) startBattle(next.id);
-}
 function addLog(html){
   if(!S.settings.combatLog)return;
   const log=document.getElementById('battle-log');
