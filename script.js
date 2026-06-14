@@ -624,17 +624,32 @@ const STAT_DEFS=[
   {key:'mxd',label:'MXD',icon:'si-mxd',cat:'offense',fmt:'pct'},
   {key:'spd',label:'SPD',icon:'si-spd',cat:'utility',fmt:'n'},
   {key:'rgn',label:'RGN',icon:'si-rgn',cat:'defense',fmt:'n'},
-  {key:'dog',label:'DOG',icon:'si-dog',cat:'chance',fmt:'pct'},
+  {key:'ddc',label:'DDC',icon:'si-ddc',cat:'chance',fmt:'pct'},
   {key:'crc',label:'CRC',icon:'si-crc',cat:'chance',fmt:'pct'},
   {key:'crd',label:'CRD',icon:'si-crd',cat:'offense',fmt:'x'},
   {key:'arm',label:'ARM',icon:'si-arm',cat:'defense',fmt:'n'},
-  {key:'asp',label:'ASP',icon:'si-asp',cat:'offense',fmt:'n'},
   {key:'mth',label:'MTH',icon:'si-mth',cat:'offense',fmt:'pct'},
   {key:'acc',label:'ACC',icon:'si-acc',cat:'chance',fmt:'pct'},
   {key:'blk',label:'BLK',icon:'si-blk',cat:'defense',fmt:'pct'},
   {key:'bld',label:'BLD',icon:'si-bld',cat:'defense',fmt:'n'},
   {key:'ctr',label:'CTR',icon:'si-ctr',cat:'chance',fmt:'pct'},
-];
+  ];
+  // hp = healt points
+  // atk = attack
+  // mnd = minimal damage
+  // mxd = maximal damage
+  // spd = speed (time between actions)
+  // rgn = regeneration (hp per second)
+  // ddc = dodge chance
+  // crc = critical hit chance
+  // crd = critical hit damage multiplier
+  // arm = armor damage reduction flat
+  // mth = multi attack chance
+  // acc = accuracy (chance to hit)
+  // blk = block chance
+  // bld = block damage reduction flat
+  // ctr = counter chance
+
 function formatStat(key,val){
   const d=STAT_DEFS.find(x=>x.key===key);
   if(!d)return fmtStat(val);
