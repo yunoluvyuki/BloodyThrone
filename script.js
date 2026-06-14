@@ -1337,7 +1337,7 @@ document.querySelectorAll('.prestige-tab').forEach(t=>{
   t.addEventListener('click',()=>{
     document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x===t));
     document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-'+t.dataset.arch));
-    if(t.dataset.arch==='synth')updateQuintUI();
+    if(t.dataset.arch==='treasury')updateQuintUI();
     if(t.dataset.arch==='glossary')renderGlossary();
     if(t.dataset.arch==='masterpiece')renderMastery();
   });
@@ -1403,7 +1403,7 @@ function setupSettings(){
     ['.victory-stat',10],['#death-overlay h2',16],['#death-overlay .timer',24],
     ['.bsp-box-title',11],['.bsp-box-sub',8],['.bsp-col-head',8],
     ['.bsp-name',10],['.bsp-you',9],['.bsp-enemy',9],['.prestige-tab',10],
-    ['.synth-panel-title',8],['.quint-pending',24],
+    ['.treasury-panel-title',8],['.quint-pending',24],
     ['.quint-sub',8],['.quint-row',9],['#reincarnate-btn',9],['.reincarnate-req',8],
     ['.settings-row-label',10],['.settings-check-label',10],
     ['.settings-check-sublabel',8],['.zoom-val',10],['.zoom-btn',11],
@@ -1510,8 +1510,8 @@ function setupSettings(){
   // Add / Quintessence shortcut
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
-    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='synth'));
-    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-synth'));
+    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='treasury'));
+    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-treasury'));
     updateQuintUI();
   });
 
@@ -1623,7 +1623,7 @@ function gameLoop(){
     renderStats();renderFundamentals();
     const archActive=document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
-      if(document.getElementById('arch-synth').classList.contains('active'))updateQuintUI();
+      if(document.getElementById('arch-treasury').classList.contains('active'))updateQuintUI();
     }
     // renderBattle() removed from periodic loop — it is called on every real
     // state change (startBattle/stopBattle/onWin/unlockNextCreature/tab-switch/load).

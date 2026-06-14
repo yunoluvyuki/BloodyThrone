@@ -208,10 +208,10 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .prestige-pane{display:none;}
 .prestige-pane.active{display:block;}
 /* Treasury */
-#synth-layout{display:flex;gap:16px;}
-#synth-panel{width:160px;flex-shrink:0;}
-.synth-panel-box{background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:8px;}
-.synth-panel-title{font-size:8px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+#treasury-layout{display:flex;gap:16px;}
+#treasury-panel{width:160px;flex-shrink:0;}
+.treasury-panel-box{background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:8px;}
+.treasury-panel-title{font-size:8px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .quint-pending{font-size:24px;color:var(--purple2);font-weight:bold;text-align:center;}
 .quint-sub{font-size:8px;color:var(--text3);text-align:center;margin-top:2px;}
 .quint-row{display:flex;justify-content:space-between;font-size:9px;margin-top:4px;}
