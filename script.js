@@ -1031,20 +1031,21 @@ function onWin(){
   renderFundamentals();
   renderBattle();
 
-  // Reset Battle State
-  B.active = true;
-  B.playerHP = maxHP();
-  B.enemyHP = B.creature.hp;
-  B.lastTick = Date.now();
-
   // Auto Challenge or Stop
   if(isMaxed(c)){
     if(S.protocols.autoChallenge){
       advanceAutoChallenge();
     } else {
       stopBattle();
+      return; // ✅ exit before reset
     }
   }
+
+  // Reset Battle State (only if continuing)
+  B.active = true;
+  B.playerHP = maxHP();
+  B.enemyHP = B.creature.hp;
+  B.lastTick = Date.now();
 }
 function onLose(){
   B.active=false;
