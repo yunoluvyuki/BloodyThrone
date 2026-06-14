@@ -531,7 +531,7 @@ const CREATURES = [
   {id:'the_unfinished',name:'THE UNFINISHED',tag:'Incomplete. Unstoppable.',atk:16000,def:395,hp:460000,count:5,rewards:{atk:170,arm:60,gra:65000,wax:22000,cha:900},vicReq:5,new:false,tier:5,type:'elite'},
   {id:'womb_of_plague',name:'WOMB OF PLAGUE',tag:'The source, not the symptom.',atk:17333,def:423,hp:490000,count:null,rewards:{gra:85000,wax:30000,cha:1100,mxd:3.5,crc:0.9},vicReq:5,new:false,tier:5,type:'elite'},
   {id:'bleeding_throne',name:'BLEEDING THRONE',tag:'Sovereignty at a cost.',atk:18667,def:450,hp:500000,count:'50%',rewards:{atk:200,arm:75,gra:110000,wax:40000,cha:1300,mxd:4.0},vicReq:5,new:false,tier:5,type:'elite'},
-  {id:'the_hollow_crown',name:'THE HOLLOW CROWN',tag:'All that remains of what ruled.',atk:20000,def:480,hp:550000,count:null,rewards:{atk:250,arm:100,gra:150000,wax:60000,cha:2000,mxd:5.0,crc:1.0,apn:10},vicReq:5,new:false,tier:5,type:'boss'},
+  {id:'the_hollow_crown',name:'THE HOLLOW CROWN',tag:'All that remains of what ruled.',atk:20000,def:480,hp:550000,count:null,rewards:{atk:250,arm:100,gra:150000,wax:60000,cha:2000,mxd:5.0,crc:1.0,asp:10},vicReq:5,new:false,tier:5,type:'boss'},
 ];
 
 const SHOP_ITEMS = [
@@ -541,18 +541,18 @@ const SHOP_ITEMS = [
   {id:'sketch_shield',name:'SKETCH SHIELD',desc:'Hastily drawn, surprisingly effective.',effect:'ARM +2',cost:{gra:80},statBonus:{arm:2}},
   {id:'ink_vial',name:'INK VIAL',desc:'Concentrated darkness in liquid form.',effect:'HP +20',cost:{gra:100},statBonus:{hp:20}},
   {id:'wax_seal',name:'WAX SEAL',desc:'Bonds your wounds shut.',effect:'RGN +0.5',cost:{gra:120,wax:5},statBonus:{rgn:0.5}},
-  {id:'charcoal_blade',name:'CHARCOAL BLADE',desc:'Smudges enemies into submission.',effect:'ATK +10, APN +0.5',cost:{gra:200,cha:5},statBonus:{atk:10,apn:0.5}},
+  {id:'charcoal_blade',name:'CHARCOAL BLADE',desc:'Smudges enemies into submission.',effect:'ATK +10, ASP +0.5',cost:{gra:200,cha:5},statBonus:{atk:10,asp:0.5}},
   {id:'draft_armor',name:'DRAFT ARMOR',desc:'Layers of rejected paper, hardened.',effect:'ARM +5, HP +30',cost:{gra:300,wax:20},statBonus:{arm:5,hp:30}},
   {id:'perspective_lens',name:'PERSPECTIVE LENS',desc:'See the angles others miss.',effect:'CRC +1%, CRD +0.1',cost:{gra:250,wax:15},statBonus:{crc:0.01,crd:0.1}},
   {id:'phantom_step',name:'PHANTOM STEP',desc:'Leave no trace behind.',effect:'DOG +1%, SPD +100',cost:{gra:180,wax:8},statBonus:{dog:0.01,spd:100}},
   // Tier 2 Shop
-  {id:'wax_tablet',name:'WAX TABLET',desc:'Ancient storage, modern power.',effect:'MND +5%, APN +1',cost:{gra:500,wax:50},statBonus:{mnd:0.05,apn:1}},
+  {id:'wax_tablet',name:'WAX TABLET',desc:'Ancient storage, modern power.',effect:'MND +5%, ASP +1',cost:{gra:500,wax:50},statBonus:{mnd:0.05,asp:1}},
   {id:'charcoal_sigil',name:'CHARCOAL SIGIL',desc:'Drawn in the dark before dawn.',effect:'CRC +2%, CRD +0.25',cost:{gra:800,wax:80,cha:10},statBonus:{crc:0.02,crd:0.25}},
   {id:'bone_quill',name:'BONE QUILL',desc:'Stripped of flesh. Pure intent.',effect:'ATK +25, ARM +8',cost:{gra:1200,wax:120},statBonus:{atk:25,arm:8}},
   {id:'ink_reservoir',name:'INK RESERVOIR',desc:'Bottomless if you believe hard enough.',effect:'HP +100, RGN +3',cost:{gra:1500,cha:30},statBonus:{hp:100,rgn:3}},
   // Tier 3 Shop
   {id:'void_fragment',name:'VOID FRAGMENT',desc:'Chipped from the edge of a sketch.',effect:'DOG +3%, MXD +0.5',cost:{gra:3000,wax:400,cha:80},statBonus:{dog:0.03,mxd:0.5}},
-  {id:'master_palette',name:'MASTER PALETTE',desc:'Every color of pain.',effect:'ATK +80, APN +2',cost:{gra:6000,wax:800},statBonus:{atk:80,apn:2}},
+  {id:'master_palette',name:'MASTER PALETTE',desc:'Every color of pain.',effect:'ATK +80, ASP +2',cost:{gra:6000,wax:800},statBonus:{atk:80,asp:2}},
   {id:'draft_crown',name:'DRAFT CROWN',desc:'Worn by those who survived the critique.',effect:'HP +300, ARM +20, CRC +3%',cost:{gra:10000,wax:2000,cha:300},statBonus:{hp:300,arm:20,crc:0.03}},
 ];
 
@@ -577,7 +577,7 @@ const ACHIEVEMENTS = [
   {id:'atk_500',        name:'MASTERFUL STROKE',   desc:'Reach ATK 500.',                      icon:'⚡',  cat:'stats',       check:s=>s.stats.atk>=500},
   {id:'arm_50',         name:'THICK SKIN',         desc:'Reach ARM 50.',                       icon:'🛡',  cat:'stats',       check:s=>s.stats.arm>=50},
   {id:'hp_500',         name:'IRON CONSTITUTION',  desc:'Reach HP 500.',                       icon:'❤',  cat:'stats',       check:s=>s.stats.hp>=500},
-  {id:'apn_10',         name:'RAPID FIRE',         desc:'Reach APN 10.',                       icon:'💨',  cat:'stats',       check:s=>s.stats.apn>=10},
+  {id:'apn_10',         name:'RAPID FIRE',         desc:'Reach ASP 10.',                       icon:'💨',  cat:'stats',       check:s=>s.stats.asp>=10},
   // ── RESOURCES ────────────────────────────────────────
   {id:'gra_1k',         name:'INK STAINED',        desc:'Accumulate 1,000 Graphite.',          icon:'▲',  cat:'resources',   check:s=>s.lifeGra>=1000},
   {id:'gra_100k',       name:'GRAPHITE HOARD',     desc:'Accumulate 100,000 Graphite lifetime.',icon:'◆', cat:'resources',   check:s=>s.lifeGra>=100000},
@@ -595,7 +595,7 @@ function getVic(s,id){return s.victories[id]||0;}
 // GAME STATE
 // ═══════════════════════════════════════════════════════
 const DEFAULT_STATE = ()=>({
-  stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:100,rgn:0,dog:0,crc:0,crd:1.0,arm:0,apn:1.0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
+  stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:100,rgn:0,dog:0,crc:0,crd:1.0,arm:0,asp:1.0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
   resources:{gra:0,wax:0,cha:0,gold:0,plat:0},
   victories:{},
   shopOwned:{},
@@ -672,7 +672,7 @@ const STAT_DEFS=[
   {key:'crc',label:'CRC',icon:'si-crc',cat:'chance',fmt:'pct'},
   {key:'crd',label:'CRD',icon:'si-crd',cat:'offense',fmt:'x'},
   {key:'arm',label:'ARM',icon:'si-arm',cat:'defense',fmt:'n'},
-  {key:'apn',label:'APN',icon:'si-apn',cat:'offense',fmt:'n'},
+  {key:'asp',label:'ASP',icon:'si-asp',cat:'offense',fmt:'n'},
   {key:'mth',label:'MTH',icon:'si-mth',cat:'offense',fmt:'pct'},
   {key:'acc',label:'ACC',icon:'si-acc',cat:'chance',fmt:'pct'},
   {key:'blk',label:'BLK',icon:'si-blk',cat:'defense',fmt:'pct'},
@@ -875,7 +875,7 @@ function startBattle(creatureId){
   B.enemyHP=c.hp;
   B.lastTick=Date.now();
   B.turnCount=0;
-  B.playerTimer=3000/(S.stats.apn||1);
+  B.playerTimer=3000/(S.stats.asp||1);
   B.enemyTimer=3000;
   updateBattleUI();
   const rc=RARITY_COLORS[B.rarity];
@@ -920,7 +920,7 @@ function battleTick(){
   if(B.playerTimer<=0){
     firePlayerTurn();
     if(!B.active)return;
-    B.playerTimer=Math.max(200,3000/(S.stats.apn||1));
+    B.playerTimer=Math.max(200,3000/(S.stats.asp||1));
   }
   if(!B.active)return;
   if(B.enemyTimer<=0){
@@ -1158,7 +1158,7 @@ function updateBattleStats(){
     {name:'ATK',              p:fmt(st.atk),          e:c?fmt(c.atk):dash},
     {name:'Min Damage',       p:n1(pMinDmg),          e:c?n1(eMinDmg):dash},
     {name:'Max Damage',       p:n1(pMaxDmg),          e:c?n1(eMaxDmg):dash},
-    {name:'Attack Speed',     p:x2(st.asp),           e:'1.00×'},
+    {name:'Attack Speed',     p:x2(st.asp??1),        e:'1.00×'},
     {name:'Accuracy',         p:pct(st.acc||1),       e:'100%'},
     {name:'Crit Chance',      p:pct(st.crc),          e:'0%'},
     {name:'Crit Damage',      p:x2(st.crd),           e:'1.00×'},
@@ -1214,7 +1214,7 @@ function updateBattleUI(){
   document.getElementById('player-hp-text').textContent=`${Math.max(0,B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
   // Timer bars
   if(B.active&&!B.dying){
-    const pInterval=Math.max(200,3000/(S.stats.apn||1));
+    const pInterval=Math.max(200,3000/(S.stats.asp||1));
     const pFill=Math.max(0,Math.min(100,(1-B.playerTimer/pInterval)*100));
     const eFill=Math.max(0,Math.min(100,(1-B.enemyTimer/3000)*100));
     if(ptimerBar){ptimerBar.style.width=pFill+'%';ptimerText.textContent=(Math.max(0,B.playerTimer)/1000).toFixed(1)+'s';}
@@ -1222,12 +1222,12 @@ function updateBattleUI(){
   }
   if(turnEl){
     if(B.dying) turnEl.textContent='DEFEATED — RECOVERING...';
-    else if(B.active) turnEl.textContent=`TURN ${B.turnCount} | ATK SPEED: ${(S.stats.apn||1).toFixed(2)}× | KILLS: ${S.victories[c.id]||0}/${c.vicReq}`;
+    else if(B.active) turnEl.textContent=`TURN ${B.turnCount} | ATK SPEED: ${(S.stats.asp||1).toFixed(2)}× | KILLS: ${S.victories[c.id]||0}/${c.vicReq}`;
     else turnEl.textContent='—';
   }
   const eatk=Math.max(1,c.atk/(1+(S.stats.arm??0)*0.15));
   document.getElementById('battle-status').textContent=
-    B.active?`Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${eatk.toFixed(1)} | Turn every ${(3000/(S.stats.apn||1)/1000).toFixed(1)}s`
+    B.active?`Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${eatk.toFixed(1)} | Turn every ${(3000/(S.stats.asp||1)/1000).toFixed(1)}s`
     :'Battle paused.';
   updateBattleStats();
 }
