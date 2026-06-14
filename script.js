@@ -1459,10 +1459,17 @@ function setupSettings(){
     ['.settings-check-sublabel',8],['.zoom-val',10],['.zoom-btn',11],
   ];
   let fs=S.settings.fontSize||FS_DEFAULT;
-  const FS_BASE=FS_RULES.map(([sel,fallback])=>{
-    const el=document.querySelector(sel);
-    return el?parseFloat(getComputedStyle(el).fontSize):fallback;
-  });
+  const FS_CSS_MAP={};
+  for(const sheet of document.styleSheets){
+    let rules;
+    try{rules=sheet.cssRules;}catch(e){continue;}
+    for(const rule of rules){
+      if(rule.style&&rule.style.fontSize){
+        FS_CSS_MAP[rule.selectorText]=parseFloat(rule.style.fontSize);
+      }
+    }
+  }
+  const FS_BASE=FS_RULES.map(([sel,fallback])=>FS_CSS_MAP[sel]??fallback);
   function applyFontSize(size){
     S.settings.fontSize=size;
     const r=size/FS_DEFAULT;
