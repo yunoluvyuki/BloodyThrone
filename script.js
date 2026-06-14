@@ -1031,18 +1031,15 @@ function onWin(){
   renderFundamentals();
   renderBattle();
 
-  // Auto Challenge or Stop
+  // Maxed check — always stop
   if(isMaxed(c)){
-    if(S.protocols.autoChallenge){
-      AutoChallenge();
-    } else {
-      stopBattle();
-      return; // ✅ exit before reset
-    }
+    addLog(`<span class="log-win">★ ${c.name} fully defeated!</span>`);
+    stopBattle();
+    return;
   }
 
-  // Reset Battle State (only if continuing)
-  if(S.protocols.autoRetry){
+  // Not maxed — continue if autoChallenge active
+  if(S.protocols.autoChallenge){
     B.active = true;
     B.playerHP = maxHP();
     B.enemyHP = B.creature.hp;
