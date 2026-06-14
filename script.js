@@ -1615,13 +1615,15 @@ function loadGame(){
     const offline=Math.min((Date.now()-(loaded.lastSave||Date.now()))/1000, 86400);
     if(offline>10){
       S.offlineTime=(S.offlineTime||0)+offline;
-      const offlineRate=0.5+(S.reincarnations*0.1);
-      const offlineOld=offline*offlineRate;
-      const offlineBronze=offline*(offlineRate*0.05);
-      S.resources.old+=offlineOld;
-      S.resources.bronze+=offlineBronze;
-      S.lifeOld+=offlineOld;
-      setTimeout(()=>toast(`Welcome back! +${fmt(offlineOld)} OLD, +${fmt(offlineBronze)} BRONZE offline (${fmtTime(offline)})`,5000),500);
+      if(S.synthUnlocked){
+        const offlineRate=0.5+(S.reincarnations*0.1);
+        const offlineOld=offline*offlineRate;
+        const offlineBronze=offline*(offlineRate*0.05);
+        S.resources.old+=offlineOld;
+        S.resources.bronze+=offlineBronze;
+        S.lifeOld+=offlineOld;
+        setTimeout(()=>toast(`Welcome back! +${fmt(offlineOld)} OLD, +${fmt(offlineBronze)} BRONZE offline (${fmtTime(offline)})`,5000),500);
+      }
     }
   }catch(e){console.error('Load failed',e);}
   initBattleQueue();
