@@ -1753,7 +1753,6 @@ function gameLoop(){
     const archActive=document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
       if(document.getElementById('arch-synth').classList.contains('active'))renderSynth();
-      if(document.getElementById('arch-achievements').classList.contains('active'))renderAchievements();
     }
     if(document.getElementById('tab-gallery').classList.contains('active'))renderGallery();
     if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
