@@ -1170,22 +1170,22 @@ function updateBattleUI(){
   const etimerBar=document.getElementById('etimer-bar');
   const ptimerText=document.getElementById('ptimer-text');
   const etimerText=document.getElementById('etimer-text');
-  if(!c){
-    document.getElementById('battle-creature-name').textContent='SELECT A CREATURE';
-    document.getElementById('battle-creature-tag').textContent='Go to Battle to challenge a creature.';
-    document.getElementById('enemy-hp-bar').style.width='0%';
-    document.getElementById('enemy-hp-text').textContent='—';
-    document.getElementById('player-hp-bar').style.width='100%';
-    document.getElementById('player-hp-text').textContent=`${maxHP().toFixed(1)} / ${maxHP().toFixed(1)}`;
-    document.getElementById('battle-art').innerHTML='';
-    document.getElementById('player-art').innerHTML='<div style="font-size:22px;opacity:0.4;">★</div>';
-    document.getElementById('battle-status').textContent='No active battle.';
-    if(turnEl) turnEl.textContent='—';
-    if(ptimerBar){ptimerBar.style.width='0%';ptimerText.textContent='—';}
-    if(etimerBar){etimerBar.style.width='0%';etimerText.textContent='—';}
+if(!c){
+  const ppct = Math.max(0, B.playerHP / maxHP() * 100);
+    document.getElementById('battle-creature-name').textContent = 'SELECT A CREATURE';
+    document.getElementById('battle-creature-tag').textContent = 'Go to Battle to challenge a creature.';
+    document.getElementById('enemy-hp-bar').style.width = '0%';
+    document.getElementById('enemy-hp-text').textContent = '—';
+    document.getElementById('player-hp-bar').style.width = ppct + '%';
+    document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
+    document.getElementById('battle-art').innerHTML = '';
+    document.getElementById('battle-status').textContent = 'No active battle.';
+    if(turnEl) turnEl.textContent = '—';
+    if(ptimerBar){ptimerBar.style.width = '0%'; ptimerText.textContent = '—';}
+    if(etimerBar){etimerBar.style.width = '0%'; etimerText.textContent = '—';}
     updateBattleStats();
     return;
-  }
+}
   const rc=RARITY_COLORS[B.rarity||'common'];
   const rl=RARITY_LABELS[B.rarity||'common'];
   document.getElementById('battle-creature-name').textContent=c.name;
