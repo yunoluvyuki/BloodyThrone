@@ -779,10 +779,10 @@ const RARITY_UPGRADES=[
 ];
 function getRarityChances(){
   const ups=S.masteryUpgrades||{};
-  const unc=1+(ups.unc_rate||0)*1;
-  const rare=(ups.rare_rate||0)*0.5;
-  const epic=(ups.epic_rate||0)*0.2;
-  const leg=(ups.leg_rate||0)*0.05;
+  const unc=30+(ups.unc_rate||0)*1;
+  const rare=20+(ups.rare_rate||0)*0.5;
+  const epic=10+(ups.epic_rate||0)*0.2;
+  const leg=10+(ups.leg_rate||0)*0.05;
   return{uncommon:Math.min(unc,40),rare:Math.min(rare,15),epic:Math.min(epic,5),legendary:Math.min(leg,2)};
 }
 function rollRarity(){
