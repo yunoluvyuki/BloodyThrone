@@ -1448,8 +1448,13 @@ function setupSettings(){
   let fs=S.settings.fontSize||FS_DEFAULT;
   function applyFontSize(size){
     S.settings.fontSize=size;
-    const r=size/13;
-    const css=FS_RULES.map(([sel,base])=>`${sel}{font-size:${(base*r).toFixed(1)}px!important;}`).join('');
+    const r=size/FS_DEFAULT;
+    document.getElementById('fs-override').textContent='';
+    const css=FS_RULES.map(([sel,fallback])=>{
+      const el=document.querySelector(sel);
+      const base=el?parseFloat(getComputedStyle(el).fontSize):fallback;
+      return `${sel}{font-size:${(base*r).toFixed(1)}px!important;}`;
+    }).join('');
     document.getElementById('fs-override').textContent=css;
     document.getElementById('fs-val').textContent=size+'px';
   }
