@@ -615,6 +615,7 @@ const DEFAULT_STATE = ()=>({
   sessionRewards:{},
   galleryUnlocked:[],
   galleryQueue:[],
+  spawnRarity:{},
 });
 let S = DEFAULT_STATE();
 
@@ -793,6 +794,11 @@ function rollRarity(){
   if(r<ch.legendary+ch.epic+ch.rare+ch.uncommon)return'uncommon';
   return'common';
 }
+function getSpawnRarity(id){
+  if(!S.spawnRarity)S.spawnRarity={};
+  if(!S.spawnRarity[id])S.spawnRarity[id]=rollRarity();
+  return S.spawnRarity[id];
+}
 
 function renderGallery(){
   const g=document.getElementById('gallery-grid');
@@ -820,11 +826,12 @@ function renderGallery(){
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
     else if(isCurrent)btnHtml=`<button class="btn-challenge btn-current" onclick="stopBattle()">FIGHTING</button>`;
     else btnHtml=`<button class="btn-challenge" onclick="startBattle('${c.id}')">CHALLENGE</button>`;
-    const spawnRarityColor=isCurrent?(RARITY_COLORS[B.rarity]||'#888'):null;
-    const borderColor=isCurrent?spawnRarityColor:maxed?'#333':`${color}44`;
-    const rarityGlow=isCurrent&&B.rarity!=='common'?`box-shadow:0 0 8px ${spawnRarityColor}55;`:'';
-    const spawnBg=isCurrent?(RARITY_BG[B.rarity]||'transparent'):(maxed?'transparent':TIER_BG[tier]||'transparent');
-    const spawnBadge=isCurrent?`<span style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${spawnRarityColor};color:#fff;">${RARITY_LABELS[B.rarity]}</span>`:'';
+    const spawnRarity=maxed?null:getSpawnRarity(c.id);
+    const spawnRarityColor=spawnRarity?(RARITY_COLORS[spawnRarity]||'#888'):null;
+    const borderColor=spawnRarity?spawnRarityColor:maxed?'#333':`${color}44`;
+    const rarityGlow=spawnRarity&&spawnRarity!=='common'?`box-shadow:0 0 8px ${spawnRarityColor}55;`:'';
+    const spawnBg=spawnRarity?(RARITY_BG[spawnRarity]||'transparent'):(maxed?'transparent':TIER_BG[tier]||'transparent');
+    const spawnBadge=spawnRarity?`<span style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${spawnRarityColor};color:#fff;">${RARITY_LABELS[spawnRarity]}</span>`:'';
     return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
       <div class="card-top">
         <div class="card-art" style="position:relative;">${rarityBadge}${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${typeBadge}${SVGs[c.id]||`<div style="color:${color};font-size:22px;opacity:0.4;">✦</div>`}</div>
@@ -863,7 +870,7 @@ function startBattle(creatureId){
   B.creature=c;
   B.active=true;
   B.dying=false;
-  B.rarity=rollRarity();
+  B.rarity=getSpawnRarity(creatureId);
   B.playerHP=maxHP();
   B.enemyHP=c.hp;
   B.lastTick=Date.now();
@@ -975,6 +982,7 @@ function fireEnemyTurn(){
 }
 function onWin(){
   const c=B.creature;
+  S.spawnRarity[c.id]=rollRarity();
   if(!S.victories[c.id])S.victories[c.id]=0;
   S.victories[c.id]++;
   const justMaxed=S.victories[c.id]===c.vicReq;
@@ -1667,6 +1675,7 @@ function loadGame(){
     S.achievements=Object.assign({},loaded.achievements||{});
     S.victories=Object.assign({},loaded.victories||{});
     S.shopOwned=Object.assign({},loaded.shopOwned||{});
+    S.spawnRarity=Object.assign({},loaded.spawnRarity||{});
     S.deaths=loaded.deaths||0;
     S.lifeGra=loaded.lifeGra||0;
     S.redraws=loaded.redraws||0;
