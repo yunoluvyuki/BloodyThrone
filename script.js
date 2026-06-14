@@ -783,7 +783,7 @@ function renderBattle(){
       <div class="card-top">
         <div class="card-art" style="position:relative;">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${typeBadge}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`:SVGs[c.id]||`<div style="color:${color};font-size:22px;opacity:0.4;">✦</div>`}</div>
         <div class="card-info">
-          <div class="card-name" style="color:${maxed?'var(--text3)':color}">${c.name}</div>
+          <div class="card-name">${c.name}</div>
           <div class="card-tagline">${c.tag}</div>
           <div class="card-stats">
             <span class="card-atk">✏ ${fmt(c.atk*spawnRarityMultDisplay)}</span> /
