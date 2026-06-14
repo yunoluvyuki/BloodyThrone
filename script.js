@@ -1357,14 +1357,14 @@ function buyShopItem(id){
 let lastResources={gra:0,wax:0,cha:0,gold:0,plat:0};
 let resRates={gra:0,wax:0,cha:0,gold:0,plat:0};
 function updateResources(){
-  document.getElementById('res-gra').textContent=fmt(S.resources.gra);
-  document.getElementById('res-wax').textContent=fmt(S.resources.wax);
-  document.getElementById('res-cha').textContent=fmt(S.resources.cha);
+  document.getElementById('res-old').textContent=fmt(S.resources.gra);
+  document.getElementById('res-bronze').textContent=fmt(S.resources.wax);
+  document.getElementById('res-silver').textContent=fmt(S.resources.cha);
   document.getElementById('res-gold').textContent=fmt(S.resources.gold);
   document.getElementById('res-plat').textContent=fmt(S.resources.plat);
-  document.getElementById('res-gra-rate').textContent=(synthRates.gra>0?'+':'')+synthRates.gra.toFixed(3)+'/s';
-  document.getElementById('res-wax-rate').textContent=(synthRates.wax>0?'+':'')+synthRates.wax.toFixed(3)+'/s';
-  document.getElementById('res-cha-rate').textContent=(synthRates.cha>0?'+':'')+synthRates.cha.toFixed(3)+'/s';
+  document.getElementById('res-old-rate').textContent=(synthRates.gra>0?'+':'')+synthRates.gra.toFixed(3)+'/s';
+  document.getElementById('res-bronze-rate').textContent=(synthRates.wax>0?'+':'')+synthRates.wax.toFixed(3)+'/s';
+  document.getElementById('res-silver-rate').textContent=(synthRates.cha>0?'+':'')+synthRates.cha.toFixed(3)+'/s';
   document.getElementById('res-gold-rate').textContent=(synthRates.gold>0?'+':'')+synthRates.gold.toFixed(3)+'/s';
   document.getElementById('res-plat-rate').textContent=(synthRates.plat>0?'+':'')+synthRates.plat.toFixed(3)+'/s';
 }
