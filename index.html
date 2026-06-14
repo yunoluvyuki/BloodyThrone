@@ -67,17 +67,22 @@
         <div id="battle-main">
           <div id="battle-creature-display">
             <div id="battle-top">
-              <div id="battle-art"></div>
-              <div id="battle-meta">
-                <div id="battle-creature-name">SELECT A CREATURE</div>
-                <div id="battle-creature-tag">Challenge a creature above to begin.</div>
-                <div class="hp-bar-wrap" style="margin-top:10px;">
-                  <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
-                  <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
-                </div>
+              <div id="battle-player-box" class="battle-side-box">
+                <div class="battle-side-label">YOU</div>
                 <div class="hp-bar-wrap">
                   <div class="hp-label"><span>YOUR HP</span><span id="player-hp-text">—</span></div>
                   <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
+                </div>
+              </div>
+              <div id="battle-enemy-box" class="battle-side-box">
+                <div id="battle-art"></div>
+                <div id="battle-meta">
+                  <div id="battle-creature-name">SELECT A CREATURE</div>
+                  <div id="battle-creature-tag">Challenge a creature above to begin.</div>
+                  <div class="hp-bar-wrap" style="margin-top:10px;">
+                    <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
+                    <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
+                  </div>
                 </div>
               </div>
             </div>
