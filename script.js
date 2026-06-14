@@ -935,25 +935,60 @@ function firePlayerTurn(){
   if(B.enemyHP <= 0) onWin();
 }
 function fireEnemyTurn(){
-  const c=B.creature;
-  const st=S.stats;
-  const isDodge=Math.random()<(st.dog??0);
-  if(isDodge){
-    addLog(`<span class="log-info">↳ ${c.name} attacks — you <b>dodge!</b></span>`);
-    return;
+  const c = B.creature;
+  const st = S.stats;
+
+  // Hit Check (enemy acc vs player ddc)
+  const ddc = st.ddc ?? 0;
+  const acc = c.acc ?? 1;
+  const isMiss = acc >= ddc ? false : Math.random() < (ddc - acc);
+
+  if(isMiss){
+    addLog(`<span class="log-info"><b>${c.name}</b> swings at you — MISS!</span>`);
+  } else {
+
+    // Damage Calc
+    const isCrit = Math.random() < (c.crc ?? 0);
+    const mnd = c.atk * (c.mnd ?? 0.7);
+    const mxd = c.atk * (c.mxd ?? 1.0);
+    let totalDmg = 0;
+    let hits = 0;
+
+    do {
+      let rolled = mnd + Math.random() * (mxd - mnd);
+      if(isCrit) rolled *= (c.crd ?? 1);                        // 2. crit multiplier
+      const isBlock = Math.random() < (st.blk ?? 0);
+      if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0)); // 3. player block reduction
+      rolled = Math.max(0, rolled - (st.arm ?? 0));             // 4. player armor reduction
+      totalDmg += rolled;
+      hits++;
+    } while(Math.random() < (c.mth ?? 0) && hits < 10);
+
+    // Apply Damage
+    B.playerHP = Math.max(0, B.playerHP - totalDmg);
+
+    // Counter Check (player counters enemy hit)
+    if(Math.random() < (st.ctr ?? 0)){
+      const cMnd = st.atk * (st.mnd ?? 0.7);
+      const cMxd = st.atk * (st.mxd ?? 1.0);
+      let counterDmg = cMnd + Math.random() * (cMxd - cMnd);
+      counterDmg = Math.max(0, counterDmg - (c.arm ?? 0));
+      B.enemyHP = Math.max(0, B.enemyHP - counterDmg);
+      addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(1)}</b> to ${c.name}!</span>`);
+      if(B.enemyHP <= 0){ onWin(); return; }
+    }
+
+    // Log
+    const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
+    if(isCrit){
+      addLog(`<span class="log-crit">✦ ${c.name} CRITS — <b>${totalDmg.toFixed(1)}</b> to you!${hitStr}</span>`);
+    } else {
+      addLog(`<span class="log-die"><b>${c.name}</b> hits you for <b>${totalDmg.toFixed(1)}</b>.${hitStr}</span>`);
+    }
   }
-  const rawDmg=Math.max(1,c.atk/(1+(st.arm??0)*0.15));
-  const isBlock=Math.random()<(st.blk??0);
-  const dmg=isBlock?Math.max(0,rawDmg-(st.bld??0)):rawDmg;
-  const isCounter=Math.random()<(st.ctr??0);
-  const counterDmg=isCounter?Math.max(0.1,(st.atk*0.5)-c.def):0;
-  B.playerHP=Math.max(0,B.playerHP-dmg);
-  if(counterDmg>0) B.enemyHP=Math.max(0,B.enemyHP-counterDmg);
-  let msg=`↳ <b>${c.name}</b> hits for <b>${dmg.toFixed(1)}</b>`;
-  if(isBlock) msg+=` <span style="color:var(--text2)">(blocked ${(rawDmg-dmg).toFixed(1)})</span>`;
-  if(counterDmg>0) msg+=`. <span class="log-crit">↩ COUNTER ${counterDmg.toFixed(1)}!</span>`;
-  addLog(`<span class="log-die">${msg}.</span>`);
-  if(B.playerHP<=0) onLose();
+
+  // Lose Check
+  if(B.playerHP <= 0) onLose();
 }
 function onWin(){
   const c=B.creature;
