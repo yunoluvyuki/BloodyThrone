@@ -345,208 +345,209 @@ final_draft:`<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" fill=
 // ═══════════════════════════════════════════════════════
 // GAME DATA
 // ═══════════════════════════════════════════════════════
-const RESOURCE_LABELS={gra:'OLD',wax:'BRONZE',cha:'SILVER',gold:'GOLD',plat:'PLAT'};
+const RESOURCE_LABELS={old:'OLD',bronze:'BRONZE',silver:'SILVER',gold:'GOLD',plat:'PLAT'};
 const CREATURES = [
-  {id:'hollow_wretch',name:'HOLLOW WRETCH',tag:'Nothing left but need.',atk:2,def:1.0,hp:10,count:null,rewards:{atk:0.12,gra:0.15},vicReq:5,new:false,type:'scrap'},
-  {id:'plague_hound',name:'PLAGUE HOUND',tag:'Loyal to the rot.',atk:3,def:1.1,hp:550,count:3,rewards:{hp:0.4,gra:0.18},vicReq:5,new:false,type:'scrap'},
-  {id:'ashwalker',name:'ASHWALKER',tag:'Stepped out of the fire.',atk:4,def:1.1,hp:600,count:'10%',rewards:{atk:0.13,gra:0.2},vicReq:5,new:false,type:'scrap'},
-  {id:'bonepicker',name:'BONEPICKER',tag:'Patience at its worst.',atk:5,def:1.2,hp:650,count:null,rewards:{gra:0.22,atk:0.11},vicReq:5,new:false,type:'scrap'},
-  {id:'grave_rat',name:'GRAVE RAT',tag:'It was here first.',atk:6,def:1.2,hp:700,count:2,rewards:{hp:0.45,gra:0.2},vicReq:5,new:false,type:'scrap'},
-  {id:'mudborn',name:'MUDBORN',tag:'The swamp made it.',atk:7,def:1.3,hp:750,count:'12%',rewards:{atk:0.14,gra:0.24},vicReq:5,new:false,type:'scrap'},
-  {id:'corpse_crawler',name:'CORPSE CRAWLER',tag:'Moving. Somehow.',atk:8,def:1.3,hp:800,count:null,rewards:{gra:0.26,hp:0.5},vicReq:5,new:false,type:'scrap'},
-  {id:'rotting_serf',name:'ROTTING SERF',tag:'Still working after death.',atk:9,def:1.4,hp:850,count:4,rewards:{atk:0.15,gra:0.28},vicReq:5,new:false,type:'scrap'},
-  {id:'blighted_husk',name:'BLIGHTED HUSK',tag:'The disease won.',atk:10,def:1.4,hp:900,count:'15%',rewards:{hp:0.55,gra:0.3},vicReq:5,new:false,type:'scrap'},
-  {id:'soot_fiend',name:'SOOT FIEND',tag:'Left over from something worse.',atk:11,def:1.5,hp:950,count:null,rewards:{atk:0.16,gra:0.32},vicReq:5,new:false,type:'scrap'},
-  {id:'wretched_thrall',name:'WRETCHED THRALL',tag:'Serving without knowing why.',atk:13,def:1.6,hp:1000,count:3,rewards:{gra:0.34,atk:0.14},vicReq:5,new:false,type:'scrap'},
-  {id:'festering_vagrant',name:'FESTERING VAGRANT',tag:'Homeless and hungry.',atk:14,def:1.6,hp:1050,count:'15%',rewards:{hp:0.6,gra:0.35},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_eye',name:'HOLLOW EYE',tag:'Nothing looks back.',atk:15,def:1.7,hp:1100,count:null,rewards:{atk:0.17,gra:0.37},vicReq:5,new:false,type:'scrap'},
-  {id:'dungeon_tick',name:'DUNGEON TICK',tag:'It found you.',atk:17,def:1.7,hp:1150,count:5,rewards:{gra:0.4,hp:0.65},vicReq:5,new:false,type:'scrap'},
-  {id:'gravel_ghoul',name:'GRAVEL GHOUL',tag:'Dug itself out.',atk:18,def:1.8,hp:1200,count:'18%',rewards:{atk:0.18,gra:0.42},vicReq:5,new:false,type:'scrap'},
-  {id:'bile_spawn',name:'BILE SPAWN',tag:'Born wrong.',atk:19,def:1.8,hp:1250,count:null,rewards:{hp:0.7,gra:0.44},vicReq:5,new:false,type:'scrap'},
-  {id:'mossrot',name:'MOSSROT',tag:'Where things go to end.',atk:21,def:1.9,hp:1300,count:2,rewards:{atk:0.19,gra:0.46},vicReq:5,new:false,type:'scrap'},
-  {id:'scab_crawler',name:'SCAB CRAWLER',tag:'Every wound is a door.',atk:22,def:1.9,hp:1350,count:'20%',rewards:{gra:0.48,atk:0.17},vicReq:5,new:false,type:'scrap'},
-  {id:'charnel_fly',name:'CHARNEL FLY',tag:'Drawn to the smell.',atk:23,def:2.0,hp:1400,count:null,rewards:{hp:0.75,gra:0.5},vicReq:5,new:false,type:'scrap'},
-  {id:'skinless_beggar',name:'SKINLESS BEGGAR',tag:'Still asking.',atk:25,def:2.0,hp:1450,count:4,rewards:{atk:0.2,gra:0.52},vicReq:5,new:false,type:'scrap'},
-  {id:'weeping_hollow',name:'WEEPING HOLLOW',tag:'The grief outlasted the body.',atk:26,def:2.1,hp:1500,count:'20%',rewards:{gra:0.54,hp:0.8},vicReq:5,new:false,type:'scrap'},
-  {id:'maggot_knight',name:'MAGGOT KNIGHT',tag:'Earned its title somehow.',atk:27,def:2.1,hp:1550,count:null,rewards:{atk:0.21,gra:0.56},vicReq:5,new:false,type:'scrap'},
-  {id:'cinder_wretch',name:'CINDER WRETCH',tag:'Burned and kept going.',atk:29,def:2.2,hp:1600,count:3,rewards:{hp:0.85,gra:0.58},vicReq:5,new:false,type:'scrap'},
-  {id:'sallow_shade',name:'SALLOW SHADE',tag:'A dim thing.',atk:30,def:2.2,hp:1650,count:'22%',rewards:{atk:0.22,gra:0.6},vicReq:5,new:false,type:'scrap'},
-  {id:'mud_ghoul',name:'MUD GHOUL',tag:'Dredged from below.',atk:32,def:2.3,hp:1700,count:null,rewards:{gra:0.62,hp:0.9},vicReq:5,new:false,type:'scrap'},
-  {id:'bonegnaw',name:'BONEGNAW',tag:'Always chewing.',atk:33,def:2.3,hp:1750,count:5,rewards:{atk:0.23,gra:0.64},vicReq:5,new:false,type:'scrap'},
-  {id:'ashen_tramp',name:'ASHEN TRAMP',tag:'Wandered here from the ruins.',atk:34,def:2.4,hp:1800,count:'22%',rewards:{hp:0.95,gra:0.66},vicReq:5,new:false,type:'scrap'},
-  {id:'foul_creeper',name:'FOUL CREEPER',tag:'Slow but certain.',atk:36,def:2.4,hp:1850,count:null,rewards:{atk:0.24,gra:0.68},vicReq:5,new:false,type:'scrap'},
-  {id:'plague_bearer',name:'PLAGUE BEARER',tag:'A gift nobody wanted.',atk:37,def:2.5,hp:1900,count:2,rewards:{gra:0.7,hp:1.0},vicReq:5,new:false,type:'scrap'},
-  {id:'tallow_shade',name:'TALLOW SHADE',tag:'Rendered down to spite.',atk:39,def:2.5,hp:1950,count:'25%',rewards:{atk:0.25,gra:0.72},vicReq:5,new:false,type:'scrap'},
-  {id:'rot_worm',name:'ROT WORM',tag:'Patient underground.',atk:40,def:2.6,hp:2000,count:null,rewards:{hp:1.05,gra:0.74},vicReq:5,new:false,type:'scrap'},
-  {id:'filth_shambler',name:'FILTH SHAMBLER',tag:'Moving against all reason.',atk:42,def:2.6,hp:2050,count:3,rewards:{atk:0.26,gra:0.76},vicReq:5,new:false,type:'scrap'},
-  {id:'corpse_leech',name:'CORPSE LEECH',tag:'Takes what it needs.',atk:43,def:2.7,hp:2100,count:'25%',rewards:{gra:0.78,hp:1.1},vicReq:5,new:false,type:'scrap'},
-  {id:'bleached_lurker',name:'BLEACHED LURKER',tag:'Waiting in the white.',atk:45,def:2.7,hp:2150,count:null,rewards:{atk:0.27,gra:0.8},vicReq:5,new:false,type:'scrap'},
-  {id:'grave_digger',name:'GRAVE DIGGER',tag:'Finished the job, then stayed.',atk:46,def:2.8,hp:2200,count:4,rewards:{hp:1.15,gra:0.82},vicReq:5,new:false,type:'scrap'},
-  {id:'putrid_wisp',name:'PUTRID WISP',tag:'Even the light here decays.',atk:48,def:2.8,hp:2250,count:'28%',rewards:{atk:0.28,gra:0.84},vicReq:5,new:false,type:'scrap'},
-  {id:'wailing_husk',name:'WAILING HUSK',tag:'No one answered.',atk:49,def:2.9,hp:2300,count:null,rewards:{gra:0.86,hp:1.2},vicReq:5,new:false,type:'scrap'},
-  {id:'dustbone',name:'DUSTBONE',tag:'Older than memory.',atk:51,def:2.9,hp:2350,count:2,rewards:{atk:0.29,gra:0.88},vicReq:5,new:false,type:'scrap'},
-  {id:'sludge_spawn',name:'SLUDGE SPAWN',tag:'From the drain.',atk:52,def:3.0,hp:2400,count:'28%',rewards:{hp:1.25,gra:0.9},vicReq:5,new:false,type:'scrap'},
-  {id:'tomb_rat',name:'TOMB RAT',tag:'It knows the tunnels.',atk:54,def:3.0,hp:2450,count:null,rewards:{atk:0.3,gra:0.92},vicReq:5,new:false,type:'scrap'},
-  {id:'cracked_skull',name:'CRACKED SKULL',tag:'Still thinking.',atk:55,def:3.1,hp:2500,count:5,rewards:{gra:0.94,hp:1.3},vicReq:5,new:false,type:'scrap'},
-  {id:'pale_shambler',name:'PALE SHAMBLER',tag:'Color long forgotten.',atk:57,def:3.1,hp:2550,count:'30%',rewards:{atk:0.31,gra:0.96},vicReq:5,new:false,type:'scrap'},
-  {id:'rotfen_cur',name:'ROTFEN CUR',tag:'A bad dog.',atk:58,def:3.2,hp:2600,count:null,rewards:{hp:1.35,gra:0.98},vicReq:5,new:false,type:'scrap'},
-  {id:'ash_crawler',name:'ASH CRAWLER',tag:'What the fire left behind.',atk:60,def:3.2,hp:2650,count:3,rewards:{atk:0.32,gra:1.0},vicReq:5,new:false,type:'scrap'},
-  {id:'bonedust_wretch',name:'BONEDUST WRETCH',tag:'Powdered thin by years.',atk:61,def:3.3,hp:2700,count:'30%',rewards:{gra:1.02,hp:1.4},vicReq:5,new:false,type:'scrap'},
-  {id:'famine_shade',name:'FAMINE SHADE',tag:'Wants what you have.',atk:63,def:3.3,hp:2750,count:null,rewards:{atk:0.33,gra:1.04},vicReq:5,new:false,type:'scrap'},
-  {id:'cobweb_ghoul',name:'COBWEB GHOUL',tag:"Hasn't moved in ages.",atk:64,def:3.4,hp:2800,count:4,rewards:{hp:1.45,gra:1.06},vicReq:5,new:false,type:'scrap'},
-  {id:'soot_crawler',name:'SOOT CRAWLER',tag:'Marks everything it touches.',atk:66,def:3.4,hp:2850,count:'32%',rewards:{atk:0.34,gra:1.08},vicReq:5,new:false,type:'scrap'},
-  {id:'charred_beggar',name:'CHARRED BEGGAR',tag:'Survived the wrong things.',atk:67,def:3.5,hp:2900,count:null,rewards:{gra:1.1,hp:1.5},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_pup',name:'HOLLOW PUP',tag:'Lost before it began.',atk:69,def:3.5,hp:2950,count:2,rewards:{atk:0.35,gra:1.12},vicReq:5,new:false,type:'scrap'},
-  {id:'mire_fiend',name:'MIRE FIEND',tag:'Deep in the wet.',atk:70,def:3.6,hp:3000,count:'32%',rewards:{hp:1.55,gra:1.14},vicReq:5,new:false,type:'scrap'},
-  {id:'ditch_ghoul',name:'DITCH GHOUL',tag:'Roadside nuisance.',atk:72,def:3.6,hp:3050,count:null,rewards:{atk:0.36,gra:1.16},vicReq:5,new:false,type:'scrap'},
-  {id:'scorch_wretch',name:'SCORCH WRETCH',tag:'Too close to the heat.',atk:73,def:3.7,hp:3100,count:5,rewards:{gra:1.18,hp:1.6},vicReq:5,new:false,type:'scrap'},
-  {id:'festering_hound',name:'FESTERING HOUND',tag:'It still tries to wag its tail.',atk:75,def:3.7,hp:3150,count:'35%',rewards:{atk:0.37,gra:1.2},vicReq:5,new:false,type:'scrap'},
-  {id:'gutter_shade',name:'GUTTER SHADE',tag:'Lives in the runoff.',atk:76,def:3.8,hp:3200,count:null,rewards:{hp:1.65,gra:1.22},vicReq:5,new:false,type:'scrap'},
-  {id:'bog_lurker',name:'BOG LURKER',tag:'Patient as the water.',atk:78,def:3.8,hp:3250,count:3,rewards:{atk:0.38,gra:1.24},vicReq:5,new:false,type:'scrap'},
-  {id:'cinder_rat',name:'CINDER RAT',tag:'Small and furious.',atk:79,def:3.9,hp:3300,count:'35%',rewards:{gra:1.26,hp:1.7},vicReq:5,new:false,type:'scrap'},
-  {id:'dried_husk',name:'DRIED HUSK',tag:'Just the shape of something.',atk:81,def:3.9,hp:3350,count:null,rewards:{atk:0.39,gra:1.28},vicReq:5,new:false,type:'scrap'},
-  {id:'brackish_spawn',name:'BRACKISH SPAWN',tag:'Salt and rot.',atk:82,def:4.0,hp:3400,count:2,rewards:{hp:1.75,gra:1.3},vicReq:5,new:false,type:'scrap'},
-  {id:'sunken_wretch',name:'SUNKEN WRETCH',tag:'Came up from below.',atk:84,def:4.0,hp:3450,count:'38%',rewards:{atk:0.4,gra:1.32},vicReq:5,new:false,type:'scrap'},
-  {id:'tallow_ghoul',name:'TALLOW GHOUL',tag:'Greasy with time.',atk:85,def:4.1,hp:3500,count:null,rewards:{gra:1.34,hp:1.8},vicReq:5,new:false,type:'scrap'},
-  {id:'blister_fiend',name:'BLISTER FIEND',tag:'Pressure made it awful.',atk:87,def:4.1,hp:3550,count:4,rewards:{atk:0.41,gra:1.36},vicReq:5,new:false,type:'scrap'},
-  {id:'gravel_rat',name:'GRAVEL RAT',tag:'Sharp teeth, no brain.',atk:88,def:4.2,hp:3600,count:'38%',rewards:{hp:1.85,gra:1.38},vicReq:5,new:false,type:'scrap'},
-  {id:'mudwater_shade',name:'MUDWATER SHADE',tag:'Visibility zero.',atk:90,def:4.2,hp:3650,count:null,rewards:{atk:0.42,gra:1.4},vicReq:5,new:false,type:'scrap'},
-  {id:'pale_crawler',name:'PALE CRAWLER',tag:'Moves like doubt.',atk:91,def:4.3,hp:3700,count:3,rewards:{gra:1.42,hp:1.9},vicReq:5,new:false,type:'scrap'},
-  {id:'crumbling_thrall',name:'CRUMBLING THRALL',tag:'Held together by orders.',atk:93,def:4.3,hp:3750,count:'40%',rewards:{atk:0.43,gra:1.44},vicReq:5,new:false,type:'scrap'},
-  {id:'fen_ghoul',name:'FEN GHOUL',tag:'The marsh kept it.',atk:94,def:4.4,hp:3800,count:null,rewards:{hp:1.95,gra:1.46},vicReq:5,new:false,type:'scrap'},
-  {id:'ashen_cur',name:'ASHEN CUR',tag:'Scorched and mean.',atk:96,def:4.4,hp:3850,count:5,rewards:{atk:0.44,gra:1.48},vicReq:5,new:false,type:'scrap'},
-  {id:'charnel_rat',name:'CHARNEL RAT',tag:'Feeds on the fallen.',atk:97,def:4.5,hp:3900,count:'40%',rewards:{gra:1.5,hp:2.0},vicReq:5,new:false,type:'scrap'},
-  {id:'bone_fly',name:'BONE FLY',tag:'Loud, wrong, everywhere.',atk:99,def:4.5,hp:3950,count:null,rewards:{atk:0.45,gra:1.52},vicReq:5,new:false,type:'scrap'},
-  {id:'sour_shade',name:'SOUR SHADE',tag:'The taste lingers.',atk:100,def:4.6,hp:4000,count:2,rewards:{hp:2.05,gra:1.54},vicReq:5,new:false,type:'scrap'},
-  {id:'rot_pup',name:'ROT PUP',tag:'Young and already ruined.',atk:102,def:4.6,hp:4100,count:'42%',rewards:{atk:0.46,gra:1.56},vicReq:5,new:false,type:'scrap'},
-  {id:'crypt_tick',name:'CRYPT TICK',tag:'Found in the lining.',atk:103,def:4.7,hp:4200,count:null,rewards:{gra:1.58,hp:2.1},vicReq:5,new:false,type:'scrap'},
-  {id:'damp_husk',name:'DAMP HUSK',tag:'The wet got in.',atk:105,def:4.7,hp:4300,count:4,rewards:{atk:0.47,gra:1.6},vicReq:5,new:false,type:'scrap'},
-  {id:'scab_fiend',name:'SCAB FIEND',tag:'Its wounds are armor.',atk:106,def:4.8,hp:4400,count:'42%',rewards:{hp:2.15,gra:1.62},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_stray',name:'HOLLOW STRAY',tag:'Looking for something gone.',atk:108,def:4.8,hp:4500,count:null,rewards:{atk:0.48,gra:1.64},vicReq:5,new:false,type:'scrap'},
-  {id:'cobweb_wretch',name:'COBWEB WRETCH',tag:'Suspended in old silk.',atk:109,def:4.9,hp:4600,count:3,rewards:{gra:1.66,hp:2.2},vicReq:5,new:false,type:'scrap'},
-  {id:'silt_shambler',name:'SILT SHAMBLER',tag:'The riverbed walks.',atk:111,def:4.9,hp:4800,count:'45%',rewards:{atk:0.49,gra:1.68},vicReq:5,new:false,type:'scrap'},
-  {id:'dusty_ghoul',name:'DUSTY GHOUL',tag:'Settled over decades.',atk:112,def:5.0,hp:5000,count:null,rewards:{hp:2.25,gra:1.7},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_shambler',name:'HOLLOW SHAMBLER',tag:'Nothing inside but hunger.',atk:114,def:5.0,hp:5200,count:'50%',rewards:{atk:0.5,gra:1.72},vicReq:5,new:false,type:'scrap'},
-  {id:'cursed_knight',name:'CURSED KNIGHT',tag:'The oath became a shackle.',atk:120,def:5.5,hp:5500,count:null,rewards:{atk:0.9,gra:2.0,arm:0.05},vicReq:5,new:false,type:'scrap'},
-  {id:'plague_archer',name:'PLAGUE ARCHER',tag:'Every arrow carries a diagnosis.',atk:130,def:5.8,hp:5800,count:3,rewards:{gra:2.2,wax:0.5},vicReq:5,new:false,type:'scrap'},
-  {id:'blighted_halberdier',name:'BLIGHTED HALBERDIER',tag:'Reach and ruin combined.',atk:140,def:6.1,hp:6100,count:'12%',rewards:{atk:1.0,gra:2.4,arm:0.06},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_sergeant',name:'HOLLOW SERGEANT',tag:'Giving orders it cannot follow.',atk:150,def:6.4,hp:6400,count:null,rewards:{gra:2.6,wax:0.8},vicReq:5,new:false,type:'scrap'},
-  {id:'rot_shaman',name:'ROT SHAMAN',tag:'Blessed by the wrong gods.',atk:160,def:6.7,hp:6700,count:2,rewards:{atk:1.1,gra:2.8,arm:0.07},vicReq:5,new:false,type:'scrap'},
-  {id:'ashbound_soldier',name:'ASHBOUND SOLDIER',tag:'Drafted after death.',atk:170,def:7.0,hp:7000,count:'15%',rewards:{gra:3.0,wax:1.0},vicReq:5,new:false,type:'scrap'},
-  {id:'bonecage_warrior',name:'BONECAGE WARRIOR',tag:'Wears its ribs outside.',atk:180,def:7.3,hp:7300,count:null,rewards:{atk:1.2,gra:3.2,arm:0.08},vicReq:5,new:false,type:'scrap'},
-  {id:'gravewarden',name:'GRAVEWARDEN',tag:'Protecting the wrong side.',atk:190,def:7.6,hp:7600,count:4,rewards:{gra:3.4,wax:1.2},vicReq:5,new:false,type:'scrap'},
-  {id:'fetid_executioner',name:'FETID EXECUTIONER',tag:'Justice went rancid.',atk:200,def:7.9,hp:7900,count:'18%',rewards:{atk:1.3,gra:3.6,arm:0.09},vicReq:5,new:false,type:'scrap'},
-  {id:'rusted_templar',name:'RUSTED TEMPLAR',tag:'Faith corroded the armor.',atk:210,def:8.2,hp:8200,count:null,rewards:{gra:3.8,wax:1.4},vicReq:5,new:false,type:'scrap'},
-  {id:'ironblight_monk',name:'IRONBLIGHT MONK',tag:'Discipline turned inward, then rotten.',atk:221,def:8.5,hp:8500,count:3,rewards:{atk:1.4,gra:4.0,arm:0.1},vicReq:5,new:false,type:'scrap'},
-  {id:'crypt_sentinel',name:'CRYPT SENTINEL',tag:'Never told the war ended.',atk:231,def:8.8,hp:8800,count:'20%',rewards:{gra:4.2,wax:1.6},vicReq:5,new:false,type:'scrap'},
-  {id:'void_hound',name:'VOID HOUND',tag:'Trained to hunt the living.',atk:241,def:9.1,hp:9100,count:null,rewards:{atk:1.5,gra:4.4,arm:0.11},vicReq:5,new:false,type:'scrap'},
-  {id:'soulless_pikeman',name:'SOULLESS PIKEMAN',tag:'The point is the only thing left.',atk:251,def:9.4,hp:9400,count:5,rewards:{gra:4.6,wax:1.8},vicReq:5,new:false,type:'scrap'},
-  {id:'charnel_blade',name:'CHARNEL BLADE',tag:'The sword came first; the corpse second.',atk:261,def:9.7,hp:9700,count:'22%',rewards:{atk:1.6,gra:4.8,arm:0.12},vicReq:5,new:false,type:'scrap'},
-  {id:'flayed_scout',name:'FLAYED SCOUT',tag:'Reconnaissance at any cost.',atk:271,def:10.0,hp:10000,count:null,rewards:{gra:5.0,wax:2.0},vicReq:5,new:false,type:'scrap'},
-  {id:'worm_priest',name:'WORM PRIEST',tag:'The congregation answers.',atk:282,def:10.4,hp:10300,count:2,rewards:{atk:1.7,gra:5.2,arm:0.13},vicReq:5,new:false,type:'scrap'},
-  {id:'ashgrave_guardian',name:'ASHGRAVE GUARDIAN',tag:'Nothing to guard. Still guarding.',atk:292,def:10.7,hp:10600,count:'25%',rewards:{gra:5.4,wax:2.2},vicReq:5,new:false,type:'scrap'},
-  {id:'mournful_specter',name:'MOURNFUL SPECTER',tag:'The grief is the danger.',atk:302,def:11.0,hp:10900,count:null,rewards:{atk:1.8,gra:5.6,arm:0.14},vicReq:5,new:false,type:'scrap'},
-  {id:'marrow_stalker',name:'MARROW STALKER',tag:'It wants what is inside.',atk:312,def:11.3,hp:11200,count:4,rewards:{gra:5.8,wax:2.4},vicReq:5,new:false,type:'scrap'},
-  {id:'duskblade_revenant',name:'DUSKBLADE REVENANT',tag:'Returned with interest.',atk:322,def:11.6,hp:11500,count:'28%',rewards:{atk:1.9,gra:6.0,arm:0.15},vicReq:5,new:false,type:'scrap'},
-  {id:'smoldering_footman',name:'SMOLDERING FOOTMAN',tag:'On fire. Still reporting.',atk:333,def:12.0,hp:11800,count:null,rewards:{gra:6.2,wax:2.6},vicReq:5,new:false,type:'scrap'},
-  {id:'blight_ranger',name:'BLIGHT RANGER',tag:'Tracking the living.',atk:343,def:12.3,hp:12100,count:3,rewards:{atk:2.0,gra:6.4,arm:0.16},vicReq:5,new:false,type:'scrap'},
-  {id:'accursed_legionnaire',name:'ACCURSED LEGIONNAIRE',tag:'The legion marched on without orders.',atk:353,def:12.6,hp:12400,count:'30%',rewards:{gra:6.6,wax:2.8},vicReq:5,new:false,type:'scrap'},
-  {id:'dead_eye_marksman',name:'DEAD EYE MARKSMAN',tag:'The eye was the last thing to go.',atk:363,def:12.9,hp:12700,count:null,rewards:{atk:2.1,gra:6.8,arm:0.17},vicReq:5,new:false,type:'scrap'},
-  {id:'tomb_warden',name:'TOMB WARDEN',tag:'The tomb is wherever it stands.',atk:373,def:13.2,hp:13000,count:5,rewards:{gra:7.0,wax:3.0},vicReq:5,new:false,type:'scrap'},
-  {id:'sable_crow',name:'SABLE CROW',tag:'Circles everything it intends to ruin.',atk:383,def:13.5,hp:13300,count:'32%',rewards:{atk:2.2,gra:7.2,arm:0.18},vicReq:5,new:false,type:'scrap'},
-  {id:'ironrot_berserker',name:'IRONROT BERSERKER',tag:'Anger was the last thing preserved.',atk:394,def:13.9,hp:13600,count:null,rewards:{gra:7.4,wax:3.2},vicReq:5,new:false,type:'scrap'},
-  {id:'plague_monk',name:'PLAGUE MONK',tag:'Spreading the doctrine.',atk:404,def:14.2,hp:13900,count:2,rewards:{atk:2.3,gra:7.6,arm:0.19},vicReq:5,new:false,type:'scrap'},
-  {id:'blighted_squire',name:'BLIGHTED SQUIRE',tag:'The knighthood never came.',atk:414,def:14.5,hp:14200,count:'35%',rewards:{gra:7.8,wax:3.4},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_cavalier',name:'HOLLOW CAVALIER',tag:'The horse is gone. It still rides.',atk:424,def:14.8,hp:14500,count:null,rewards:{atk:2.4,gra:8.0,arm:0.2},vicReq:5,new:false,type:'scrap'},
-  {id:'gravebound_duelist',name:'GRAVEBOUND DUELIST',tag:'An honor bound to the wrong world.',atk:434,def:15.1,hp:14700,count:4,rewards:{gra:8.2,wax:3.6},vicReq:5,new:false,type:'scrap'},
-  {id:'withered_inquisitor',name:'WITHERED INQUISITOR',tag:'The questions never stopped.',atk:445,def:15.5,hp:15000,count:'38%',rewards:{atk:2.5,gra:8.4,arm:0.21},vicReq:5,new:false,type:'scrap'},
-  {id:'shroud_knight',name:'SHROUD KNIGHT',tag:'The burial cloth became the armor.',atk:455,def:15.8,hp:15200,count:null,rewards:{gra:8.6,wax:3.8},vicReq:5,new:false,type:'scrap'},
-  {id:'bone_arbalist',name:'BONE ARBALIST',tag:'The bolts are personal.',atk:465,def:16.1,hp:15500,count:3,rewards:{atk:2.6,gra:8.8,arm:0.22},vicReq:5,new:false,type:'scrap'},
-  {id:'ash_zealot',name:'ASH ZEALOT',tag:'Burned for the cause. Returned for more.',atk:475,def:16.4,hp:15700,count:'40%',rewards:{gra:9.0,wax:4.0},vicReq:5,new:false,type:'scrap'},
-  {id:'saltblood_soldier',name:'SALTBLOOD SOLDIER',tag:'Preserved in spite.',atk:485,def:16.7,hp:16000,count:null,rewards:{atk:2.7,gra:9.2,arm:0.23},vicReq:5,new:false,type:'scrap'},
-  {id:'dread_footman',name:'DREAD FOOTMAN',tag:'The lowest rank. The worst fate.',atk:496,def:17.1,hp:16300,count:5,rewards:{gra:9.4,wax:4.2},vicReq:5,new:false,type:'scrap'},
-  {id:'ruinborn_warden',name:'RUINBORN WARDEN',tag:'Made from the rubble. Guards the rubble.',atk:506,def:17.4,hp:16600,count:'42%',rewards:{atk:2.8,gra:9.6,arm:0.24},vicReq:5,new:false,type:'scrap'},
-  {id:'forsaken_outrider',name:'FORSAKEN OUTRIDER',tag:'Left behind on purpose.',atk:516,def:17.7,hp:16900,count:null,rewards:{gra:9.8,wax:4.4},vicReq:5,new:false,type:'scrap'},
-  {id:'bonegrinder',name:'BONEGRINDER',tag:'The name is the method.',atk:800,def:35,hp:22000,count:null,rewards:{atk:5.0,arm:1.2,gra:100},vicReq:5,new:false,type:'scrap'},
-  {id:'voidborn_witch',name:'VOIDBORN WITCH',tag:'She came from nothing and brought it with her.',atk:850,def:36.5,hp:24000,count:'15%',rewards:{gra:120,wax:20,crc:0.08},vicReq:5,new:false,type:'scrap'},
-  {id:'weeping_shade',name:'WEEPING SHADE',tag:'The sorrow is the weapon.',atk:900,def:38,hp:26000,count:2,rewards:{atk:5.5,gra:140,arm:1.5},vicReq:5,new:false,type:'scrap'},
-  {id:'soul_eater',name:'SOUL EATER',tag:'Efficient. Thorough. Hungry.',atk:950,def:39.5,hp:28000,count:null,rewards:{gra:160,wax:30,cha:5},vicReq:5,new:false,type:'scrap'},
-  {id:'dread_colossus',name:'DREAD COLOSSUS',tag:'Too large to comprehend. Too real to ignore.',atk:1000,def:41,hp:30000,count:'18%',rewards:{atk:6.0,arm:2.0,gra:180},vicReq:5,new:false,type:'scrap'},
-  {id:'flesh_sculptor',name:'FLESH SCULPTOR',tag:'It has opinions about your shape.',atk:1050,def:42.5,hp:32000,count:null,rewards:{gra:200,wax:40,cha:7},vicReq:5,new:false,type:'scrap'},
-  {id:'blighted_hydra',name:'BLIGHTED HYDRA',tag:'Cut one head. Grieve twice.',atk:1100,def:44,hp:34000,count:3,rewards:{atk:6.5,arm:2.5,gra:220},vicReq:5,new:false,type:'scrap'},
-  {id:'pale_stalker',name:'PALE STALKER',tag:'Moving only when unseen.',atk:1150,def:45.5,hp:36000,count:'20%',rewards:{gra:240,wax:50,crc:0.1},vicReq:5,new:false,type:'scrap'},
-  {id:'abyssal_hound',name:'ABYSSAL HOUND',tag:'Trained in the dark for the dark.',atk:1200,def:47,hp:38000,count:null,rewards:{atk:7.0,arm:3.0,gra:260},vicReq:5,new:false,type:'scrap'},
-  {id:'marrow_golem',name:'MARROW GOLEM',tag:'Built from what the battlefield left over.',atk:1250,def:48.5,hp:40000,count:4,rewards:{gra:280,wax:60,cha:10},vicReq:5,new:false,type:'scrap'},
-  {id:'gravemind_thrall',name:'GRAVEMIND THRALL',tag:'The grave is the mind now.',atk:1300,def:50,hp:42000,count:'22%',rewards:{atk:7.5,arm:3.5,gra:300},vicReq:5,new:false,type:'scrap'},
-  {id:'soulrend_fiend',name:'SOULREND FIEND',tag:'It tears at something you cannot defend.',atk:1355,def:51.5,hp:44000,count:null,rewards:{gra:320,wax:70,cha:12},vicReq:5,new:false,type:'scrap'},
-  {id:'crypt_behemoth',name:'CRYPT BEHEMOTH',tag:'The crypt was built around it.',atk:1410,def:53,hp:46000,count:2,rewards:{atk:8.0,arm:4.0,gra:340},vicReq:5,new:false,type:'scrap'},
-  {id:'ashen_revenant',name:'ASHEN REVENANT',tag:'Burned. Returned. Angry.',atk:1465,def:54.5,hp:48000,count:'25%',rewards:{gra:360,wax:80,cha:14},vicReq:5,new:false,type:'scrap'},
-  {id:'hollow_titan',name:'HOLLOW TITAN',tag:'Enormous. Nothing inside.',atk:1520,def:56,hp:50000,count:null,rewards:{atk:8.5,arm:4.5,gra:380},vicReq:5,new:false,type:'scrap'},
-  {id:'plague_chimera',name:'PLAGUE CHIMERA',tag:'The worst of several things.',atk:1575,def:57.5,hp:52000,count:3,rewards:{gra:400,wax:90,cha:16},vicReq:5,new:false,type:'scrap'},
-  {id:'bone_leviathan',name:'BONE LEVIATHAN',tag:'It surfaces when hope fades.',atk:1630,def:59,hp:54000,count:'28%',rewards:{atk:9.0,arm:5.0,gra:420},vicReq:5,new:false,type:'scrap'},
-  {id:'wretched_oracle',name:'WRETCHED ORACLE',tag:'It knows. It does not care.',atk:1685,def:60.5,hp:56000,count:null,rewards:{gra:440,wax:100,cha:18},vicReq:5,new:false,type:'scrap'},
-  {id:'dusk_warden',name:'DUSK WARDEN',tag:'Protecting the threshold between worlds.',atk:1740,def:62,hp:58000,count:4,rewards:{atk:9.5,arm:5.5,gra:460},vicReq:5,new:false,type:'scrap'},
-  {id:'voidtouched_wraith',name:'VOIDTOUCHED WRAITH',tag:'The void left fingerprints.',atk:1795,def:63.5,hp:60000,count:'30%',rewards:{gra:480,wax:110,cha:20},vicReq:5,new:false,type:'scrap'},
-  {id:'ironblight_giant',name:'IRONBLIGHT GIANT',tag:'Rust and contempt made flesh.',atk:1850,def:65,hp:62000,count:null,rewards:{atk:10.0,arm:6.0,gra:500},vicReq:5,new:false,type:'scrap'},
-  {id:'charnel_hydra',name:'CHARNEL HYDRA',tag:'Each head remembers a different death.',atk:1905,def:66.5,hp:64000,count:2,rewards:{gra:520,wax:120,cha:22},vicReq:5,new:false,type:'scrap'},
-  {id:'nightmare_shade',name:'NIGHTMARE SHADE',tag:'It is what you fear it to be.',atk:1960,def:68,hp:66000,count:'32%',rewards:{atk:10.5,arm:6.5,gra:540},vicReq:5,new:false,type:'scrap'},
-  {id:'graveworm_matron',name:'GRAVEWORM MATRON',tag:'Mother of what the ground produces.',atk:2015,def:69.5,hp:68000,count:null,rewards:{gra:560,wax:130,cha:24},vicReq:5,new:false,type:'scrap'},
-  {id:'soul_harvester',name:'SOUL HARVESTER',tag:'Working the final field.',atk:2070,def:71,hp:70000,count:3,rewards:{atk:11.0,arm:7.0,gra:580},vicReq:5,new:false,type:'scrap'},
-  {id:'blighted_cyclops',name:'BLIGHTED CYCLOPS',tag:'One eye. Sees everything.',atk:2125,def:72.5,hp:72000,count:'35%',rewards:{gra:600,wax:140,cha:26},vicReq:5,new:false,type:'scrap'},
-  {id:'desecrated_giant',name:'DESECRATED GIANT',tag:'The sacred made obscene.',atk:2180,def:74,hp:74000,count:null,rewards:{atk:11.5,arm:7.5,gra:620},vicReq:5,new:false,type:'scrap'},
-  {id:'moonblood_specter',name:'MOONBLOOD SPECTER',tag:'Lunar light brought it here.',atk:2235,def:75.5,hp:76000,count:4,rewards:{gra:640,wax:150,cha:28},vicReq:5,new:false,type:'scrap'},
-  {id:'gravesinger',name:'GRAVESINGER',tag:'The song is the sentence.',atk:2290,def:77,hp:78000,count:'38%',rewards:{atk:12.0,arm:8.0,gra:660},vicReq:5,new:false,type:'scrap'},
-  {id:'blight_behemoth',name:'BLIGHT BEHEMOTH',tag:'Slow. Absolute.',atk:2345,def:78.5,hp:80000,count:null,rewards:{gra:680,wax:160,cha:30},vicReq:5,new:false,type:'scrap'},
-  {id:'lich_sovereign',name:'LICH SOVEREIGN',tag:'Death is a promotion.',atk:2800,def:95,hp:80000,count:null,rewards:{atk:20,arm:8,gra:1000,wax:300},vicReq:5,new:false,type:'elite'},
-  {id:'ashen_seraph',name:'ASHEN SERAPH',tag:'Holy war, concluded badly.',atk:3000,def:100,hp:88000,count:'20%',rewards:{gra:1200,wax:380,cha:40},vicReq:5,new:false,type:'elite'},
-  {id:'dread_overlord',name:'DREAD OVERLORD',tag:'Command without a kingdom left.',atk:3200,def:105,hp:96000,count:4,rewards:{atk:22,arm:10,gra:1400,wax:450},vicReq:5,new:false,type:'elite'},
-  {id:'plague_archon',name:'PLAGUE ARCHON',tag:'The authority of disease.',atk:3400,def:110,hp:104000,count:null,rewards:{gra:1600,wax:520,cha:55,mxd:0.5},vicReq:5,new:false,type:'elite'},
-  {id:'voidborn_tyrant',name:'VOIDBORN TYRANT',tag:'Rulership learned from nothing.',atk:3600,def:115,hp:112000,count:'25%',rewards:{atk:25,arm:12,gra:1800,wax:600},vicReq:5,new:false,type:'elite'},
-  {id:'hollow_god_husk',name:'HOLLOW GOD-HUSK',tag:'Something divine was here.',atk:3800,def:120,hp:120000,count:null,rewards:{gra:2000,wax:680,cha:70,mxd:0.7},vicReq:5,new:false,type:'elite'},
-  {id:'soulweaver_ancient',name:'SOULWEAVER ANCIENT',tag:'It has been weaving since before you.',atk:4000,def:128,hp:128000,count:3,rewards:{atk:28,arm:14,gra:2200,wax:760},vicReq:5,new:false,type:'elite'},
-  {id:'desecrated_archangel',name:'DESECRATED ARCHANGEL',tag:'The fall was not an accident.',atk:4200,def:135,hp:136000,count:'30%',rewards:{gra:2400,wax:840,cha:85,crc:0.2},vicReq:5,new:false,type:'elite'},
-  {id:'bonelord_eternal',name:'BONELORD ETERNAL',tag:'Has not stopped since it began.',atk:4400,def:142,hp:144000,count:null,rewards:{atk:32,arm:16,gra:2600,wax:920},vicReq:5,new:false,type:'elite'},
-  {id:'maelstrom_wraith',name:'MAELSTROM WRAITH',tag:'The storm learned to hate.',atk:4600,def:149,hp:152000,count:5,rewards:{gra:2800,wax:1000,cha:100,mxd:0.9},vicReq:5,new:false,type:'elite'},
-  {id:'abyssal_monarch',name:'ABYSSAL MONARCH',tag:'Crowned in the deepest dark.',atk:4800,def:157,hp:160000,count:'35%',rewards:{atk:36,arm:18,gra:3000,wax:1100},vicReq:5,new:false,type:'elite'},
-  {id:'gravemind_elder',name:'GRAVEMIND ELDER',tag:'The oldest thought in the graveyard.',atk:5000,def:164,hp:168000,count:null,rewards:{gra:3200,wax:1200,cha:120,crc:0.3},vicReq:5,new:false,type:'elite'},
-  {id:'bloodbound_colossus',name:'BLOODBOUND COLOSSUS',tag:'Held together by a pact and old blood.',atk:5200,def:171,hp:176000,count:2,rewards:{atk:40,arm:20,gra:3400,wax:1300},vicReq:5,new:false,type:'elite'},
-  {id:'cursed_demigod',name:'CURSED DEMIGOD',tag:'Half divine, fully damned.',atk:5400,def:178,hp:184000,count:'40%',rewards:{gra:3600,wax:1400,cha:140,mxd:1.2},vicReq:5,new:false,type:'elite'},
-  {id:'pale_dominion',name:'PALE DOMINION',tag:'Sovereignty over nothing living.',atk:5600,def:185,hp:192000,count:null,rewards:{atk:44,arm:22,gra:3800,wax:1500},vicReq:5,new:false,type:'elite'},
-  {id:'hollow_primarch',name:'HOLLOW PRIMARCH',tag:'The first of a lineage of ruin.',atk:5800,def:192,hp:200000,count:4,rewards:{gra:4000,wax:1600,cha:160,crc:0.4},vicReq:5,new:false,type:'elite'},
-  {id:'forsaken_titan',name:'FORSAKEN TITAN',tag:'Abandoned by the age that made it.',atk:6000,def:200,hp:210000,count:'45%',rewards:{atk:48,arm:24,gra:4200,wax:1700},vicReq:5,new:false,type:'elite'},
-  {id:'sorrow_sovereign',name:'SORROW SOVEREIGN',tag:'Rules only what it has destroyed.',atk:6200,def:207,hp:220000,count:null,rewards:{gra:4400,wax:1800,cha:180,mxd:1.5},vicReq:5,new:false,type:'elite'},
-  {id:'shattered_deity',name:'SHATTERED DEITY',tag:'The pieces are still dangerous.',atk:6500,def:215,hp:230000,count:3,rewards:{atk:52,arm:26,gra:4700,wax:1900},vicReq:5,new:false,type:'elite'},
-  {id:'ironblight_colossus',name:'IRONBLIGHT COLOSSUS',tag:'Corroded past the point of stopping.',atk:6800,def:222,hp:240000,count:'50%',rewards:{gra:5000,wax:2000,cha:200,crc:0.5,mxd:1.8},vicReq:5,new:false,type:'elite'},
-  {id:'the_devourer',name:'THE DEVOURER',tag:'It has always been eating.',atk:8000,def:230,hp:260000,count:null,rewards:{atk:80,arm:30,gra:8000,wax:3000,cha:250},vicReq:5,new:false,type:'elite'},
-  {id:'nameless_king',name:'NAMELESS KING',tag:'The name was the last thing surrendered.',atk:9333,def:258,hp:300000,count:'30%',rewards:{gra:12000,wax:4500,cha:350,mxd:2.0,crc:0.6},vicReq:5,new:false,type:'elite'},
-  {id:'he_who_unravels',name:'HE WHO UNRAVELS',tag:'Everything comes apart near him.',atk:10667,def:285,hp:340000,count:4,rewards:{atk:110,arm:40,gra:18000,wax:6500},vicReq:5,new:false,type:'elite'},
-  {id:'throne_of_ash',name:'THRONE OF ASH',tag:'Power without a king. Worse.',atk:12000,def:313,hp:380000,count:null,rewards:{gra:25000,wax:9000,cha:500,mxd:2.5,crc:0.7},vicReq:5,new:false,type:'elite'},
-  {id:'the_pale_hunger',name:'THE PALE HUNGER',tag:'It was not born. It grew.',atk:13333,def:340,hp:400000,count:'40%',rewards:{atk:140,arm:50,gra:35000,wax:12000,cha:600},vicReq:5,new:false,type:'elite'},
-  {id:'godrot',name:'GODROT',tag:'Even gods decompose.',atk:14667,def:368,hp:430000,count:null,rewards:{gra:48000,wax:16000,cha:750,mxd:3.0,crc:0.8},vicReq:5,new:false,type:'elite'},
-  {id:'the_unfinished',name:'THE UNFINISHED',tag:'Incomplete. Unstoppable.',atk:16000,def:395,hp:460000,count:5,rewards:{atk:170,arm:60,gra:65000,wax:22000,cha:900},vicReq:5,new:false,type:'elite'},
-  {id:'womb_of_plague',name:'WOMB OF PLAGUE',tag:'The source, not the symptom.',atk:17333,def:423,hp:490000,count:null,rewards:{gra:85000,wax:30000,cha:1100,mxd:3.5,crc:0.9},vicReq:5,new:false,type:'elite'},
-  {id:'bleeding_throne',name:'BLEEDING THRONE',tag:'Sovereignty at a cost.',atk:18667,def:450,hp:500000,count:'50%',rewards:{atk:200,arm:75,gra:110000,wax:40000,cha:1300,mxd:4.0},vicReq:5,new:false,type:'elite'},
-  {id:'the_hollow_crown',name:'THE HOLLOW CROWN',tag:'All that remains of what ruled.',atk:20000,def:480,hp:550000,count:null,rewards:{atk:250,arm:100,gra:150000,wax:60000,cha:2000,mxd:5.0,crc:1.0,asp:10},vicReq:5,new:false,type:'boss'},
+  {id:'hollow_wretch',name:'HOLLOW WRETCH',tag:'Nothing left but need.',atk:2,def:1.0,hp:10,count:null,rewards:{atk:0.12,old:0.15},vicReq:5,new:false,type:'scrap',img:'attached_assets/img/1hollow_wretch.jpg'},
+  {id:'plague_hound',name:'PLAGUE HOUND',tag:'Loyal to the rot.',atk:3,def:1.1,hp:550,count:3,rewards:{hp:0.4,old:0.18},vicReq:5,new:false,type:'scrap',img:'attached_assets/img/2plague_hound.jpg'},
+  {id:'ashwalker',name:'ASHWALKER',tag:'Stepped out of the fire.',atk:4,def:1.1,hp:600,count:'10%',rewards:{atk:0.13,old:0.2},vicReq:5,new:false,type:'scrap'},
+  {id:'bonepicker',name:'BONEPICKER',tag:'Patience at its worst.',atk:5,def:1.2,hp:650,count:null,rewards:{old:0.22,atk:0.11},vicReq:5,new:false,type:'scrap'},
+  {id:'grave_rat',name:'GRAVE RAT',tag:'It was here first.',atk:6,def:1.2,hp:700,count:2,rewards:{hp:0.45,old:0.2},vicReq:5,new:false,type:'scrap'},
+  {id:'mudborn',name:'MUDBORN',tag:'The swamp made it.',atk:7,def:1.3,hp:750,count:'12%',rewards:{atk:0.14,old:0.24},vicReq:5,new:false,type:'scrap'},
+  {id:'corpse_crawler',name:'CORPSE CRAWLER',tag:'Moving. Somehow.',atk:8,def:1.3,hp:800,count:null,rewards:{old:0.26,hp:0.5},vicReq:5,new:false,type:'scrap'},
+  {id:'rotting_serf',name:'ROTTING SERF',tag:'Still working after death.',atk:9,def:1.4,hp:850,count:4,rewards:{atk:0.15,old:0.28},vicReq:5,new:false,type:'scrap'},
+  {id:'blighted_husk',name:'BLIGHTED HUSK',tag:'The disease won.',atk:10,def:1.4,hp:900,count:'15%',rewards:{hp:0.55,old:0.3},vicReq:5,new:false,type:'scrap'},
+  {id:'soot_fiend',name:'SOOT FIEND',tag:'Left over from something worse.',atk:11,def:1.5,hp:950,count:null,rewards:{atk:0.16,old:0.32},vicReq:5,new:false,type:'scrap'},
+  {id:'wretched_thrall',name:'WRETCHED THRALL',tag:'Serving without knowing why.',atk:13,def:1.6,hp:1000,count:3,rewards:{old:0.34,atk:0.14},vicReq:5,new:false,type:'scrap'},
+  {id:'festering_vagrant',name:'FESTERING VAGRANT',tag:'Homeless and hungry.',atk:14,def:1.6,hp:1050,count:'15%',rewards:{hp:0.6,old:0.35},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_eye',name:'HOLLOW EYE',tag:'Nothing looks back.',atk:15,def:1.7,hp:1100,count:null,rewards:{atk:0.17,old:0.37},vicReq:5,new:false,type:'scrap'},
+  {id:'dungeon_tick',name:'DUNGEON TICK',tag:'It found you.',atk:17,def:1.7,hp:1150,count:5,rewards:{old:0.4,hp:0.65},vicReq:5,new:false,type:'scrap'},
+  {id:'gravel_ghoul',name:'GRAVEL GHOUL',tag:'Dug itself out.',atk:18,def:1.8,hp:1200,count:'18%',rewards:{atk:0.18,old:0.42},vicReq:5,new:false,type:'scrap'},
+  {id:'bile_spawn',name:'BILE SPAWN',tag:'Born wrong.',atk:19,def:1.8,hp:1250,count:null,rewards:{hp:0.7,old:0.44},vicReq:5,new:false,type:'scrap'},
+  {id:'mossrot',name:'MOSSROT',tag:'Where things go to end.',atk:21,def:1.9,hp:1300,count:2,rewards:{atk:0.19,old:0.46},vicReq:5,new:false,type:'scrap'},
+  {id:'scab_crawler',name:'SCAB CRAWLER',tag:'Every wound is a door.',atk:22,def:1.9,hp:1350,count:'20%',rewards:{old:0.48,atk:0.17},vicReq:5,new:false,type:'scrap'},
+  {id:'charnel_fly',name:'CHARNEL FLY',tag:'Drawn to the smell.',atk:23,def:2.0,hp:1400,count:null,rewards:{hp:0.75,old:0.5},vicReq:5,new:false,type:'scrap'},
+  {id:'skinless_beggar',name:'SKINLESS BEGGAR',tag:'Still asking.',atk:25,def:2.0,hp:1450,count:4,rewards:{atk:0.2,old:0.52},vicReq:5,new:false,type:'scrap'},
+  {id:'weeping_hollow',name:'WEEPING HOLLOW',tag:'The grief outlasted the body.',atk:26,def:2.1,hp:1500,count:'20%',rewards:{old:0.54,hp:0.8},vicReq:5,new:false,type:'scrap'},
+  {id:'maggot_knight',name:'MAGGOT KNIGHT',tag:'Earned its title somehow.',atk:27,def:2.1,hp:1550,count:null,rewards:{atk:0.21,old:0.56},vicReq:5,new:false,type:'scrap'},
+  {id:'cinder_wretch',name:'CINDER WRETCH',tag:'Burned and kept going.',atk:29,def:2.2,hp:1600,count:3,rewards:{hp:0.85,old:0.58},vicReq:5,new:false,type:'scrap'},
+  {id:'sallow_shade',name:'SALLOW SHADE',tag:'A dim thing.',atk:30,def:2.2,hp:1650,count:'22%',rewards:{atk:0.22,old:0.6},vicReq:5,new:false,type:'scrap'},
+  {id:'mud_ghoul',name:'MUD GHOUL',tag:'Dredged from below.',atk:32,def:2.3,hp:1700,count:null,rewards:{old:0.62,hp:0.9},vicReq:5,new:false,type:'scrap'},
+  {id:'bonegnaw',name:'BONEGNAW',tag:'Always chewing.',atk:33,def:2.3,hp:1750,count:5,rewards:{atk:0.23,old:0.64},vicReq:5,new:false,type:'scrap'},
+  {id:'ashen_tramp',name:'ASHEN TRAMP',tag:'Wandered here from the ruins.',atk:34,def:2.4,hp:1800,count:'22%',rewards:{hp:0.95,old:0.66},vicReq:5,new:false,type:'scrap'},
+  {id:'foul_creeper',name:'FOUL CREEPER',tag:'Slow but certain.',atk:36,def:2.4,hp:1850,count:null,rewards:{atk:0.24,old:0.68},vicReq:5,new:false,type:'scrap'},
+  {id:'plague_bearer',name:'PLAGUE BEARER',tag:'A gift nobody wanted.',atk:37,def:2.5,hp:1900,count:2,rewards:{old:0.7,hp:1.0},vicReq:5,new:false,type:'scrap'},
+  {id:'tallow_shade',name:'TALLOW SHADE',tag:'Rendered down to spite.',atk:39,def:2.5,hp:1950,count:'25%',rewards:{atk:0.25,old:0.72},vicReq:5,new:false,type:'scrap'},
+  {id:'rot_worm',name:'ROT WORM',tag:'Patient underground.',atk:40,def:2.6,hp:2000,count:null,rewards:{hp:1.05,old:0.74},vicReq:5,new:false,type:'scrap'},
+  {id:'filth_shambler',name:'FILTH SHAMBLER',tag:'Moving against all reason.',atk:42,def:2.6,hp:2050,count:3,rewards:{atk:0.26,old:0.76},vicReq:5,new:false,type:'scrap'},
+  {id:'corpse_leech',name:'CORPSE LEECH',tag:'Takes what it needs.',atk:43,def:2.7,hp:2100,count:'25%',rewards:{old:0.78,hp:1.1},vicReq:5,new:false,type:'scrap'},
+  {id:'bleached_lurker',name:'BLEACHED LURKER',tag:'Waiting in the white.',atk:45,def:2.7,hp:2150,count:null,rewards:{atk:0.27,old:0.8},vicReq:5,new:false,type:'scrap'},
+  {id:'grave_digger',name:'GRAVE DIGGER',tag:'Finished the job, then stayed.',atk:46,def:2.8,hp:2200,count:4,rewards:{hp:1.15,old:0.82},vicReq:5,new:false,type:'scrap'},
+  {id:'putrid_wisp',name:'PUTRID WISP',tag:'Even the light here decays.',atk:48,def:2.8,hp:2250,count:'28%',rewards:{atk:0.28,old:0.84},vicReq:5,new:false,type:'scrap'},
+  {id:'wailing_husk',name:'WAILING HUSK',tag:'No one answered.',atk:49,def:2.9,hp:2300,count:null,rewards:{old:0.86,hp:1.2},vicReq:5,new:false,type:'scrap'},
+  {id:'dustbone',name:'DUSTBONE',tag:'Older than memory.',atk:51,def:2.9,hp:2350,count:2,rewards:{atk:0.29,old:0.88},vicReq:5,new:false,type:'scrap'},
+  {id:'sludge_spawn',name:'SLUDGE SPAWN',tag:'From the drain.',atk:52,def:3.0,hp:2400,count:'28%',rewards:{hp:1.25,old:0.9},vicReq:5,new:false,type:'scrap'},
+  {id:'tomb_rat',name:'TOMB RAT',tag:'It knows the tunnels.',atk:54,def:3.0,hp:2450,count:null,rewards:{atk:0.3,old:0.92},vicReq:5,new:false,type:'scrap'},
+  {id:'cracked_skull',name:'CRACKED SKULL',tag:'Still thinking.',atk:55,def:3.1,hp:2500,count:5,rewards:{old:0.94,hp:1.3},vicReq:5,new:false,type:'scrap'},
+  {id:'pale_shambler',name:'PALE SHAMBLER',tag:'Color long forgotten.',atk:57,def:3.1,hp:2550,count:'30%',rewards:{atk:0.31,old:0.96},vicReq:5,new:false,type:'scrap'},
+  {id:'rotfen_cur',name:'ROTFEN CUR',tag:'A bad dog.',atk:58,def:3.2,hp:2600,count:null,rewards:{hp:1.35,old:0.98},vicReq:5,new:false,type:'scrap'},
+  {id:'ash_crawler',name:'ASH CRAWLER',tag:'What the fire left behind.',atk:60,def:3.2,hp:2650,count:3,rewards:{atk:0.32,old:1.0},vicReq:5,new:false,type:'scrap'},
+  {id:'bonedust_wretch',name:'BONEDUST WRETCH',tag:'Powdered thin by years.',atk:61,def:3.3,hp:2700,count:'30%',rewards:{old:1.02,hp:1.4},vicReq:5,new:false,type:'scrap'},
+  {id:'famine_shade',name:'FAMINE SHADE',tag:'Wants what you have.',atk:63,def:3.3,hp:2750,count:null,rewards:{atk:0.33,old:1.04},vicReq:5,new:false,type:'scrap'},
+  {id:'cobweb_ghoul',name:'COBWEB GHOUL',tag:"Hasn't moved in ages.",atk:64,def:3.4,hp:2800,count:4,rewards:{hp:1.45,old:1.06},vicReq:5,new:false,type:'scrap'},
+  {id:'soot_crawler',name:'SOOT CRAWLER',tag:'Marks everything it touches.',atk:66,def:3.4,hp:2850,count:'32%',rewards:{atk:0.34,old:1.08},vicReq:5,new:false,type:'scrap'},
+  {id:'charred_beggar',name:'CHARRED BEGGAR',tag:'Survived the wrong things.',atk:67,def:3.5,hp:2900,count:null,rewards:{old:1.1,hp:1.5},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_pup',name:'HOLLOW PUP',tag:'Lost before it began.',atk:69,def:3.5,hp:2950,count:2,rewards:{atk:0.35,old:1.12},vicReq:5,new:false,type:'scrap'},
+  {id:'mire_fiend',name:'MIRE FIEND',tag:'Deep in the wet.',atk:70,def:3.6,hp:3000,count:'32%',rewards:{hp:1.55,old:1.14},vicReq:5,new:false,type:'scrap'},
+  {id:'ditch_ghoul',name:'DITCH GHOUL',tag:'Roadside nuisance.',atk:72,def:3.6,hp:3050,count:null,rewards:{atk:0.36,old:1.16},vicReq:5,new:false,type:'scrap'},
+  {id:'scorch_wretch',name:'SCORCH WRETCH',tag:'Too close to the heat.',atk:73,def:3.7,hp:3100,count:5,rewards:{old:1.18,hp:1.6},vicReq:5,new:false,type:'scrap'},
+  {id:'festering_hound',name:'FESTERING HOUND',tag:'It still tries to wag its tail.',atk:75,def:3.7,hp:3150,count:'35%',rewards:{atk:0.37,old:1.2},vicReq:5,new:false,type:'scrap'},
+  {id:'gutter_shade',name:'GUTTER SHADE',tag:'Lives in the runoff.',atk:76,def:3.8,hp:3200,count:null,rewards:{hp:1.65,old:1.22},vicReq:5,new:false,type:'scrap'},
+  {id:'bog_lurker',name:'BOG LURKER',tag:'Patient as the water.',atk:78,def:3.8,hp:3250,count:3,rewards:{atk:0.38,old:1.24},vicReq:5,new:false,type:'scrap'},
+  {id:'cinder_rat',name:'CINDER RAT',tag:'Small and furious.',atk:79,def:3.9,hp:3300,count:'35%',rewards:{old:1.26,hp:1.7},vicReq:5,new:false,type:'scrap'},
+  {id:'dried_husk',name:'DRIED HUSK',tag:'Just the shape of something.',atk:81,def:3.9,hp:3350,count:null,rewards:{atk:0.39,old:1.28},vicReq:5,new:false,type:'scrap'},
+  {id:'brackish_spawn',name:'BRACKISH SPAWN',tag:'Salt and rot.',atk:82,def:4.0,hp:3400,count:2,rewards:{hp:1.75,old:1.3},vicReq:5,new:false,type:'scrap'},
+  {id:'sunken_wretch',name:'SUNKEN WRETCH',tag:'Came up from below.',atk:84,def:4.0,hp:3450,count:'38%',rewards:{atk:0.4,old:1.32},vicReq:5,new:false,type:'scrap'},
+  {id:'tallow_ghoul',name:'TALLOW GHOUL',tag:'Greasy with time.',atk:85,def:4.1,hp:3500,count:null,rewards:{old:1.34,hp:1.8},vicReq:5,new:false,type:'scrap'},
+  {id:'blister_fiend',name:'BLISTER FIEND',tag:'Pressure made it awful.',atk:87,def:4.1,hp:3550,count:4,rewards:{atk:0.41,old:1.36},vicReq:5,new:false,type:'scrap'},
+  {id:'gravel_rat',name:'GRAVEL RAT',tag:'Sharp teeth, no brain.',atk:88,def:4.2,hp:3600,count:'38%',rewards:{hp:1.85,old:1.38},vicReq:5,new:false,type:'scrap'},
+  {id:'mudwater_shade',name:'MUDWATER SHADE',tag:'Visibility zero.',atk:90,def:4.2,hp:3650,count:null,rewards:{atk:0.42,old:1.4},vicReq:5,new:false,type:'scrap'},
+  {id:'pale_crawler',name:'PALE CRAWLER',tag:'Moves like doubt.',atk:91,def:4.3,hp:3700,count:3,rewards:{old:1.42,hp:1.9},vicReq:5,new:false,type:'scrap'},
+  {id:'crumbling_thrall',name:'CRUMBLING THRALL',tag:'Held together by orders.',atk:93,def:4.3,hp:3750,count:'40%',rewards:{atk:0.43,old:1.44},vicReq:5,new:false,type:'scrap'},
+  {id:'fen_ghoul',name:'FEN GHOUL',tag:'The marsh kept it.',atk:94,def:4.4,hp:3800,count:null,rewards:{hp:1.95,old:1.46},vicReq:5,new:false,type:'scrap'},
+  {id:'ashen_cur',name:'ASHEN CUR',tag:'Scorched and mean.',atk:96,def:4.4,hp:3850,count:5,rewards:{atk:0.44,old:1.48},vicReq:5,new:false,type:'scrap'},
+  {id:'charnel_rat',name:'CHARNEL RAT',tag:'Feeds on the fallen.',atk:97,def:4.5,hp:3900,count:'40%',rewards:{old:1.5,hp:2.0},vicReq:5,new:false,type:'scrap'},
+  {id:'bone_fly',name:'BONE FLY',tag:'Loud, wrong, everywhere.',atk:99,def:4.5,hp:3950,count:null,rewards:{atk:0.45,old:1.52},vicReq:5,new:false,type:'scrap'},
+  {id:'sour_shade',name:'SOUR SHADE',tag:'The taste lingers.',atk:100,def:4.6,hp:4000,count:2,rewards:{hp:2.05,old:1.54},vicReq:5,new:false,type:'scrap'},
+  {id:'rot_pup',name:'ROT PUP',tag:'Young and already ruined.',atk:102,def:4.6,hp:4100,count:'42%',rewards:{atk:0.46,old:1.56},vicReq:5,new:false,type:'scrap'},
+  {id:'crypt_tick',name:'CRYPT TICK',tag:'Found in the lining.',atk:103,def:4.7,hp:4200,count:null,rewards:{old:1.58,hp:2.1},vicReq:5,new:false,type:'scrap'},
+  {id:'damp_husk',name:'DAMP HUSK',tag:'The wet got in.',atk:105,def:4.7,hp:4300,count:4,rewards:{atk:0.47,old:1.6},vicReq:5,new:false,type:'scrap'},
+  {id:'scab_fiend',name:'SCAB FIEND',tag:'Its wounds are armor.',atk:106,def:4.8,hp:4400,count:'42%',rewards:{hp:2.15,old:1.62},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_stray',name:'HOLLOW STRAY',tag:'Looking for something gone.',atk:108,def:4.8,hp:4500,count:null,rewards:{atk:0.48,old:1.64},vicReq:5,new:false,type:'scrap'},
+  {id:'cobweb_wretch',name:'COBWEB WRETCH',tag:'Suspended in old silk.',atk:109,def:4.9,hp:4600,count:3,rewards:{old:1.66,hp:2.2},vicReq:5,new:false,type:'scrap'},
+  {id:'silt_shambler',name:'SILT SHAMBLER',tag:'The riverbed walks.',atk:111,def:4.9,hp:4800,count:'45%',rewards:{atk:0.49,old:1.68},vicReq:5,new:false,type:'scrap'},
+  {id:'dusty_ghoul',name:'DUSTY GHOUL',tag:'Settled over decades.',atk:112,def:5.0,hp:5000,count:null,rewards:{hp:2.25,old:1.7},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_shambler',name:'HOLLOW SHAMBLER',tag:'Nothing inside but hunger.',atk:114,def:5.0,hp:5200,count:'50%',rewards:{atk:0.5,old:1.72},vicReq:5,new:false,type:'scrap'},
+  {id:'cursed_knight',name:'CURSED KNIGHT',tag:'The oath became a shackle.',atk:120,def:5.5,hp:5500,count:null,rewards:{atk:0.9,old:2.0,arm:0.05},vicReq:5,new:false,type:'scrap'},
+  {id:'plague_archer',name:'PLAGUE ARCHER',tag:'Every arrow carries a diagnosis.',atk:130,def:5.8,hp:5800,count:3,rewards:{old:2.2,bronze:0.5},vicReq:5,new:false,type:'scrap'},
+  {id:'blighted_halberdier',name:'BLIGHTED HALBERDIER',tag:'Reach and ruin combined.',atk:140,def:6.1,hp:6100,count:'12%',rewards:{atk:1.0,old:2.4,arm:0.06},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_sergeant',name:'HOLLOW SERGEANT',tag:'Giving orders it cannot follow.',atk:150,def:6.4,hp:6400,count:null,rewards:{old:2.6,bronze:0.8},vicReq:5,new:false,type:'scrap'},
+  {id:'rot_shaman',name:'ROT SHAMAN',tag:'Blessed by the wrong gods.',atk:160,def:6.7,hp:6700,count:2,rewards:{atk:1.1,old:2.8,arm:0.07},vicReq:5,new:false,type:'scrap'},
+  {id:'ashbound_soldier',name:'ASHBOUND SOLDIER',tag:'Drafted after death.',atk:170,def:7.0,hp:7000,count:'15%',rewards:{old:3.0,bronze:1.0},vicReq:5,new:false,type:'scrap'},
+  {id:'bonecage_warrior',name:'BONECAGE WARRIOR',tag:'Wears its ribs outside.',atk:180,def:7.3,hp:7300,count:null,rewards:{atk:1.2,old:3.2,arm:0.08},vicReq:5,new:false,type:'scrap'},
+  {id:'gravewarden',name:'GRAVEWARDEN',tag:'Protecting the wrong side.',atk:190,def:7.6,hp:7600,count:4,rewards:{old:3.4,bronze:1.2},vicReq:5,new:false,type:'scrap'},
+  {id:'fetid_executioner',name:'FETID EXECUTIONER',tag:'Justice went rancid.',atk:200,def:7.9,hp:7900,count:'18%',rewards:{atk:1.3,old:3.6,arm:0.09},vicReq:5,new:false,type:'scrap'},
+  {id:'rusted_templar',name:'RUSTED TEMPLAR',tag:'Faith corroded the armor.',atk:210,def:8.2,hp:8200,count:null,rewards:{old:3.8,bronze:1.4},vicReq:5,new:false,type:'scrap'},
+  {id:'ironblight_monk',name:'IRONBLIGHT MONK',tag:'Discipline turned inward, then rotten.',atk:221,def:8.5,hp:8500,count:3,rewards:{atk:1.4,old:4.0,arm:0.1},vicReq:5,new:false,type:'scrap'},
+  {id:'crypt_sentinel',name:'CRYPT SENTINEL',tag:'Never told the war ended.',atk:231,def:8.8,hp:8800,count:'20%',rewards:{old:4.2,bronze:1.6},vicReq:5,new:false,type:'scrap'},
+  {id:'void_hound',name:'VOID HOUND',tag:'Trained to hunt the living.',atk:241,def:9.1,hp:9100,count:null,rewards:{atk:1.5,old:4.4,arm:0.11},vicReq:5,new:false,type:'scrap'},
+  {id:'soulless_pikeman',name:'SOULLESS PIKEMAN',tag:'The point is the only thing left.',atk:251,def:9.4,hp:9400,count:5,rewards:{old:4.6,bronze:1.8},vicReq:5,new:false,type:'scrap'},
+  {id:'charnel_blade',name:'CHARNEL BLADE',tag:'The sword came first; the corpse second.',atk:261,def:9.7,hp:9700,count:'22%',rewards:{atk:1.6,old:4.8,arm:0.12},vicReq:5,new:false,type:'scrap'},
+  {id:'flayed_scout',name:'FLAYED SCOUT',tag:'Reconnaissance at any cost.',atk:271,def:10.0,hp:10000,count:null,rewards:{old:5.0,bronze:2.0},vicReq:5,new:false,type:'scrap'},
+  {id:'worm_priest',name:'WORM PRIEST',tag:'The congregation answers.',atk:282,def:10.4,hp:10300,count:2,rewards:{atk:1.7,old:5.2,arm:0.13},vicReq:5,new:false,type:'scrap'},
+  {id:'ashgrave_guardian',name:'ASHGRAVE GUARDIAN',tag:'Nothing to guard. Still guarding.',atk:292,def:10.7,hp:10600,count:'25%',rewards:{old:5.4,bronze:2.2},vicReq:5,new:false,type:'scrap'},
+  {id:'mournful_specter',name:'MOURNFUL SPECTER',tag:'The grief is the danger.',atk:302,def:11.0,hp:10900,count:null,rewards:{atk:1.8,old:5.6,arm:0.14},vicReq:5,new:false,type:'scrap'},
+  {id:'marrow_stalker',name:'MARROW STALKER',tag:'It wants what is inside.',atk:312,def:11.3,hp:11200,count:4,rewards:{old:5.8,bronze:2.4},vicReq:5,new:false,type:'scrap'},
+  {id:'duskblade_revenant',name:'DUSKBLADE REVENANT',tag:'Returned with interest.',atk:322,def:11.6,hp:11500,count:'28%',rewards:{atk:1.9,old:6.0,arm:0.15},vicReq:5,new:false,type:'scrap'},
+  {id:'smoldering_footman',name:'SMOLDERING FOOTMAN',tag:'On fire. Still reporting.',atk:333,def:12.0,hp:11800,count:null,rewards:{old:6.2,bronze:2.6},vicReq:5,new:false,type:'scrap'},
+  {id:'blight_ranger',name:'BLIGHT RANGER',tag:'Tracking the living.',atk:343,def:12.3,hp:12100,count:3,rewards:{atk:2.0,old:6.4,arm:0.16},vicReq:5,new:false,type:'scrap'},
+  {id:'accursed_legionnaire',name:'ACCURSED LEGIONNAIRE',tag:'The legion marched on without orders.',atk:353,def:12.6,hp:12400,count:'30%',rewards:{old:6.6,bronze:2.8},vicReq:5,new:false,type:'scrap'},
+  {id:'dead_eye_marksman',name:'DEAD EYE MARKSMAN',tag:'The eye was the last thing to go.',atk:363,def:12.9,hp:12700,count:null,rewards:{atk:2.1,old:6.8,arm:0.17},vicReq:5,new:false,type:'scrap'},
+  {id:'tomb_warden',name:'TOMB WARDEN',tag:'The tomb is wherever it stands.',atk:373,def:13.2,hp:13000,count:5,rewards:{old:7.0,bronze:3.0},vicReq:5,new:false,type:'scrap'},
+  {id:'sable_crow',name:'SABLE CROW',tag:'Circles everything it intends to ruin.',atk:383,def:13.5,hp:13300,count:'32%',rewards:{atk:2.2,old:7.2,arm:0.18},vicReq:5,new:false,type:'scrap'},
+  {id:'ironrot_berserker',name:'IRONROT BERSERKER',tag:'Anger was the last thing preserved.',atk:394,def:13.9,hp:13600,count:null,rewards:{old:7.4,bronze:3.2},vicReq:5,new:false,type:'scrap'},
+  {id:'plague_monk',name:'PLAGUE MONK',tag:'Spreading the doctrine.',atk:404,def:14.2,hp:13900,count:2,rewards:{atk:2.3,old:7.6,arm:0.19},vicReq:5,new:false,type:'scrap'},
+  {id:'blighted_squire',name:'BLIGHTED SQUIRE',tag:'The knighthood never came.',atk:414,def:14.5,hp:14200,count:'35%',rewards:{old:7.8,bronze:3.4},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_cavalier',name:'HOLLOW CAVALIER',tag:'The horse is gone. It still rides.',atk:424,def:14.8,hp:14500,count:null,rewards:{atk:2.4,old:8.0,arm:0.2},vicReq:5,new:false,type:'scrap'},
+  {id:'gravebound_duelist',name:'GRAVEBOUND DUELIST',tag:'An honor bound to the wrong world.',atk:434,def:15.1,hp:14700,count:4,rewards:{old:8.2,bronze:3.6},vicReq:5,new:false,type:'scrap'},
+  {id:'withered_inquisitor',name:'WITHERED INQUISITOR',tag:'The questions never stopped.',atk:445,def:15.5,hp:15000,count:'38%',rewards:{atk:2.5,old:8.4,arm:0.21},vicReq:5,new:false,type:'scrap'},
+  {id:'shroud_knight',name:'SHROUD KNIGHT',tag:'The burial cloth became the armor.',atk:455,def:15.8,hp:15200,count:null,rewards:{old:8.6,bronze:3.8},vicReq:5,new:false,type:'scrap'},
+  {id:'bone_arbalist',name:'BONE ARBALIST',tag:'The bolts are personal.',atk:465,def:16.1,hp:15500,count:3,rewards:{atk:2.6,old:8.8,arm:0.22},vicReq:5,new:false,type:'scrap'},
+  {id:'ash_zealot',name:'ASH ZEALOT',tag:'Burned for the cause. Returned for more.',atk:475,def:16.4,hp:15700,count:'40%',rewards:{old:9.0,bronze:4.0},vicReq:5,new:false,type:'scrap'},
+  {id:'saltblood_soldier',name:'SALTBLOOD SOLDIER',tag:'Preserved in spite.',atk:485,def:16.7,hp:16000,count:null,rewards:{atk:2.7,old:9.2,arm:0.23},vicReq:5,new:false,type:'scrap'},
+  {id:'dread_footman',name:'DREAD FOOTMAN',tag:'The lowest rank. The worst fate.',atk:496,def:17.1,hp:16300,count:5,rewards:{old:9.4,bronze:4.2},vicReq:5,new:false,type:'scrap'},
+  {id:'ruinborn_warden',name:'RUINBORN WARDEN',tag:'Made from the rubble. Guards the rubble.',atk:506,def:17.4,hp:16600,count:'42%',rewards:{atk:2.8,old:9.6,arm:0.24},vicReq:5,new:false,type:'scrap'},
+  {id:'forsaken_outrider',name:'FORSAKEN OUTRIDER',tag:'Left behind on purpose.',atk:516,def:17.7,hp:16900,count:null,rewards:{old:9.8,bronze:4.4},vicReq:5,new:false,type:'scrap'},
+  {id:'bonegrinder',name:'BONEGRINDER',tag:'The name is the method.',atk:800,def:35,hp:22000,count:null,rewards:{atk:5.0,arm:1.2,old:100},vicReq:5,new:false,type:'scrap'},
+  {id:'voidborn_witch',name:'VOIDBORN WITCH',tag:'She came from nothing and brought it with her.',atk:850,def:36.5,hp:24000,count:'15%',rewards:{old:120,bronze:20,crc:0.08},vicReq:5,new:false,type:'scrap'},
+  {id:'weeping_shade',name:'WEEPING SHADE',tag:'The sorrow is the weapon.',atk:900,def:38,hp:26000,count:2,rewards:{atk:5.5,old:140,arm:1.5},vicReq:5,new:false,type:'scrap'},
+  {id:'soul_eater',name:'SOUL EATER',tag:'Efficient. Thorough. Hungry.',atk:950,def:39.5,hp:28000,count:null,rewards:{old:160,bronze:30,silver:5},vicReq:5,new:false,type:'scrap'},
+  {id:'dread_colossus',name:'DREAD COLOSSUS',tag:'Too large to comprehend. Too real to ignore.',atk:1000,def:41,hp:30000,count:'18%',rewards:{atk:6.0,arm:2.0,old:180},vicReq:5,new:false,type:'scrap'},
+  {id:'flesh_sculptor',name:'FLESH SCULPTOR',tag:'It has opinions about your shape.',atk:1050,def:42.5,hp:32000,count:null,rewards:{old:200,bronze:40,silver:7},vicReq:5,new:false,type:'scrap'},
+  {id:'blighted_hydra',name:'BLIGHTED HYDRA',tag:'Cut one head. Grieve twice.',atk:1100,def:44,hp:34000,count:3,rewards:{atk:6.5,arm:2.5,old:220},vicReq:5,new:false,type:'scrap'},
+  {id:'pale_stalker',name:'PALE STALKER',tag:'Moving only when unseen.',atk:1150,def:45.5,hp:36000,count:'20%',rewards:{old:240,bronze:50,crc:0.1},vicReq:5,new:false,type:'scrap'},
+  {id:'abyssal_hound',name:'ABYSSAL HOUND',tag:'Trained in the dark for the dark.',atk:1200,def:47,hp:38000,count:null,rewards:{atk:7.0,arm:3.0,old:260},vicReq:5,new:false,type:'scrap'},
+  {id:'marrow_golem',name:'MARROW GOLEM',tag:'Built from what the battlefield left over.',atk:1250,def:48.5,hp:40000,count:4,rewards:{old:280,bronze:60,silver:10},vicReq:5,new:false,type:'scrap'},
+  {id:'gravemind_thrall',name:'GRAVEMIND THRALL',tag:'The grave is the mind now.',atk:1300,def:50,hp:42000,count:'22%',rewards:{atk:7.5,arm:3.5,old:300},vicReq:5,new:false,type:'scrap'},
+  {id:'soulrend_fiend',name:'SOULREND FIEND',tag:'It tears at something you cannot defend.',atk:1355,def:51.5,hp:44000,count:null,rewards:{old:320,bronze:70,silver:12},vicReq:5,new:false,type:'scrap'},
+  {id:'crypt_behemoth',name:'CRYPT BEHEMOTH',tag:'The crypt was built around it.',atk:1410,def:53,hp:46000,count:2,rewards:{atk:8.0,arm:4.0,old:340},vicReq:5,new:false,type:'scrap'},
+  {id:'ashen_revenant',name:'ASHEN REVENANT',tag:'Burned. Returned. Angry.',atk:1465,def:54.5,hp:48000,count:'25%',rewards:{old:360,bronze:80,silver:14},vicReq:5,new:false,type:'scrap'},
+  {id:'hollow_titan',name:'HOLLOW TITAN',tag:'Enormous. Nothing inside.',atk:1520,def:56,hp:50000,count:null,rewards:{atk:8.5,arm:4.5,old:380},vicReq:5,new:false,type:'scrap'},
+  {id:'plague_chimera',name:'PLAGUE CHIMERA',tag:'The worst of several things.',atk:1575,def:57.5,hp:52000,count:3,rewards:{old:400,bronze:90,silver:16},vicReq:5,new:false,type:'scrap'},
+  {id:'bone_leviathan',name:'BONE LEVIATHAN',tag:'It surfaces when hope fades.',atk:1630,def:59,hp:54000,count:'28%',rewards:{atk:9.0,arm:5.0,old:420},vicReq:5,new:false,type:'scrap'},
+  {id:'wretched_oracle',name:'WRETCHED ORACLE',tag:'It knows. It does not care.',atk:1685,def:60.5,hp:56000,count:null,rewards:{old:440,bronze:100,silver:18},vicReq:5,new:false,type:'scrap'},
+  {id:'dusk_warden',name:'DUSK WARDEN',tag:'Protecting the threshold between worlds.',atk:1740,def:62,hp:58000,count:4,rewards:{atk:9.5,arm:5.5,old:460},vicReq:5,new:false,type:'scrap'},
+  {id:'voidtouched_wraith',name:'VOIDTOUCHED WRAITH',tag:'The void left fingerprints.',atk:1795,def:63.5,hp:60000,count:'30%',rewards:{old:480,bronze:110,silver:20},vicReq:5,new:false,type:'scrap'},
+  {id:'ironblight_giant',name:'IRONBLIGHT GIANT',tag:'Rust and contempt made flesh.',atk:1850,def:65,hp:62000,count:null,rewards:{atk:10.0,arm:6.0,old:500},vicReq:5,new:false,type:'scrap'},
+  {id:'charnel_hydra',name:'CHARNEL HYDRA',tag:'Each head remembers a different death.',atk:1905,def:66.5,hp:64000,count:2,rewards:{old:520,bronze:120,silver:22},vicReq:5,new:false,type:'scrap'},
+  {id:'nightmare_shade',name:'NIGHTMARE SHADE',tag:'It is what you fear it to be.',atk:1960,def:68,hp:66000,count:'32%',rewards:{atk:10.5,arm:6.5,old:540},vicReq:5,new:false,type:'scrap'},
+  {id:'graveworm_matron',name:'GRAVEWORM MATRON',tag:'Mother of what the ground produces.',atk:2015,def:69.5,hp:68000,count:null,rewards:{old:560,bronze:130,silver:24},vicReq:5,new:false,type:'scrap'},
+  {id:'soul_harvester',name:'SOUL HARVESTER',tag:'Working the final field.',atk:2070,def:71,hp:70000,count:3,rewards:{atk:11.0,arm:7.0,old:580},vicReq:5,new:false,type:'scrap'},
+  {id:'blighted_cyclops',name:'BLIGHTED CYCLOPS',tag:'One eye. Sees everything.',atk:2125,def:72.5,hp:72000,count:'35%',rewards:{old:600,bronze:140,silver:26},vicReq:5,new:false,type:'scrap'},
+  {id:'desecrated_giant',name:'DESECRATED GIANT',tag:'The sacred made obscene.',atk:2180,def:74,hp:74000,count:null,rewards:{atk:11.5,arm:7.5,old:620},vicReq:5,new:false,type:'scrap'},
+  {id:'moonblood_specter',name:'MOONBLOOD SPECTER',tag:'Lunar light brought it here.',atk:2235,def:75.5,hp:76000,count:4,rewards:{old:640,bronze:150,silver:28},vicReq:5,new:false,type:'scrap'},
+  {id:'gravesinger',name:'GRAVESINGER',tag:'The song is the sentence.',atk:2290,def:77,hp:78000,count:'38%',rewards:{atk:12.0,arm:8.0,old:660},vicReq:5,new:false,type:'scrap'},
+  {id:'blight_behemoth',name:'BLIGHT BEHEMOTH',tag:'Slow. Absolute.',atk:2345,def:78.5,hp:80000,count:null,rewards:{old:680,bronze:160,silver:30},vicReq:5,new:false,type:'scrap'},
+  {id:'lich_sovereign',name:'LICH SOVEREIGN',tag:'Death is a promotion.',atk:2800,def:95,hp:80000,count:null,rewards:{atk:20,arm:8,old:1000,bronze:300},vicReq:5,new:false,type:'elite'},
+  {id:'ashen_seraph',name:'ASHEN SERAPH',tag:'Holy war, concluded badly.',atk:3000,def:100,hp:88000,count:'20%',rewards:{old:1200,bronze:380,silver:40},vicReq:5,new:false,type:'elite'},
+  {id:'dread_overlord',name:'DREAD OVERLORD',tag:'Command without a kingdom left.',atk:3200,def:105,hp:96000,count:4,rewards:{atk:22,arm:10,old:1400,bronze:450},vicReq:5,new:false,type:'elite'},
+  {id:'plague_archon',name:'PLAGUE ARCHON',tag:'The authority of disease.',atk:3400,def:110,hp:104000,count:null,rewards:{old:1600,bronze:520,silver:55,mxd:0.5},vicReq:5,new:false,type:'elite'},
+  {id:'voidborn_tyrant',name:'VOIDBORN TYRANT',tag:'Rulership learned from nothing.',atk:3600,def:115,hp:112000,count:'25%',rewards:{atk:25,arm:12,old:1800,bronze:600},vicReq:5,new:false,type:'elite'},
+  {id:'hollow_god_husk',name:'HOLLOW GOD-HUSK',tag:'Something divine was here.',atk:3800,def:120,hp:120000,count:null,rewards:{old:2000,bronze:680,silver:70,mxd:0.7},vicReq:5,new:false,type:'elite'},
+  {id:'soulweaver_ancient',name:'SOULWEAVER ANCIENT',tag:'It has been weaving since before you.',atk:4000,def:128,hp:128000,count:3,rewards:{atk:28,arm:14,old:2200,bronze:760},vicReq:5,new:false,type:'elite'},
+  {id:'desecrated_archangel',name:'DESECRATED ARCHANGEL',tag:'The fall was not an accident.',atk:4200,def:135,hp:136000,count:'30%',rewards:{old:2400,bronze:840,silver:85,crc:0.2},vicReq:5,new:false,type:'elite'},
+  {id:'bonelord_eternal',name:'BONELORD ETERNAL',tag:'Has not stopped since it began.',atk:4400,def:142,hp:144000,count:null,rewards:{atk:32,arm:16,old:2600,bronze:920},vicReq:5,new:false,type:'elite'},
+  {id:'maelstrom_wraith',name:'MAELSTROM WRAITH',tag:'The storm learned to hate.',atk:4600,def:149,hp:152000,count:5,rewards:{old:2800,bronze:1000,silver:100,mxd:0.9},vicReq:5,new:false,type:'elite'},
+  {id:'abyssal_monarch',name:'ABYSSAL MONARCH',tag:'Crowned in the deepest dark.',atk:4800,def:157,hp:160000,count:'35%',rewards:{atk:36,arm:18,old:3000,bronze:1100},vicReq:5,new:false,type:'elite'},
+  {id:'gravemind_elder',name:'GRAVEMIND ELDER',tag:'The oldest thought in the graveyard.',atk:5000,def:164,hp:168000,count:null,rewards:{old:3200,bronze:1200,silver:120,crc:0.3},vicReq:5,new:false,type:'elite'},
+  {id:'bloodbound_colossus',name:'BLOODBOUND COLOSSUS',tag:'Held together by a pact and old blood.',atk:5200,def:171,hp:176000,count:2,rewards:{atk:40,arm:20,old:3400,bronze:1300},vicReq:5,new:false,type:'elite'},
+  {id:'cursed_demigod',name:'CURSED DEMIGOD',tag:'Half divine, fully damned.',atk:5400,def:178,hp:184000,count:'40%',rewards:{old:3600,bronze:1400,silver:140,mxd:1.2},vicReq:5,new:false,type:'elite'},
+  {id:'pale_dominion',name:'PALE DOMINION',tag:'Sovereignty over nothing living.',atk:5600,def:185,hp:192000,count:null,rewards:{atk:44,arm:22,old:3800,bronze:1500},vicReq:5,new:false,type:'elite'},
+  {id:'hollow_primarch',name:'HOLLOW PRIMARCH',tag:'The first of a lineage of ruin.',atk:5800,def:192,hp:200000,count:4,rewards:{old:4000,bronze:1600,silver:160,crc:0.4},vicReq:5,new:false,type:'elite'},
+  {id:'forsaken_titan',name:'FORSAKEN TITAN',tag:'Abandoned by the age that made it.',atk:6000,def:200,hp:210000,count:'45%',rewards:{atk:48,arm:24,old:4200,bronze:1700},vicReq:5,new:false,type:'elite'},
+  {id:'sorrow_sovereign',name:'SORROW SOVEREIGN',tag:'Rules only what it has destroyed.',atk:6200,def:207,hp:220000,count:null,rewards:{old:4400,bronze:1800,silver:180,mxd:1.5},vicReq:5,new:false,type:'elite'},
+  {id:'shattered_deity',name:'SHATTERED DEITY',tag:'The pieces are still dangerous.',atk:6500,def:215,hp:230000,count:3,rewards:{atk:52,arm:26,old:4700,bronze:1900},vicReq:5,new:false,type:'elite'},
+  {id:'ironblight_colossus',name:'IRONBLIGHT COLOSSUS',tag:'Corroded past the point of stopping.',atk:6800,def:222,hp:240000,count:'50%',rewards:{old:5000,bronze:2000,silver:200,crc:0.5,mxd:1.8},vicReq:5,new:false,type:'elite'},
+  {id:'the_devourer',name:'THE DEVOURER',tag:'It has always been eating.',atk:8000,def:230,hp:260000,count:null,rewards:{atk:80,arm:30,old:8000,bronze:3000,silver:250},vicReq:5,new:false,type:'elite'},
+  {id:'nameless_king',name:'NAMELESS KING',tag:'The name was the last thing surrendered.',atk:9333,def:258,hp:300000,count:'30%',rewards:{old:12000,bronze:4500,silver:350,mxd:2.0,crc:0.6},vicReq:5,new:false,type:'elite'},
+  {id:'he_who_unravels',name:'HE WHO UNRAVELS',tag:'Everything comes apart near him.',atk:10667,def:285,hp:340000,count:4,rewards:{atk:110,arm:40,old:18000,bronze:6500},vicReq:5,new:false,type:'elite'},
+  {id:'throne_of_ash',name:'THRONE OF ASH',tag:'Power without a king. Worse.',atk:12000,def:313,hp:380000,count:null,rewards:{old:25000,bronze:9000,silver:500,mxd:2.5,crc:0.7},vicReq:5,new:false,type:'elite'},
+  {id:'the_pale_hunger',name:'THE PALE HUNGER',tag:'It was not born. It grew.',atk:13333,def:340,hp:400000,count:'40%',rewards:{atk:140,arm:50,old:35000,bronze:12000,silver:600},vicReq:5,new:false,type:'elite'},
+  {id:'godrot',name:'GODROT',tag:'Even gods decompose.',atk:14667,def:368,hp:430000,count:null,rewards:{old:48000,bronze:16000,silver:750,mxd:3.0,crc:0.8},vicReq:5,new:false,type:'elite'},
+  {id:'the_unfinished',name:'THE UNFINISHED',tag:'Incomplete. Unstoppable.',atk:16000,def:395,hp:460000,count:5,rewards:{atk:170,arm:60,old:65000,bronze:22000,silver:900},vicReq:5,new:false,type:'elite'},
+  {id:'womb_of_plague',name:'WOMB OF PLAGUE',tag:'The source, not the symptom.',atk:17333,def:423,hp:490000,count:null,rewards:{old:85000,bronze:30000,silver:1100,mxd:3.5,crc:0.9},vicReq:5,new:false,type:'elite'},
+  {id:'bleeding_throne',name:'BLEEDING THRONE',tag:'Sovereignty at a cost.',atk:18667,def:450,hp:500000,count:'50%',rewards:{atk:200,arm:75,old:110000,bronze:40000,silver:1300,mxd:4.0},vicReq:5,new:false,type:'elite'},
+  {id:'the_hollow_crown',name:'THE HOLLOW CROWN',tag:'All that remains of what ruled.',atk:20000,def:480,hp:550000,count:null,rewards:{atk:250,arm:100,old:150000,bronze:60000,silver:2000,mxd:5.0,crc:1.0,asp:10},vicReq:5,new:false,type:'boss'},
 ];
 
 const SHOP_ITEMS = [
-  {id:'test_mnd',name:'[TEST] MND +10%',desc:'Test upgrade — free.',effect:'MND +10%',cost:{gra:0},statBonus:{mnd:0.10}},
-  {id:'test_mxd',name:'[TEST] MXD +10%',desc:'Test upgrade — free.',effect:'MXD +10%',cost:{gra:0},statBonus:{mxd:0.10}},
-  {id:'iron_quill',name:'IRON QUILL',desc:'A sharpened writing instrument, repurposed.',effect:'ATK +5',cost:{gra:50},statBonus:{atk:5}},
-  {id:'sketch_shield',name:'SKETCH SHIELD',desc:'Hastily drawn, surprisingly effective.',effect:'ARM +2',cost:{gra:80},statBonus:{arm:2}},
-  {id:'ink_vial',name:'INK VIAL',desc:'Concentrated darkness in liquid form.',effect:'HP +20',cost:{gra:100},statBonus:{hp:20}},
-  {id:'wax_seal',name:'WAX SEAL',desc:'Bonds your wounds shut.',effect:'RGN +0.5',cost:{gra:120,wax:5},statBonus:{rgn:0.5}},
-  {id:'charcoal_blade',name:'CHARCOAL BLADE',desc:'Smudges enemies into submission.',effect:'ATK +10, ASP +0.5',cost:{gra:200,cha:5},statBonus:{atk:10,asp:0.5}},
-  {id:'draft_armor',name:'DRAFT ARMOR',desc:'Layers of rejected paper, hardened.',effect:'ARM +5, HP +30',cost:{gra:300,wax:20},statBonus:{arm:5,hp:30}},
-  {id:'perspective_lens',name:'PERSPECTIVE LENS',desc:'See the angles others miss.',effect:'CRC +1%, CRD +0.1',cost:{gra:250,wax:15},statBonus:{crc:0.01,crd:0.1}},
-  {id:'phantom_step',name:'PHANTOM STEP',desc:'Leave no trace behind.',effect:'DOG +1%, SPD +100',cost:{gra:180,wax:8},statBonus:{dog:0.01,spd:100}},
-  {id:'wax_tablet',name:'WAX TABLET',desc:'Ancient storage, modern power.',effect:'MND +5%, ASP +1',cost:{gra:500,wax:50},statBonus:{mnd:0.05,asp:1}},
-  {id:'charcoal_sigil',name:'CHARCOAL SIGIL',desc:'Drawn in the dark before dawn.',effect:'CRC +2%, CRD +0.25',cost:{gra:800,wax:80,cha:10},statBonus:{crc:0.02,crd:0.25}},
-  {id:'bone_quill',name:'BONE QUILL',desc:'Stripped of flesh. Pure intent.',effect:'ATK +25, ARM +8',cost:{gra:1200,wax:120},statBonus:{atk:25,arm:8}},
-  {id:'ink_reservoir',name:'INK RESERVOIR',desc:'Bottomless if you believe hard enough.',effect:'HP +100, RGN +3',cost:{gra:1500,cha:30},statBonus:{hp:100,rgn:3}},
-  {id:'void_fragment',name:'VOID FRAGMENT',desc:'Chipped from the edge of a sketch.',effect:'DOG +3%, MXD +0.5',cost:{gra:3000,wax:400,cha:80},statBonus:{dog:0.03,mxd:0.5}},
-  {id:'master_palette',name:'MASTER PALETTE',desc:'Every color of pain.',effect:'ATK +80, ASP +2',cost:{gra:6000,wax:800},statBonus:{atk:80,asp:2}},
-  {id:'draft_crown',name:'DRAFT CROWN',desc:'Worn by those who survived the critique.',effect:'HP +300, ARM +20, CRC +3%',cost:{gra:10000,wax:2000,cha:300},statBonus:{hp:300,arm:20,crc:0.03}},
+  {id:'synth_chain',name:'SYNTHESIS CHAIN',desc:'Unlocks passive resource conversion (each coin slowly produces the one below it).',effect:'Unlocks passive production chain',cost:{old:1000},statBonus:{},unlock:'synthUnlocked',maxOwned:1},
+  {id:'test_mnd',name:'[TEST] MND +10%',desc:'Test upgrade — free.',effect:'MND +10%',cost:{old:0},statBonus:{mnd:0.10}},
+  {id:'test_mxd',name:'[TEST] MXD +10%',desc:'Test upgrade — free.',effect:'MXD +10%',cost:{old:0},statBonus:{mxd:0.10}},
+  {id:'iron_quill',name:'IRON QUILL',desc:'A sharpened writing instrument, repurposed.',effect:'ATK +5',cost:{old:50},statBonus:{atk:5}},
+  {id:'sketch_shield',name:'SKETCH SHIELD',desc:'Hastily drawn, surprisingly effective.',effect:'ARM +2',cost:{old:80},statBonus:{arm:2}},
+  {id:'ink_vial',name:'INK VIAL',desc:'Concentrated darkness in liquid form.',effect:'HP +20',cost:{old:100},statBonus:{hp:20}},
+  {id:'wax_seal',name:'WAX SEAL',desc:'Bonds your wounds shut.',effect:'RGN +0.5',cost:{old:120,bronze:5},statBonus:{rgn:0.5}},
+  {id:'charcoal_blade',name:'CHARCOAL BLADE',desc:'Smudges enemies into submission.',effect:'ATK +10, ASP +0.5',cost:{old:200,silver:5},statBonus:{atk:10,asp:0.5}},
+  {id:'draft_armor',name:'DRAFT ARMOR',desc:'Layers of rejected paper, hardened.',effect:'ARM +5, HP +30',cost:{old:300,bronze:20},statBonus:{arm:5,hp:30}},
+  {id:'perspective_lens',name:'PERSPECTIVE LENS',desc:'See the angles others miss.',effect:'CRC +1%, CRD +0.1',cost:{old:250,bronze:15},statBonus:{crc:0.01,crd:0.1}},
+  {id:'phantom_step',name:'PHANTOM STEP',desc:'Leave no trace behind.',effect:'DOG +1%, SPD +100',cost:{old:180,bronze:8},statBonus:{dog:0.01,spd:100}},
+  {id:'wax_tablet',name:'WAX TABLET',desc:'Ancient storage, modern power.',effect:'MND +5%, ASP +1',cost:{old:500,bronze:50},statBonus:{mnd:0.05,asp:1}},
+  {id:'charcoal_sigil',name:'CHARCOAL SIGIL',desc:'Drawn in the dark before dawn.',effect:'CRC +2%, CRD +0.25',cost:{old:800,bronze:80,silver:10},statBonus:{crc:0.02,crd:0.25}},
+  {id:'bone_quill',name:'BONE QUILL',desc:'Stripped of flesh. Pure intent.',effect:'ATK +25, ARM +8',cost:{old:1200,bronze:120},statBonus:{atk:25,arm:8}},
+  {id:'ink_reservoir',name:'INK RESERVOIR',desc:'Bottomless if you believe hard enough.',effect:'HP +100, RGN +3',cost:{old:1500,silver:30},statBonus:{hp:100,rgn:3}},
+  {id:'void_fragment',name:'VOID FRAGMENT',desc:'Chipped from the edge of a sketch.',effect:'DOG +3%, MXD +0.5',cost:{old:3000,bronze:400,silver:80},statBonus:{dog:0.03,mxd:0.5}},
+  {id:'master_palette',name:'MASTER PALETTE',desc:'Every color of pain.',effect:'ATK +80, ASP +2',cost:{old:6000,bronze:800},statBonus:{atk:80,asp:2}},
+  {id:'draft_crown',name:'DRAFT CROWN',desc:'Worn by those who survived the critique.',effect:'HP +300, ARM +20, CRC +3%',cost:{old:10000,bronze:2000,silver:300},statBonus:{hp:300,arm:20,crc:0.03}},
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -554,7 +555,7 @@ const SHOP_ITEMS = [
 // ═══════════════════════════════════════════════════════
 const DEFAULT_STATE = ()=>({
   stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:100,rgn:0,dog:0,crc:0,crd:1.0,arm:0,asp:1.0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
-  resources:{gra:0,wax:0,cha:0,gold:0,plat:0},
+  resources:{old:0,bronze:0,silver:0,gold:0,plat:0},
   victories:{},
   shopOwned:{},
   currentCreature:null,
@@ -564,14 +565,15 @@ const DEFAULT_STATE = ()=>({
   activeTime:0,
   offlineTime:0,
   deaths:0,
-  lifeGra:0,
+  lifeOld:0,
   lastSave:Date.now(),
   settings:{lightMode:false,invertImg:false,showProtocols:true,combatLog:true,uiZoom:100,battleNav:'manual',numNotation:'mixed',fontSize:13},
   protocols:{autoChallenge:false,autoRetry:false},
   masteryUpgrades:{},
+  synthUnlocked:false,
   sessionRewards:{},
-  galleryUnlocked:[],
-  galleryQueue:[],
+  battleUnlocked:[],
+  battleQueue:[],
   spawnRarity:{},
 });
 let S = DEFAULT_STATE();
@@ -677,39 +679,39 @@ function renderFundamentals(){
 }
 
 // ═══════════════════════════════════════════════════════
-// GALLERY
+// CREATURE UNLOCKS & RARITY
 // ═══════════════════════════════════════════════════════
-// ── GALLERY QUEUE ─────────────────────────────────────
-function initGalleryQueue(){
+// ── BATTLE QUEUE ─────────────────────────────────────
+function initBattleQueue(){
   // Build from scratch if missing or empty
-  if(!S.galleryUnlocked||S.galleryUnlocked.length===0){
+  if(!S.battleUnlocked||S.battleUnlocked.length===0){
     const allIds=CREATURES.map(c=>c.id);
     const withVic=allIds.filter(id=>(S.victories[id]||0)>0);
     const remaining=allIds.filter(id=>!withVic.includes(id));
-    S.galleryUnlocked=[...withVic];
-    S.galleryQueue=[...remaining];
+    S.battleUnlocked=[...withVic];
+    S.battleQueue=[...remaining];
     // Ensure at least 4 unlocked
-    while(S.galleryUnlocked.length<4&&S.galleryQueue.length>0){
-      S.galleryUnlocked.push(S.galleryQueue.shift());
+    while(S.battleUnlocked.length<4&&S.battleQueue.length>0){
+      S.battleUnlocked.push(S.battleQueue.shift());
     }
   }else{
     // Ensure queue is clean (remove any IDs already unlocked)
-    S.galleryQueue=(S.galleryQueue||[]).filter(id=>!S.galleryUnlocked.includes(id));
+    S.battleQueue=(S.battleQueue||[]).filter(id=>!S.battleUnlocked.includes(id));
   }
 }
 function unlockNextCreature(){
-  if(!S.galleryQueue||S.galleryQueue.length===0)return;
-  const window=Math.min(4,S.galleryQueue.length);
+  if(!S.battleQueue||S.battleQueue.length===0)return;
+  const window=Math.min(4,S.battleQueue.length);
   const pick=Math.floor(Math.random()*window);
-  const id=S.galleryQueue.splice(pick,1)[0];
-  S.galleryUnlocked.push(id);
+  const id=S.battleQueue.splice(pick,1)[0];
+  S.battleUnlocked.push(id);
   const c=getCreature(id);
   if(c){
     addLog(`<span style="color:var(--green)">◆ A new enemy has stepped forward: <b>${c.name}</b>.</span>`);
     toast(`New foe: ${c.name}`,3000);
   }
 }
-function isUnlocked(id){return S.galleryUnlocked&&S.galleryUnlocked.includes(id);}
+function isUnlocked(id){return S.battleUnlocked&&S.battleUnlocked.includes(id);}
 
 const TYPE_COLORS={scrap:'#555',elite:'#8e44ad',boss:'#c0392b'};
 
@@ -717,12 +719,12 @@ const TYPE_COLORS={scrap:'#555',elite:'#8e44ad',boss:'#c0392b'};
 const RARITY_COLORS={common:'#888',uncommon:'#27ae60',rare:'#2980b9',epic:'#9b59b6',legendary:'#f0b429'};
 const RARITY_LABELS={common:'COMMON',uncommon:'UNCOMMON',rare:'RARE',epic:'EPIC',legendary:'LEGENDARY'};
 const RARITY_MULTS={common:1,uncommon:1.5,rare:3,epic:6,legendary:15};
-const RARITY_BG={common:'rgba(80,80,80,0.15)',uncommon:'rgba(39,174,96,0.18)',rare:'rgba(41,128,185,0.18)',epic:'rgba(155,89,182,0.2)',legendary:'rgba(240,180,41,0.15)'};
+const RARITY_BG={common:'rgba(80,80,80,0.15)',uncommon:'rgba(39,174,96,0.4)',rare:'rgba(41,128,185,0.18)',epic:'rgba(155,89,182,0.2)',legendary:'rgba(240,180,41,0.15)'};
 const RARITY_UPGRADES=[
-  {id:'unc_rate',rarity:'uncommon',label:'UNCOMMON ATTUNEMENT',desc:'+1% uncommon spawn chance per level.',base:{gra:500},scale:1.8,maxLevel:19,perLevel:1},
-  {id:'rare_rate',rarity:'rare',label:'RARE ATTUNEMENT',desc:'+0.5% rare spawn chance per level.',base:{gra:5000,wax:50},scale:2,maxLevel:20,perLevel:0.5},
-  {id:'epic_rate',rarity:'epic',label:'EPIC ATTUNEMENT',desc:'+0.2% epic spawn chance per level.',base:{gra:30000,wax:500},scale:2,maxLevel:20,perLevel:0.2},
-  {id:'leg_rate',rarity:'legendary',label:'LEGENDARY ATTUNEMENT',desc:'+0.05% legendary spawn chance per level.',base:{gra:200000,wax:5000,cha:5},scale:2,maxLevel:20,perLevel:0.05},
+  {id:'unc_rate',rarity:'uncommon',label:'UNCOMMON ATTUNEMENT',desc:'+1% uncommon spawn chance per level.',base:{old:500},scale:1.8,maxLevel:19,perLevel:1},
+  {id:'rare_rate',rarity:'rare',label:'RARE ATTUNEMENT',desc:'+0.5% rare spawn chance per level.',base:{old:5000,bronze:50},scale:2,maxLevel:20,perLevel:0.5},
+  {id:'epic_rate',rarity:'epic',label:'EPIC ATTUNEMENT',desc:'+0.2% epic spawn chance per level.',base:{old:30000,bronze:500},scale:2,maxLevel:20,perLevel:0.2},
+  {id:'leg_rate',rarity:'legendary',label:'LEGENDARY ATTUNEMENT',desc:'+0.05% legendary spawn chance per level.',base:{old:200000,bronze:5000,silver:5},scale:2,maxLevel:20,perLevel:0.05},
 ];
 function getRarityChances(){
   const ups=S.masteryUpgrades||{};
@@ -747,8 +749,8 @@ function getSpawnRarity(id){
   return S.spawnRarity[id];
 }
 
-function renderGallery(){
-  const g=document.getElementById('gallery-grid');
+function renderBattle(){
+  const g=document.getElementById('battle-grid');
   const visible=CREATURES.filter(c=>isUnlocked(c.id)&&!isMaxed(c));
   const defeated=CREATURES.filter(c=>isMaxed(c)).length;
   const hidden=CREATURES.length-visible.length-defeated;
@@ -764,7 +766,7 @@ function renderGallery(){
     const isCurrent=S.currentCreature===c.id;
     const pct=Math.min(100,vic/c.vicReq*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
-    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['gra','wax','cha'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
+    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
     const countStr=c.count!=null?`<span style="margin-left:4px;color:var(--text3);">${c.count}</span>`:'';
     const typeBadge=c.type&&c.type!=='scrap'?`<span style="position:absolute;bottom:4px;right:4px;font-size:7px;padding:1px 4px;background:${TYPE_COLORS[c.type]||'#555'};color:#fff;letter-spacing:1px;">${c.type.toUpperCase()}</span>`:'';
     let btnHtml='';
@@ -779,9 +781,9 @@ function renderGallery(){
     const spawnBadge=spawnRarity?`<span style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${spawnRarityColor};color:#fff;">${RARITY_LABELS[spawnRarity]}</span>`:'';
     return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
       <div class="card-top">
-        <div class="card-art" style="position:relative;">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${typeBadge}${SVGs[c.id]||`<div style="color:${color};font-size:22px;opacity:0.4;">✦</div>`}</div>
+        <div class="card-art" style="position:relative;">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${typeBadge}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`:SVGs[c.id]||`<div style="color:${color};font-size:22px;opacity:0.4;">✦</div>`}</div>
         <div class="card-info">
-          <div class="card-name" style="color:${maxed?'var(--text3)':color}">${c.name}</div>
+          <div class="card-name">${c.name}</div>
           <div class="card-tagline">${c.tag}</div>
           <div class="card-stats">
             <span class="card-atk">✏ ${fmt(c.atk*spawnRarityMultDisplay)}</span> /
@@ -824,16 +826,16 @@ function startBattle(creatureId){
   const rc=RARITY_COLORS[B.rarity];
   const rl=RARITY_LABELS[B.rarity];
   addLog(`<span style="color:${rc}">⚔ ${c.name} appears [${rl}]${B.rarity!=='common'?' ×'+RARITY_MULTS[B.rarity]:''}</span>`);
-  if(S.settings.battleNav==='always') switchTab('gallery');
+  if(S.settings.battleNav==='always') switchTab('battle');
   else if(S.settings.battleNav==='manual') {} // stay
-  renderGallery();
+  renderBattle();
   document.getElementById('ac-details').textContent=c.name;
 }
 function stopBattle(){
   B.active=false;
   S.currentCreature=null;
   B.creature=null;
-  renderGallery();
+  renderBattle();
   updateBattleUI();
   document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
 }
@@ -937,9 +939,9 @@ function onWin(){
   const gainStrs=[];
   Object.entries(c.rewards).forEach(([k,v])=>{
     const amount=v*mult*rewardMult*rarityMult;
-    if(['gra','wax','cha'].includes(k)){
+    if(['old','bronze','silver'].includes(k)){
       S.resources[k]=(S.resources[k]||0)+amount;
-      if(k==='gra'){S.lifeGra=(S.lifeGra||0)+amount;}
+      if(k==='old'){S.lifeOld=(S.lifeOld||0)+amount;}
     } else if(S.stats[k]!==undefined){
       S.stats[k]+=amount;
       if(!S.sessionRewards[k])S.sessionRewards[k]=0;
@@ -949,7 +951,7 @@ function onWin(){
   });
   addLog(`<span class="log-info">↳ Rewards: ${gainStrs.join(', ')}</span>`);
   renderSessionRewards();
-  renderStats();renderFundamentals();renderGallery();
+  renderStats();renderFundamentals();renderBattle();
   B.playerHP=maxHP();
   B.enemyHP=c.hp;
   B.lastTick=Date.now();
@@ -971,6 +973,9 @@ function onLose(){
   updateBattleUI();
 }
 
+// ═══════════════════════════════════════════════════════
+// MASTERY UPGRADES & BATTLE UI HELPERS
+// ═══════════════════════════════════════════════════════
 function renderMastery(){
   const el=document.getElementById('mastery-content');
   if(!el)return;
@@ -1101,7 +1106,7 @@ function updateBattleUI(){
   document.getElementById('battle-creature-name').textContent=c.name;
   document.getElementById('battle-creature-name').style.color=rc||'var(--white)';
   document.getElementById('battle-creature-tag').textContent=`[${rl}] ${c.tag}`;
-  document.getElementById('battle-art').innerHTML=SVGs[c.id]||'';
+  document.getElementById('battle-art').innerHTML=c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`:(SVGs[c.id]||'');
   const epct=Math.max(0,B.enemyHP/c.hp*100);
   const ppct=Math.max(0,B.playerHP/maxHP()*100);
   document.getElementById('enemy-hp-bar').style.width=epct+'%';
@@ -1141,31 +1146,31 @@ function renderSessionRewards(){
 // CONCEPTUAL SYNTHESIZER
 // ═══════════════════════════════════════════════════════
 const SYNTH_CONCEPTS=[
-  {id:'gra',name:'Old Coin',sub:'Blood Coin Gain',milestone:1618,baseRate:0},
-  {id:'wax',name:'Bronze Coin',sub:'Produces Old Coin',milestone:1618,baseRate:0},
-  {id:'cha',name:'Silver Coin',sub:'Produces Bronze Coin',milestone:1618,baseRate:0},
+  {id:'old',name:'Old Coin',sub:'Blood Coin Gain',milestone:1618,baseRate:0},
+  {id:'bronze',name:'Bronze Coin',sub:'Produces Old Coin',milestone:1618,baseRate:0},
+  {id:'silver',name:'Silver Coin',sub:'Produces Bronze Coin',milestone:1618,baseRate:0},
   {id:'gold',name:'Gold Coin',sub:'Produces Silver Coin',milestone:1618,baseRate:0},
   {id:'plat',name:'Platinum Coin',sub:'Produces Gold Coin',milestone:1618,baseRate:0},
 ];
-let synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
+let synthRates={old:0,bronze:0,silver:0,gold:0,plat:0};
 function synthTick(dt){
   const platRate=S.victories['contrast_crusher']||0;
-  const goldRate=S.resources.plat*0.002;
-  const chaRate=S.resources.gold*0.002;
-  const waxRate=S.resources.cha*0.002;
-  const graRate=S.resources.wax*0.005;
+  const goldRate=S.synthUnlocked?S.resources.plat*0.002:0;
+  const silverRate=S.synthUnlocked?S.resources.gold*0.002:0;
+  const bronzeRate=S.synthUnlocked?S.resources.silver*0.002:0;
+  const oldRate=S.synthUnlocked?S.resources.bronze*0.005:0;
   synthRates.plat=platRate;
   synthRates.gold=goldRate;
-  synthRates.cha=chaRate;
-  synthRates.wax=waxRate;
-  synthRates.gra=graRate;
+  synthRates.silver=silverRate;
+  synthRates.bronze=bronzeRate;
+  synthRates.old=oldRate;
   S.resources.plat+=platRate*dt;
   S.resources.gold+=goldRate*dt;
-  S.resources.cha+=chaRate*dt;
-  S.resources.wax+=waxRate*dt;
-  S.resources.gra+=graRate*dt;
+  S.resources.silver+=silverRate*dt;
+  S.resources.bronze+=bronzeRate*dt;
+  S.resources.old+=oldRate*dt;
   // Quintessence from graphite milestone
-  if(S.resources.gra>=S.quintPending*100+100){
+  if(S.resources.old>=S.quintPending*100+100){
     S.quintPending+=1;
   }
 }
@@ -1181,7 +1186,7 @@ function renderSynth(){
       <td><div class="synth-concept-name">${c.name}</div><div class="synth-concept-sub">${c.sub}</div></td>
       <td>${fmt(total)}</td>
       <td>${c.milestone} ${etaStr}<div class="synth-milestone-bar"><div class="synth-milestone-fill" style="width:${pct}%"></div></div></td>
-      <td>${S.victories[CREATURES.find(x=>x.rewards.cha!==undefined)?.id]||0}</td>
+      <td>${S.victories[CREATURES.find(x=>x.rewards.silver!==undefined)?.id]||0}</td>
       <td>${rate>0?'+'+rate.toFixed(4)+'/s':'0'}</td>
     </tr>`;
   }).join('');
@@ -1224,24 +1229,28 @@ function renderShop(){
   g.innerHTML=SHOP_ITEMS.map(item=>{
     const owned=S.shopOwned[item.id]||0;
     const costStr=Object.entries(item.cost).map(([k,v])=>`${fmt(v)} ${k.toUpperCase()}`).join(' + ');
-    const canAfford=Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
+    const maxed=item.maxOwned&&owned>=item.maxOwned;
+    const canAfford=!maxed&&Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
     return`<div class="shop-card">
       <div class="shop-name">${item.name}</div>
       <div class="shop-desc">${item.desc}</div>
       <div class="shop-effect">${item.effect}</div>
       <div class="shop-cost">Cost: ${costStr}</div>
-      <div class="shop-own">Owned: ${owned}</div>
-      <button class="btn-buy" onclick="buyShopItem('${item.id}')" ${canAfford?'':'disabled'}>BUY</button>
+      <div class="shop-own">Owned: ${owned}${item.maxOwned?'/'+item.maxOwned:''}</div>
+      <button class="btn-buy" onclick="buyShopItem('${item.id}')" ${canAfford?'':'disabled'}>${maxed?'OWNED':'BUY'}</button>
     </div>`;
   }).join('');
 }
 function buyShopItem(id){
   const item=SHOP_ITEMS.find(x=>x.id===id);
   if(!item)return;
+  const owned=S.shopOwned[item.id]||0;
+  if(item.maxOwned&&owned>=item.maxOwned){toast('Already owned!');return;}
   const canAfford=Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
   if(!canAfford){toast('Not enough resources!');return;}
   Object.entries(item.cost).forEach(([k,v])=>{S.resources[k]-=v;});
   Object.entries(item.statBonus).forEach(([k,v])=>{S.stats[k]=(S.stats[k]||0)+v;});
+  if(item.unlock)S[item.unlock]=true;
   S.shopOwned[item.id]=(S.shopOwned[item.id]||0)+1;
   toast(`Purchased: ${item.name}!`);
   renderShop();renderStats();
@@ -1250,17 +1259,17 @@ function buyShopItem(id){
 // ═══════════════════════════════════════════════════════
 // RESOURCES DISPLAY
 // ═══════════════════════════════════════════════════════
-let lastResources={gra:0,wax:0,cha:0,gold:0,plat:0};
-let resRates={gra:0,wax:0,cha:0,gold:0,plat:0};
+let lastResources={old:0,bronze:0,silver:0,gold:0,plat:0};
+let resRates={old:0,bronze:0,silver:0,gold:0,plat:0};
 function updateResources(){
-  document.getElementById('res-old').textContent=fmt(S.resources.gra);
-  document.getElementById('res-bronze').textContent=fmt(S.resources.wax);
-  document.getElementById('res-silver').textContent=fmt(S.resources.cha);
+  document.getElementById('res-old').textContent=fmt(S.resources.old);
+  document.getElementById('res-bronze').textContent=fmt(S.resources.bronze);
+  document.getElementById('res-silver').textContent=fmt(S.resources.silver);
   document.getElementById('res-gold').textContent=fmt(S.resources.gold);
   document.getElementById('res-plat').textContent=fmt(S.resources.plat);
-  document.getElementById('res-old-rate').textContent=(synthRates.gra>0?'+':'')+synthRates.gra.toFixed(3)+'/s';
-  document.getElementById('res-bronze-rate').textContent=(synthRates.wax>0?'+':'')+synthRates.wax.toFixed(3)+'/s';
-  document.getElementById('res-silver-rate').textContent=(synthRates.cha>0?'+':'')+synthRates.cha.toFixed(3)+'/s';
+  document.getElementById('res-old-rate').textContent=(synthRates.old>0?'+':'')+synthRates.old.toFixed(3)+'/s';
+  document.getElementById('res-bronze-rate').textContent=(synthRates.bronze>0?'+':'')+synthRates.bronze.toFixed(3)+'/s';
+  document.getElementById('res-silver-rate').textContent=(synthRates.silver>0?'+':'')+synthRates.silver.toFixed(3)+'/s';
   document.getElementById('res-gold-rate').textContent=(synthRates.gold>0?'+':'')+synthRates.gold.toFixed(3)+'/s';
   document.getElementById('res-plat-rate').textContent=(synthRates.plat>0?'+':'')+synthRates.plat.toFixed(3)+'/s';
 }
@@ -1293,7 +1302,7 @@ function setupToggles(){
 }
 
 // ═══════════════════════════════════════════════════════
-// TABS
+// INVENTORY
 // ═══════════════════════════════════════════════════════
 const ITEM_ICONS={
   iron_quill:'🗡',sketch_shield:'🛡',ink_vial:'⚗',wax_seal:'💎',
@@ -1335,6 +1344,10 @@ function renderInventory(){
     ${owned.length===0?`<div class="inv-empty-msg" style="text-align:center;padding:12px 0;">Empty. Visit the Shop.</div>`:''}
   </div>`;
 }
+
+// ═══════════════════════════════════════════════════════
+// TAB SWITCHING & NOTIFICATIONS
+// ═══════════════════════════════════════════════════════
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
     t.classList.toggle('active',t.dataset.tab===name);
@@ -1342,7 +1355,7 @@ function switchTab(name){
   document.querySelectorAll('.tab-pane').forEach(p=>{
     p.classList.toggle('active',p.id==='tab-'+name);
   });
-  if(name==='gallery')renderGallery();
+  if(name==='battle')renderBattle();
   if(name==='inventory')renderInventory();
   if(name==='shop')renderShop();
   if(name==='archive'){
@@ -1369,10 +1382,10 @@ function updateArchiveDot(){
 document.querySelectorAll('.nav-tab').forEach(t=>{
   t.addEventListener('click',()=>switchTab(t.dataset.tab));
 });
-document.querySelectorAll('.arch-tab').forEach(t=>{
+document.querySelectorAll('.prestige-tab').forEach(t=>{
   t.addEventListener('click',()=>{
-    document.querySelectorAll('.arch-tab').forEach(x=>x.classList.toggle('active',x===t));
-    document.querySelectorAll('.arch-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-'+t.dataset.arch));
+    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x===t));
+    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-'+t.dataset.arch));
     if(t.dataset.arch==='synth')renderSynth();
     if(t.dataset.arch==='glossary')renderGlossary();
     if(t.dataset.arch==='masterpiece')renderMastery();
@@ -1423,14 +1436,14 @@ function setupSettings(){
   // Font Size
   const FS_DEFAULT=13,FS_MIN=8,FS_MAX=24,FS_STEP=1;
   const FS_RULES=[
-    ['body',13],['#topbar .title',16],['.nav-tab',12],['.res-val',15],
-    ['.res-rate',11],['.res-icon',10],['.res-unknown',22],['#topbar .fps',12],
+    ['body',13],['#topbar .title',16],['.nav-tab',12],['.res-val',18],
+    ['.res-rate',13],['.res-icon',12],['#topbar .fps',12],
     ['#add-btn',16],['#quint-count',13],['.btm-panel-hdr',11],
     ['#specs-header .label',9],['.filter-tab',10],['.sort-btn',11],
-    ['.sort-label',11],['.stat-name',9],['.stat-val',13],
+    ['.sort-label',11],['.stat-name',9],['.stat-val',17],
     ['#fund-header .label',11],['.fund-row',10],['#protocols-header .title',11],
     ['.protocol-title',10],['.protocol-sub',10],['.toggle-label',10],
-    ['.protocol-val',8],['#gallery-intro',11],['.card-name',10],
+    ['.protocol-val',8],['#battle-intro',11],['.card-name',10],
     ['.card-tagline',8],['.card-stats',9],['.new-badge',7],
     ['.rewards-header',8],['.reward-item',8],['.btn-challenge',9],
     ['.btn-maxed',9],['#battle-creature-name',16],['#battle-creature-tag',10],
@@ -1438,7 +1451,7 @@ function setupSettings(){
     ['.timer-label',8],['.timer-text',8],['#victory-panel h3',10],
     ['.victory-stat',10],['#death-overlay h2',16],['#death-overlay .timer',24],
     ['.bsp-box-title',11],['.bsp-box-sub',8],['.bsp-col-head',8],
-    ['.bsp-name',10],['.bsp-you',9],['.bsp-enemy',9],['.arch-tab',10],
+    ['.bsp-name',10],['.bsp-you',9],['.bsp-enemy',9],['.prestige-tab',10],
     ['.synth-table th',9],['.synth-table td',10],['.synth-concept-sub',8],
     ['.synth-eta',8],['.synth-panel-title',8],['.quint-pending',24],
     ['.quint-sub',8],['.quint-row',9],['#reincarnate-btn',9],['.reincarnate-req',8],
@@ -1446,10 +1459,21 @@ function setupSettings(){
     ['.settings-check-sublabel',8],['.zoom-val',10],['.zoom-btn',11],
   ];
   let fs=S.settings.fontSize||FS_DEFAULT;
+  const FS_CSS_MAP={};
+  for(const sheet of document.styleSheets){
+    let rules;
+    try{rules=sheet.cssRules;}catch(e){continue;}
+    for(const rule of rules){
+      if(rule.style&&rule.style.fontSize){
+        FS_CSS_MAP[rule.selectorText]=parseFloat(rule.style.fontSize);
+      }
+    }
+  }
+  const FS_BASE=FS_RULES.map(([sel,fallback])=>FS_CSS_MAP[sel]??fallback);
   function applyFontSize(size){
     S.settings.fontSize=size;
-    const r=size/13;
-    const css=FS_RULES.map(([sel,base])=>`${sel}{font-size:${(base*r).toFixed(1)}px!important;}`).join('');
+    const r=size/FS_DEFAULT;
+    const css=FS_RULES.map(([sel],i)=>`${sel}{font-size:${(FS_BASE[i]*r).toFixed(1)}px!important;}`).join('');
     document.getElementById('fs-override').textContent=css;
     document.getElementById('fs-val').textContent=size+'px';
   }
@@ -1516,11 +1540,10 @@ function setupSettings(){
   document.getElementById('btn-hard-reset').addEventListener('click',()=>{
     if(confirm('HARD RESET: All progress will be permanently lost. Are you absolutely sure?')){
       localStorage.removeItem('rejected_draft_save');
-      localStorage.removeItem('rd_tutorial_done');
       S=DEFAULT_STATE();
       B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
-      synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
-      initGalleryQueue();
+      synthRates={old:0,bronze:0,silver:0,gold:0,plat:0};
+      initBattleQueue();
       renderAll();
       toast('Game has been reset.',3000);
     }
@@ -1538,8 +1561,8 @@ function setupSettings(){
   // Add / Quintessence shortcut
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
-    document.querySelectorAll('.arch-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='synth'));
-    document.querySelectorAll('.arch-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-synth'));
+    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='synth'));
+    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-synth'));
     renderSynth();
   });
 
@@ -1554,15 +1577,15 @@ function setupSettings(){
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.victories={};
-    S.resources={gra:0,wax:0,cha:0,gold:0,plat:0};
+    S.resources={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.currentCreature=null;
     S.quintPending=0;
     S.sessionRewards={};
-    S.galleryUnlocked=[];
-    S.galleryQueue=[];
+    S.battleUnlocked=[];
+    S.battleQueue=[];
     B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
-    synthRates={gra:0,wax:0,cha:0,gold:0,plat:0};
-    initGalleryQueue();
+    synthRates={old:0,bronze:0,silver:0,gold:0,plat:0};
+    initBattleQueue();
     renderAll();
   });
 }
@@ -1582,14 +1605,15 @@ function loadGame(){
     const def=DEFAULT_STATE();
     S=Object.assign(def,loaded);
     S.stats=Object.assign(DEFAULT_STATE().stats,loaded.stats||{});
-    S.resources=Object.assign({gra:0,wax:0,cha:0,gold:0,plat:0},loaded.resources||{});
+    S.resources=Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0},loaded.resources||{});
     S.settings=Object.assign(def.settings,loaded.settings||{});
     S.protocols=Object.assign({autoChallenge:false,autoRetry:false},loaded.protocols||{});
     S.victories=Object.assign({},loaded.victories||{});
     S.shopOwned=Object.assign({},loaded.shopOwned||{});
     S.spawnRarity=Object.assign({},loaded.spawnRarity||{});
+    S.synthUnlocked=loaded.synthUnlocked||false;
     S.deaths=loaded.deaths||0;
-    S.lifeGra=loaded.lifeGra||0;
+    S.lifeOld=loaded.lifeOld||0;
     S.reincarnations=loaded.reincarnations||0;
     S.quintPending=loaded.quintPending||0;
     S.quintLifetime=loaded.quintLifetime||0;
@@ -1597,16 +1621,18 @@ function loadGame(){
     const offline=Math.min((Date.now()-(loaded.lastSave||Date.now()))/1000, 86400);
     if(offline>10){
       S.offlineTime=(S.offlineTime||0)+offline;
-      const offlineRate=0.5+(S.reincarnations*0.1);
-      const offlineGra=offline*offlineRate;
-      const offlineWax=offline*(offlineRate*0.05);
-      S.resources.gra+=offlineGra;
-      S.resources.wax+=offlineWax;
-      S.lifeGra+=offlineGra;
-      setTimeout(()=>toast(`Welcome back! +${fmt(offlineGra)} GRA, +${fmt(offlineWax)} WAX offline (${fmtTime(offline)})`,5000),500);
+      if(S.synthUnlocked){
+        const offlineRate=0.5+(S.reincarnations*0.1);
+        const offlineOld=offline*offlineRate;
+        const offlineBronze=offline*(offlineRate*0.05);
+        S.resources.old+=offlineOld;
+        S.resources.bronze+=offlineBronze;
+        S.lifeOld+=offlineOld;
+        setTimeout(()=>toast(`Welcome back! +${fmt(offlineOld)} OLD, +${fmt(offlineBronze)} BRONZE offline (${fmtTime(offline)})`,5000),500);
+      }
     }
   }catch(e){console.error('Load failed',e);}
-  initGalleryQueue();
+  initBattleQueue();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1631,7 +1657,7 @@ document.querySelectorAll('#fund-filters .filter-tab').forEach(t=>{
 // MAIN RENDER
 // ═══════════════════════════════════════════════════════
 function renderAll(){
-  renderStats();renderFundamentals();renderGallery();renderShop();
+  renderStats();renderFundamentals();renderBattle();renderShop();
   renderSynth();renderGlossary();
   updateBattleUI();renderSessionRewards();updateResources();
 }
@@ -1667,7 +1693,7 @@ function gameLoop(){
     if(archActive){
       if(document.getElementById('arch-synth').classList.contains('active'))renderSynth();
     }
-    if(document.getElementById('tab-gallery').classList.contains('active'))renderGallery();
+    if(document.getElementById('tab-battle').classList.contains('active'))renderBattle();
     if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
     saveGame();
   }
@@ -1678,7 +1704,7 @@ function gameLoop(){
 // INIT
 // ═══════════════════════════════════════════════════════
 loadGame();
-initGalleryQueue();
+initBattleQueue();
 setupToggles();
 setupSettings();
 renderAll();

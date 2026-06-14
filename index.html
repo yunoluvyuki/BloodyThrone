@@ -13,7 +13,7 @@
 <div id="topbar">
   <div class="title">Draft Throne</div>
   <div id="nav-tabs">
-    <button class="nav-tab active" data-tab="gallery">BATTLE<span class="dot" id="gallery-dot" style="display:none"></span></button>
+    <button class="nav-tab active" data-tab="battle">BATTLE<span class="dot" id="battle-dot" style="display:none"></span></button>
     <button class="nav-tab" data-tab="inventory">INVENTORY</button>
     <button class="nav-tab" data-tab="shop">SHOP</button>
     <button class="nav-tab" data-tab="archive">PRESTIGE<span class="dot" id="archive-dot" style="display:none"></span></button>
@@ -62,10 +62,10 @@
   <!-- CONTENT AREA -->
   <div id="content-area">
 
-    <!-- GALLERY / WORLD TAB (includes battle below) -->
-    <div class="tab-pane active" id="tab-gallery">
+    <!-- BATTLE TAB (includes battle below) -->
+    <div class="tab-pane active" id="tab-battle">
 
-      <div id="gallery-grid"></div>
+      <div id="battle-grid"></div>
 
       <!-- BATTLE SECTION (embedded in World tab) -->
       <div id="battle-area" style="margin-top:12px;">
@@ -136,20 +136,20 @@
       <div id="shop-grid"></div>
     </div>
 
-    <!-- ARCHIVE TAB -->
+    <!-- PRESTIGE TAB -->
     <div class="tab-pane" id="tab-archive">
-      <div class="archive-tabs">
-        <span class="arch-tab" data-arch="glossary">CODEX</span>
-        <span class="arch-tab active" data-arch="synth">TREASURY</span>
-        <span class="arch-tab" data-arch="masterpiece">MASTERY</span>
+      <div class="prestige-tabs">
+        <span class="prestige-tab" data-arch="glossary">CODEX</span>
+        <span class="prestige-tab active" data-arch="synth">TREASURY</span>
+        <span class="prestige-tab" data-arch="masterpiece">MASTERY</span>
       </div>
       <!-- Glossary -->
-      <div class="arch-pane" id="arch-glossary">
+      <div class="prestige-pane" id="arch-glossary">
         <div id="gloss-filters"></div>
         <div id="gloss-grid"></div>
       </div>
       <!-- Synthesizer -->
-      <div class="arch-pane active" id="arch-synth">
+      <div class="prestige-pane active" id="arch-synth">
         <div id="synth-layout">
           <div id="synth-table-wrap">
             <table class="synth-table">
@@ -181,7 +181,7 @@
         </div>
       </div>
       <!-- Masterpiece -->
-      <div class="arch-pane" id="arch-masterpiece">
+      <div class="prestige-pane" id="arch-masterpiece">
         <div id="mastery-content"></div>
       </div>
     </div>
@@ -245,7 +245,7 @@
           </label>
           <label class="settings-check-row">
             <input type="checkbox" id="chk-unstick">
-            <div><div class="settings-check-label">UNSTICK GALLERY/CODEX FILTERS</div><div class="settings-check-sublabel">Let filters scroll with the page on cramped screens.</div></div>
+            <div><div class="settings-check-label">UNSTICK BATTLE/CODEX FILTERS</div><div class="settings-check-sublabel">Let filters scroll with the page on cramped screens.</div></div>
           </label>
           <label class="settings-check-row">
             <input type="checkbox" id="chk-highlights">
@@ -358,26 +358,6 @@
         </div>
 
       </div><!-- /settings-layout row 1 -->
-
-      <!-- Row 2: Community + Wishlist -->
-      <div id="settings-layout2">
-        <!-- Community & Feedback -->
-        <div class="settings-section" style="max-height:none;">
-          <div class="settings-title"><span class="settings-icon">💬</span> COMMUNITY &amp; FEEDBACK</div>
-          <p class="community-text">Hope you enjoy the demo! Join our Discord to talk strategy, track updates, report bugs, or just hang out with the Draft Throne community.</p>
-          <button class="settings-btn" onclick="toast('Discord link not available in this build.')">JOIN DISCORD</button>
-          <button class="settings-btn" onclick="toast('Thank you for playing!')">SEND FEEDBACK</button>
-          <button class="settings-btn" onclick="toast('Bug report noted!')">REPORT A BUG</button>
-          <div style="margin-top:8px;font-size:8px;color:var(--text3);line-height:1.6;">All feedback is read. The game improves because of players like you.</div>
-        </div>
-        <!-- Wishlist on Steam -->
-        <div class="settings-section" style="max-height:none;">
-          <div class="settings-title"><span class="settings-icon">⭐</span> WISHLIST ON STEAM</div>
-          <p class="wishlist-text">Wishlisting only takes a few clicks. The full game will have a longer story, bigger progression systems, and more interesting enemies waiting later into the run. It's on Steam on its way.</p>
-          <button class="settings-btn" onclick="toast('Wishlist feature not available in this build.')">WISHLIST ON STEAM →</button>
-          <div style="margin-top:8px;font-size:8px;color:var(--text3);line-height:1.6;">Your wishlist helps the game reach more players. Every notification counts.</div>
-        </div>
-      </div><!-- /settings-layout row 2 -->
 
     </div><!-- /tab-settings -->
 
