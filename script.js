@@ -827,7 +827,6 @@ function startBattle(creatureId){
   B.creature={...c,atk:c.atk*rarityMult,hp:c.hp*rarityMult};
   B.active=true;
   B.dying=false;
-  B.playerHP=maxHP();
   B.enemyHP=B.creature.hp;
   B.lastTick=Date.now();
   B.playerTimer=3000/(S.stats.asp||1);
@@ -849,37 +848,38 @@ function stopBattle(){
 }
 function battleTick(){
   if(B.dying){
-    const elapsed=(Date.now()-B.deathStart)/1000;
-    const remaining=Math.max(0,10-elapsed);
-    document.getElementById('death-timer').textContent=Math.ceil(remaining);
-    if(remaining<=0){
-      document.getElementById('death-overlay').style.display='none';
-      B.dying=false;
-      if(S.protocols.autoRetry&&B.creature){
+    const elapsed = (Date.now() - B.deathStart) / 1000;
+    const remaining = Math.max(0, 10 - elapsed);
+    document.getElementById('death-timer').textContent = Math.ceil(remaining);
+    if(remaining <= 0){
+      document.getElementById('death-overlay').style.display = 'none';
+      B.dying = false;
+      B.playerHP = maxHP(); 
+      if(S.protocols.autoRetry && B.creature){
         startBattle(B.creature.id);
       } else {
-        B.active=false;
-        S.currentCreature=null;
+        B.active = false;
+        S.currentCreature = null;
       }
     }
     return;
   }
-  if(!B.active||!B.creature)return;
-  const now=Date.now();
-  const dt=Math.min(now-B.lastTick,500);
-  B.lastTick=now;
-  B.playerTimer-=dt;
-  B.enemyTimer-=dt;
-  if(B.playerTimer<=0){
+  if(!B.active || !B.creature) return;
+  const now = Date.now();
+  const dt = Math.min(now - B.lastTick, 500);
+  B.lastTick = now;
+  B.playerTimer -= dt;
+  B.enemyTimer -= dt;
+  if(B.playerTimer <= 0){
     firePlayerTurn();
-    if(!B.active)return;
-    B.playerTimer=Math.max(200,3000/(S.stats.asp||1));
+    if(!B.active) return;
+    B.playerTimer = Math.max(200, 3000 / (S.stats.asp || 1));
   }
-  if(!B.active)return;
-  if(B.enemyTimer<=0){
+  if(!B.active) return;
+  if(B.enemyTimer <= 0){
     fireEnemyTurn();
-    if(!B.active)return;
-    B.enemyTimer=3000;
+    if(!B.active) return;
+    B.enemyTimer = 3000;
   }
 }
 function firePlayerTurn(){
@@ -1041,7 +1041,6 @@ function onWin(){
   // Not maxed — continue if autoChallenge active
   if(S.protocols.autoChallenge){
     B.active = true;
-    B.playerHP = maxHP();
     B.enemyHP = B.creature.hp;
     B.lastTick = Date.now();
   } else {
