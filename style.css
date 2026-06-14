@@ -201,12 +201,12 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .bsp-you{color:#4ecdc4;text-align:right;font-size:9px;font-variant-numeric:tabular-nums;}
 .bsp-enemy{color:#e74c3c;text-align:right;font-size:9px;font-variant-numeric:tabular-nums;}
 
-/* ── ARCHIVE ────────────────────────────────────────── */
-.archive-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:12px;}
-.arch-tab{padding:6px 16px;cursor:pointer;font-size:10px;color:var(--text2);border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:1px;}
-.arch-tab.active{color:var(--white);border-bottom-color:var(--white);}
-.arch-pane{display:none;}
-.arch-pane.active{display:block;}
+/* ── PRESTIGE ────────────────────────────────────────── */
+.prestige-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.prestige-tab{padding:6px 16px;cursor:pointer;font-size:10px;color:var(--text2);border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:1px;}
+.prestige-tab.active{color:var(--white);border-bottom-color:var(--white);}
+.prestige-pane{display:none;}
+.prestige-pane.active{display:block;}
 /* Synthesizer */
 #synth-layout{display:flex;gap:16px;}
 #synth-table-wrap{flex:1;}

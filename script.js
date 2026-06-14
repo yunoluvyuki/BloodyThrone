@@ -1382,10 +1382,10 @@ function updateArchiveDot(){
 document.querySelectorAll('.nav-tab').forEach(t=>{
   t.addEventListener('click',()=>switchTab(t.dataset.tab));
 });
-document.querySelectorAll('.arch-tab').forEach(t=>{
+document.querySelectorAll('.prestige-tab').forEach(t=>{
   t.addEventListener('click',()=>{
-    document.querySelectorAll('.arch-tab').forEach(x=>x.classList.toggle('active',x===t));
-    document.querySelectorAll('.arch-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-'+t.dataset.arch));
+    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x===t));
+    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-'+t.dataset.arch));
     if(t.dataset.arch==='synth')renderSynth();
     if(t.dataset.arch==='glossary')renderGlossary();
     if(t.dataset.arch==='masterpiece')renderMastery();
@@ -1451,7 +1451,7 @@ function setupSettings(){
     ['.timer-label',8],['.timer-text',8],['#victory-panel h3',10],
     ['.victory-stat',10],['#death-overlay h2',16],['#death-overlay .timer',24],
     ['.bsp-box-title',11],['.bsp-box-sub',8],['.bsp-col-head',8],
-    ['.bsp-name',10],['.bsp-you',9],['.bsp-enemy',9],['.arch-tab',10],
+    ['.bsp-name',10],['.bsp-you',9],['.bsp-enemy',9],['.prestige-tab',10],
     ['.synth-table th',9],['.synth-table td',10],['.synth-concept-sub',8],
     ['.synth-eta',8],['.synth-panel-title',8],['.quint-pending',24],
     ['.quint-sub',8],['.quint-row',9],['#reincarnate-btn',9],['.reincarnate-req',8],
@@ -1556,8 +1556,8 @@ function setupSettings(){
   // Add / Quintessence shortcut
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
-    document.querySelectorAll('.arch-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='synth'));
-    document.querySelectorAll('.arch-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-synth'));
+    document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='synth'));
+    document.querySelectorAll('.prestige-pane').forEach(x=>x.classList.toggle('active',x.id==='arch-synth'));
     renderSynth();
   });
 
