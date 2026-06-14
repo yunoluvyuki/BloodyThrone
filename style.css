@@ -181,7 +181,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .tfill-enemy{background:#9b59b6;}
 .timer-text{font-size:8px;color:var(--text2);width:28px;text-align:right;flex-shrink:0;}
 .timer-block{display:flex;flex-direction:column;gap:3px;}
-.timer-block .timer-bar-wrap{width:100%;}
+.timer-block .timer-bar-wrap{flex:none;width:100%;height:6px;}
 .timer-block .timer-text{align-self:flex-end;}
 #victory-panel{background:var(--bg2);border:1px solid var(--border);padding:12px;}
 #victory-panel h3{font-size:10px;color:var(--text2);letter-spacing:1px;margin-bottom:8px;}
