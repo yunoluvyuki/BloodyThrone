@@ -114,18 +114,18 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .card-art{width:120px;height:120px;background:var(--card-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;}
 .card-art svg{width:100px;height:100px;}
 .card-info{flex:1;padding:6px 8px;}
-.card-name{font-size:10px;color:var(--white);font-weight:bold;letter-spacing:1px;text-transform:uppercase;}
-.card-tagline{font-size:8px;color:var(--text2);margin:2px 0;font-style:italic;}
-.card-stats{display:flex;gap:4px;align-items:center;margin-top:4px;font-size:9px;color:var(--text2);}
+.card-name{font-size:16px;color:#ff0000;font-weight:bold;letter-spacing:1px;text-transform:uppercase;}
+.card-tagline{font-size:10px;color:var(--text2);margin:2px 0;font-style:italic;}
+.card-stats{display:flex;gap:1px;align-items:center;margin-top:2px;font-size:12px;color:var(--text2);}
 .card-atk{color:#e8a44a;}
 .card-def{color:#7fb3d3;}
 .card-hp{color:var(--red2);}
 .new-badge{position:absolute;top:4px;left:4px;background:var(--red2);color:#fff;font-size:7px;font-weight:bold;padding:1px 4px;letter-spacing:1px;}
 .card-rewards{padding:6px 8px;border-bottom:1px solid var(--border);}
-.rewards-header{font-size:8px;color:var(--text3);display:flex;justify-content:space-between;margin-bottom:3px;}
+.rewards-header{font-size:12px;color:var(--text3);display:flex;justify-content:space-between;margin-bottom:3px;}
 .rewards-header .vic{color:var(--text3);}
 .reward-list{display:flex;flex-wrap:wrap;gap:3px;}
-.reward-item{font-size:8px;color:var(--green);background:rgba(39,174,96,0.08);padding:1px 4px;}
+.reward-item{font-size:10px;color:var(--green);padding:1px 4px;}
 .reward-item.res{color:var(--yellow);}
 .card-btn{padding:6px;text-align:center;}
 .btn-challenge{width:100%;padding:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:2px;text-transform:uppercase;}
