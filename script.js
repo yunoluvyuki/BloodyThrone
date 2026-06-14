@@ -572,8 +572,8 @@ const DEFAULT_STATE = ()=>({
   masteryUpgrades:{},
   synthUnlocked:false,
   sessionRewards:{},
-  galleryUnlocked:[],
-  galleryQueue:[],
+  battleUnlocked:[],
+  battleQueue:[],
   spawnRarity:{},
 });
 let S = DEFAULT_STATE();
@@ -679,39 +679,39 @@ function renderFundamentals(){
 }
 
 // ═══════════════════════════════════════════════════════
-// GALLERY
+// CREATURE UNLOCKS & RARITY
 // ═══════════════════════════════════════════════════════
-// ── GALLERY QUEUE ─────────────────────────────────────
-function initGalleryQueue(){
+// ── BATTLE QUEUE ─────────────────────────────────────
+function initBattleQueue(){
   // Build from scratch if missing or empty
-  if(!S.galleryUnlocked||S.galleryUnlocked.length===0){
+  if(!S.battleUnlocked||S.battleUnlocked.length===0){
     const allIds=CREATURES.map(c=>c.id);
     const withVic=allIds.filter(id=>(S.victories[id]||0)>0);
     const remaining=allIds.filter(id=>!withVic.includes(id));
-    S.galleryUnlocked=[...withVic];
-    S.galleryQueue=[...remaining];
+    S.battleUnlocked=[...withVic];
+    S.battleQueue=[...remaining];
     // Ensure at least 4 unlocked
-    while(S.galleryUnlocked.length<4&&S.galleryQueue.length>0){
-      S.galleryUnlocked.push(S.galleryQueue.shift());
+    while(S.battleUnlocked.length<4&&S.battleQueue.length>0){
+      S.battleUnlocked.push(S.battleQueue.shift());
     }
   }else{
     // Ensure queue is clean (remove any IDs already unlocked)
-    S.galleryQueue=(S.galleryQueue||[]).filter(id=>!S.galleryUnlocked.includes(id));
+    S.battleQueue=(S.battleQueue||[]).filter(id=>!S.battleUnlocked.includes(id));
   }
 }
 function unlockNextCreature(){
-  if(!S.galleryQueue||S.galleryQueue.length===0)return;
-  const window=Math.min(4,S.galleryQueue.length);
+  if(!S.battleQueue||S.battleQueue.length===0)return;
+  const window=Math.min(4,S.battleQueue.length);
   const pick=Math.floor(Math.random()*window);
-  const id=S.galleryQueue.splice(pick,1)[0];
-  S.galleryUnlocked.push(id);
+  const id=S.battleQueue.splice(pick,1)[0];
+  S.battleUnlocked.push(id);
   const c=getCreature(id);
   if(c){
     addLog(`<span style="color:var(--green)">◆ A new enemy has stepped forward: <b>${c.name}</b>.</span>`);
     toast(`New foe: ${c.name}`,3000);
   }
 }
-function isUnlocked(id){return S.galleryUnlocked&&S.galleryUnlocked.includes(id);}
+function isUnlocked(id){return S.battleUnlocked&&S.battleUnlocked.includes(id);}
 
 const TYPE_COLORS={scrap:'#555',elite:'#8e44ad',boss:'#c0392b'};
 
@@ -749,8 +749,8 @@ function getSpawnRarity(id){
   return S.spawnRarity[id];
 }
 
-function renderGallery(){
-  const g=document.getElementById('gallery-grid');
+function renderBattle(){
+  const g=document.getElementById('battle-grid');
   const visible=CREATURES.filter(c=>isUnlocked(c.id)&&!isMaxed(c));
   const defeated=CREATURES.filter(c=>isMaxed(c)).length;
   const hidden=CREATURES.length-visible.length-defeated;
@@ -826,16 +826,16 @@ function startBattle(creatureId){
   const rc=RARITY_COLORS[B.rarity];
   const rl=RARITY_LABELS[B.rarity];
   addLog(`<span style="color:${rc}">⚔ ${c.name} appears [${rl}]${B.rarity!=='common'?' ×'+RARITY_MULTS[B.rarity]:''}</span>`);
-  if(S.settings.battleNav==='always') switchTab('gallery');
+  if(S.settings.battleNav==='always') switchTab('battle');
   else if(S.settings.battleNav==='manual') {} // stay
-  renderGallery();
+  renderBattle();
   document.getElementById('ac-details').textContent=c.name;
 }
 function stopBattle(){
   B.active=false;
   S.currentCreature=null;
   B.creature=null;
-  renderGallery();
+  renderBattle();
   updateBattleUI();
   document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
 }
@@ -951,7 +951,7 @@ function onWin(){
   });
   addLog(`<span class="log-info">↳ Rewards: ${gainStrs.join(', ')}</span>`);
   renderSessionRewards();
-  renderStats();renderFundamentals();renderGallery();
+  renderStats();renderFundamentals();renderBattle();
   B.playerHP=maxHP();
   B.enemyHP=c.hp;
   B.lastTick=Date.now();
@@ -973,6 +973,9 @@ function onLose(){
   updateBattleUI();
 }
 
+// ═══════════════════════════════════════════════════════
+// MASTERY UPGRADES & BATTLE UI HELPERS
+// ═══════════════════════════════════════════════════════
 function renderMastery(){
   const el=document.getElementById('mastery-content');
   if(!el)return;
@@ -1299,7 +1302,7 @@ function setupToggles(){
 }
 
 // ═══════════════════════════════════════════════════════
-// TABS
+// INVENTORY
 // ═══════════════════════════════════════════════════════
 const ITEM_ICONS={
   iron_quill:'🗡',sketch_shield:'🛡',ink_vial:'⚗',wax_seal:'💎',
@@ -1341,6 +1344,10 @@ function renderInventory(){
     ${owned.length===0?`<div class="inv-empty-msg" style="text-align:center;padding:12px 0;">Empty. Visit the Shop.</div>`:''}
   </div>`;
 }
+
+// ═══════════════════════════════════════════════════════
+// TAB SWITCHING & NOTIFICATIONS
+// ═══════════════════════════════════════════════════════
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
     t.classList.toggle('active',t.dataset.tab===name);
@@ -1348,7 +1355,7 @@ function switchTab(name){
   document.querySelectorAll('.tab-pane').forEach(p=>{
     p.classList.toggle('active',p.id==='tab-'+name);
   });
-  if(name==='gallery')renderGallery();
+  if(name==='battle')renderBattle();
   if(name==='inventory')renderInventory();
   if(name==='shop')renderShop();
   if(name==='archive'){
@@ -1436,7 +1443,7 @@ function setupSettings(){
     ['.sort-label',11],['.stat-name',9],['.stat-val',17],
     ['#fund-header .label',11],['.fund-row',10],['#protocols-header .title',11],
     ['.protocol-title',10],['.protocol-sub',10],['.toggle-label',10],
-    ['.protocol-val',8],['#gallery-intro',11],['.card-name',10],
+    ['.protocol-val',8],['#battle-intro',11],['.card-name',10],
     ['.card-tagline',8],['.card-stats',9],['.new-badge',7],
     ['.rewards-header',8],['.reward-item',8],['.btn-challenge',9],
     ['.btn-maxed',9],['#battle-creature-name',16],['#battle-creature-tag',10],
@@ -1531,7 +1538,7 @@ function setupSettings(){
       S=DEFAULT_STATE();
       B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
       synthRates={old:0,bronze:0,silver:0,gold:0,plat:0};
-      initGalleryQueue();
+      initBattleQueue();
       renderAll();
       toast('Game has been reset.',3000);
     }
@@ -1569,11 +1576,11 @@ function setupSettings(){
     S.currentCreature=null;
     S.quintPending=0;
     S.sessionRewards={};
-    S.galleryUnlocked=[];
-    S.galleryQueue=[];
+    S.battleUnlocked=[];
+    S.battleQueue=[];
     B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
     synthRates={old:0,bronze:0,silver:0,gold:0,plat:0};
-    initGalleryQueue();
+    initBattleQueue();
     renderAll();
   });
 }
@@ -1618,7 +1625,7 @@ function loadGame(){
       setTimeout(()=>toast(`Welcome back! +${fmt(offlineOld)} OLD, +${fmt(offlineBronze)} BRONZE offline (${fmtTime(offline)})`,5000),500);
     }
   }catch(e){console.error('Load failed',e);}
-  initGalleryQueue();
+  initBattleQueue();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1643,7 +1650,7 @@ document.querySelectorAll('#fund-filters .filter-tab').forEach(t=>{
 // MAIN RENDER
 // ═══════════════════════════════════════════════════════
 function renderAll(){
-  renderStats();renderFundamentals();renderGallery();renderShop();
+  renderStats();renderFundamentals();renderBattle();renderShop();
   renderSynth();renderGlossary();
   updateBattleUI();renderSessionRewards();updateResources();
 }
@@ -1679,7 +1686,7 @@ function gameLoop(){
     if(archActive){
       if(document.getElementById('arch-synth').classList.contains('active'))renderSynth();
     }
-    if(document.getElementById('tab-gallery').classList.contains('active'))renderGallery();
+    if(document.getElementById('tab-battle').classList.contains('active'))renderBattle();
     if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
     saveGame();
   }
@@ -1690,7 +1697,7 @@ function gameLoop(){
 // INIT
 // ═══════════════════════════════════════════════════════
 loadGame();
-initGalleryQueue();
+initBattleQueue();
 setupToggles();
 setupSettings();
 renderAll();
