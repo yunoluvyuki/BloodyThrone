@@ -769,7 +769,7 @@ const TYPE_COLORS={scrap:'#555',elite:'#8e44ad',boss:'#c0392b'};
 // ── RARITY SYSTEM ─────────────────────────────────────
 const RARITY_COLORS={common:'#888',uncommon:'#27ae60',rare:'#2980b9',epic:'#9b59b6',legendary:'#f0b429'};
 const RARITY_LABELS={common:'COMMON',uncommon:'UNCOMMON',rare:'RARE',epic:'EPIC',legendary:'LEGENDARY'};
-const RARITY_MULTS={common:1,uncommon:1.5,rare:3,epic:7,legendary:15};
+const RARITY_MULTS={common:1,uncommon:1.5,rare:3,epic:6,legendary:15};
 const RARITY_BG={common:'rgba(80,80,80,0.15)',uncommon:'rgba(39,174,96,0.18)',rare:'rgba(41,128,185,0.18)',epic:'rgba(155,89,182,0.2)',legendary:'rgba(240,180,41,0.15)'};
 const RARITY_UPGRADES=[
   {id:'unc_rate',rarity:'uncommon',label:'UNCOMMON ATTUNEMENT',desc:'+1% uncommon spawn chance per level.',base:{gra:500},scale:1.8,maxLevel:19,perLevel:1},
@@ -867,12 +867,13 @@ function startBattle(creatureId){
   const c=getCreature(creatureId);
   if(!c)return;
   S.currentCreature=creatureId;
-  B.creature=c;
+  B.rarity=getSpawnRarity(creatureId);
+  const rarityMult=RARITY_MULTS[B.rarity]||1;
+  B.creature={...c,atk:c.atk*rarityMult,hp:c.hp*rarityMult};
   B.active=true;
   B.dying=false;
-  B.rarity=getSpawnRarity(creatureId);
   B.playerHP=maxHP();
-  B.enemyHP=c.hp;
+  B.enemyHP=B.creature.hp;
   B.lastTick=Date.now();
   B.turnCount=0;
   B.playerTimer=3000/(S.stats.asp||1);
