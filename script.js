@@ -994,9 +994,9 @@ function onWin(){
   const c=B.creature;
   if(!S.victories[c.id])S.victories[c.id]=0;
   S.victories[c.id]++;
-  const justMaxed=S.victories[c.id]===c.vicReq;
+  const maxwin=S.victories[c.id]===c.vicReq;
   addLog(`<span class="log-win">✓ Defeated ${c.name}! (${S.victories[c.id]}/${c.vicReq})</span>`);
-  if(justMaxed) unlockNextCreature();
+  if(maxwin) unlockNextCreature();
   const mult=calcGlossaryMult();
   const rewardMult=1+(S.reincarnations*0.05);
   const rarityMult=RARITY_MULTS[B.rarity||'common']||1;
@@ -1018,7 +1018,7 @@ function onWin(){
   renderSessionRewards();
   renderStats();renderFundamentals();renderBattle();
   B.playerHP=maxHP();
-  B.enemyHP=c.hp;
+  B.enemyHP = B.creature.hp;
   B.lastTick=Date.now();
   if(isMaxed(c)){
     if(S.protocols.autoChallenge){
