@@ -64,7 +64,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .sort-btn{padding:1px 4px;font-size:11px;cursor:pointer;color:var(--text3);background:none;border:none;font-family:inherit;}
 .sort-btn.active{color:var(--white);}
 .sort-label{font-size:11px;color:var(--text3);}
-#stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px 8px;}
+#stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2px;padding:5px 8px;}
 .stat-cell{background:var(--bg3);border:1px solid var(--border);padding:3px 6px;display:flex;flex-direction:column;}
 .stat-name{font-size:9px;color:var(--text3);text-transform:uppercase;}
 .stat-val{font-size:13px;color:var(--white);font-weight:bold;line-height:1.2;}
