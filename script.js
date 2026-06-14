@@ -1161,14 +1161,15 @@ function updateBattleStats(){
   document.getElementById('bsp-def').innerHTML = defRows.map(s => row(s, '#4ecdc4')).join('');
 }
 function updateBattleUI(){
-  const c=B.creature;
-  const turnEl=document.getElementById('turn-display');
-  const ptimerBar=document.getElementById('ptimer-bar');
-  const etimerBar=document.getElementById('etimer-bar');
-  const ptimerText=document.getElementById('ptimer-text');
-  const etimerText=document.getElementById('etimer-text');
-if(!c){
-  const ppct = Math.max(0, B.playerHP / maxHP() * 100);
+  const c = B.creature;
+  const turnEl = document.getElementById('turn-display');
+  const ptimerBar = document.getElementById('ptimer-bar');
+  const etimerBar = document.getElementById('etimer-bar');
+  const ptimerText = document.getElementById('ptimer-text');
+  const etimerText = document.getElementById('etimer-text');
+
+  if(!c){
+    const ppct = Math.max(0, B.playerHP / maxHP() * 100);
     document.getElementById('battle-creature-name').textContent = 'SELECT A CREATURE';
     document.getElementById('battle-creature-tag').textContent = 'Go to Battle to challenge a creature.';
     document.getElementById('enemy-hp-bar').style.width = '0%';
@@ -1178,41 +1179,47 @@ if(!c){
     document.getElementById('battle-art').innerHTML = '';
     document.getElementById('battle-status').textContent = 'No active battle.';
     if(turnEl) turnEl.textContent = '—';
-    if(ptimerBar){ptimerBar.style.width = '0%'; ptimerText.textContent = '—';}
-    if(etimerBar){etimerBar.style.width = '0%'; etimerText.textContent = '—';}
+    if(ptimerBar){ ptimerBar.style.width = '0%'; ptimerText.textContent = '—'; }
+    if(etimerBar){ etimerBar.style.width = '0%'; etimerText.textContent = '—'; }
     updateBattleStats();
     return;
-}
-  const rc=RARITY_COLORS[B.rarity||'common'];
-  const rl=RARITY_LABELS[B.rarity||'common'];
-  document.getElementById('battle-creature-name').textContent=c.name;
-  document.getElementById('battle-creature-name').style.color=rc||'var(--white)';
-  document.getElementById('battle-creature-tag').textContent=`[${rl}] ${c.tag}`;
-  document.getElementById('battle-art').innerHTML=c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`:(SVGs[c.id]||'');
-  document.getElementById('player-art').innerHTML='<div style="font-size:22px;opacity:0.4;">★</div>';
-  const epct=Math.max(0,B.enemyHP/c.hp*100);
-  const ppct=Math.max(0,B.playerHP/maxHP()*100);
-  document.getElementById('enemy-hp-bar').style.width=epct+'%';
-  document.getElementById('enemy-hp-text').textContent=`${B.enemyHP.toFixed(1)} / ${c.hp}`;
-  document.getElementById('player-hp-bar').style.width=ppct+'%';
-  document.getElementById('player-hp-text').textContent=`${Math.max(0,B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
+  }
+
+  const rc = RARITY_COLORS[B.rarity || 'common'];
+  const rl = RARITY_LABELS[B.rarity || 'common'];
+  document.getElementById('battle-creature-name').textContent = c.name;
+  document.getElementById('battle-creature-name').style.color = rc || 'var(--white)';
+  document.getElementById('battle-creature-tag').textContent = `[${rl}] ${c.tag}`;
+  document.getElementById('battle-art').innerHTML = c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">` : (SVGs[c.id] || '');
+  document.getElementById('player-art').innerHTML = '<div style="font-size:22px;opacity:0.4;">★</div>';
+
+  const epct = Math.max(0, B.enemyHP / c.hp * 100);
+  const ppct = Math.max(0, B.playerHP / maxHP() * 100);
+  document.getElementById('enemy-hp-bar').style.width = epct + '%';
+  document.getElementById('enemy-hp-text').textContent = `${B.enemyHP.toFixed(1)} / ${c.hp}`;
+  document.getElementById('player-hp-bar').style.width = ppct + '%';
+  document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
+
   // Timer bars
-  if(B.active&&!B.dying){
-    const pInterval=Math.max(200,3000/(S.stats.asp||1));
-    const pFill=Math.max(0,Math.min(100,(1-B.playerTimer/pInterval)*100));
-    const eFill=Math.max(0,Math.min(100,(1-B.enemyTimer/3000)*100));
-    if(ptimerBar){ptimerBar.style.width=pFill+'%';ptimerText.textContent=(Math.max(0,B.playerTimer)/1000).toFixed(1)+'s';}
-    if(etimerBar){etimerBar.style.width=eFill+'%';etimerText.textContent=(Math.max(0,B.enemyTimer)/1000).toFixed(1)+'s';}
+  if(B.active && !B.dying){
+    const pInterval = Math.max(200, 3000 / (S.stats.asp || 1));
+    const pFill = Math.max(0, Math.min(100, (1 - B.playerTimer / pInterval) * 100));
+    const eFill = Math.max(0, Math.min(100, (1 - B.enemyTimer / 3000) * 100));
+    if(ptimerBar){ ptimerBar.style.width = pFill + '%'; ptimerText.textContent = (Math.max(0, B.playerTimer) / 1000).toFixed(1) + 's'; }
+    if(etimerBar){ etimerBar.style.width = eFill + '%'; etimerText.textContent = (Math.max(0, B.enemyTimer) / 1000).toFixed(1) + 's'; }
   }
+
   if(turnEl){
-    if(B.dying) turnEl.textContent='DEFEATED — RECOVERING...';
-    else if(B.active) turnEl.textContent=`TURN ${B.turnCount} | ATK SPEED: ${(S.stats.asp||1).toFixed(2)}× | KILLS: ${S.victories[c.id]||0}/${c.vicReq}`;
-    else turnEl.textContent='—';
+    if(B.dying) turnEl.textContent = 'DEFEATED — RECOVERING...';
+    else if(B.active) turnEl.textContent = `ATK SPEED: ${(S.stats.asp || 1).toFixed(2)}× | KILLS: ${S.victories[c.id] || 0}/${c.vicReq}`;
+    else turnEl.textContent = '—';
   }
-  const eatk=Math.max(1,c.atk/(1+(S.stats.arm??0)*0.15));
-  document.getElementById('battle-status').textContent=
-    B.active?`Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${eatk.toFixed(1)} | Turn every ${(3000/(S.stats.asp||1)/1000).toFixed(1)}s`
-    :'Battle paused.';
+
+  // ✅ use c.atk directly — arm reduction happens in combat not here
+  document.getElementById('battle-status').textContent = B.active
+    ? `Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${c.atk.toFixed(1)} | Turn every ${(3000 / (S.stats.asp || 1) / 1000).toFixed(1)}s`
+    : 'Battle paused.';
+
   updateBattleStats();
 }
 function renderSessionRewards(){
