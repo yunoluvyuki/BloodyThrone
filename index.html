@@ -73,6 +73,11 @@
                   <div class="hp-label"><span>YOUR HP</span><span id="player-hp-text">—</span></div>
                   <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
                 </div>
+                <div class="timer-row">
+                  <span class="timer-label">YOUR TURN</span>
+                  <div class="timer-bar-wrap"><div class="timer-fill tfill-player" id="ptimer-bar" style="width:0%"></div></div>
+                  <span class="timer-text" id="ptimer-text">—</span>
+                </div>
               </div>
               <div id="battle-enemy-box" class="battle-side-box">
                 <div id="battle-art"></div>
@@ -83,19 +88,12 @@
                     <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
                     <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
                   </div>
+                  <div class="timer-row">
+                    <span class="timer-label">ENEMY TURN</span>
+                    <div class="timer-bar-wrap"><div class="timer-fill tfill-enemy" id="etimer-bar" style="width:0%"></div></div>
+                    <span class="timer-text" id="etimer-text">—</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div id="battle-timers">
-              <div class="timer-row">
-                <span class="timer-label">YOUR TURN</span>
-                <div class="timer-bar-wrap"><div class="timer-fill tfill-player" id="ptimer-bar" style="width:0%"></div></div>
-                <span class="timer-text" id="ptimer-text">—</span>
-              </div>
-              <div class="timer-row">
-                <span class="timer-label">ENEMY TURN</span>
-                <div class="timer-bar-wrap"><div class="timer-fill tfill-enemy" id="etimer-bar" style="width:0%"></div></div>
-                <span class="timer-text" id="etimer-text">—</span>
               </div>
             </div>
             <div id="battle-controls" style="margin-top:8px;">

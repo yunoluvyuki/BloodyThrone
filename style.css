@@ -141,8 +141,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-creature-display{background:var(--bg2);border:1px solid var(--border);padding:16px;margin-bottom:12px;}
 #battle-top{display:flex;gap:16px;align-items:flex-start;}
 .battle-side-box{flex:1;display:flex;gap:16px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--border);padding:10px;}
-#battle-player-box{align-items:stretch;}
+#battle-player-box{flex-direction:column;}
 #battle-player-box .hp-bar-wrap{width:100%;}
+#battle-enemy-box #battle-meta{display:flex;flex-direction:column;flex:1;}
 .battle-side-label{font-size:10px;letter-spacing:1px;color:var(--text3);}
 #battle-art{width:120px;height:120px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #battle-art svg{width:100px;height:100px;}
