@@ -710,6 +710,7 @@ function unlockNextCreature(){
     addLog(`<span style="color:var(--green)">◆ A new enemy has stepped forward: <b>${c.name}</b>.</span>`);
     toast(`New foe: ${c.name}`,3000);
   }
+  renderBattle();
 }
 function isUnlocked(id){return S.battleUnlocked&&S.battleUnlocked.includes(id);}
 
@@ -1693,7 +1694,10 @@ function gameLoop(){
     if(archActive){
       if(document.getElementById('arch-synth').classList.contains('active'))renderSynth();
     }
-    if(document.getElementById('tab-battle').classList.contains('active'))renderBattle();
+    // renderBattle() removed from periodic loop — it is called on every real
+    // state change (startBattle/stopBattle/onWin/unlockNextCreature/tab-switch/load).
+    // Keeping it here caused full innerHTML replacement every ~500 ms which
+    // destroyed the button under the cursor and reset its :hover state → flicker.
     if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
     saveGame();
   }

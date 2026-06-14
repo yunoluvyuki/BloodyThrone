@@ -128,7 +128,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .reward-item{font-size:10px;color:var(--green);padding:1px 4px;}
 .reward-item.res{color:var(--yellow);}
 .card-btn{padding:6px;text-align:center;}
-.btn-challenge{width:100%;padding:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:2px;text-transform:uppercase;}
+.btn-challenge{width:100%;padding:5px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:2px;text-transform:uppercase;transition:background .15s,color .15s;}
 .btn-challenge:hover{background:var(--bg4);color:var(--white);}
 .btn-maxed{width:100%;padding:5px;background:#1a1a1a;border:1px solid var(--border);color:var(--text3);font-family:inherit;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:default;}
 .btn-current{background:#1a2e1a;border-color:var(--green);color:var(--green);}
