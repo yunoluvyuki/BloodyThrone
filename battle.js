@@ -356,7 +356,6 @@ function onWin(){
   if(justCompleted) unlockNextCreature();
 
   // Reward Multipliers
-  const mult = calcGlossaryMult();
   const rewardMult = 1 + (S.reincarnations * 0.05);
   const rarityMult = RARITY_MULTS[B.rarity || 'common'] || 1;
   if(rarityMult > 1) addLog(`<span style="color:${RARITY_COLORS[B.rarity]}">★ ${RARITY_LABELS[B.rarity]} bonus ×${rarityMult} applied!</span>`);
@@ -364,7 +363,7 @@ function onWin(){
   // Apply Rewards
   const gainStrs = [];
   Object.entries(c.rewards).forEach(([k, v]) => {
-    const amount = v * mult * rewardMult * rarityMult;
+    const amount = v * rewardMult * rarityMult;
     if(['old', 'bronze', 'silver'].includes(k)){
       S.resources[k] = (S.resources[k] || 0) + amount;
       if(k === 'old') S.lifeOld = (S.lifeOld || 0) + amount;

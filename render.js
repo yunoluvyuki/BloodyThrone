@@ -14,7 +14,6 @@ function renderStats(){
 const FUND_DEFS={
   all:[
     {key:'reincarnate',label:'REINCARNATIONS',val:()=>S.reincarnations+'x',cat:'core'},
-    {key:'glossmult',label:'GLOSSARY MULTIPLIER',val:()=>'x'+calcGlossaryMult().toFixed(2),cat:'economy'},
     {key:'decay',label:'DECAY FACTOR',val:()=>'1x',cat:'core'},
     {key:'death_rec',label:'DEATH RECOVERY',val:()=>'10s',cat:'stats'},
     {key:'flee_pen',label:'FLEE PENALTY',val:()=>'5s',cat:'stats'},
@@ -100,7 +99,7 @@ function renderBattle(){
         </div>
       </div>
       <div class="card-rewards">
-        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${(calcGlossaryMult()*spawnRarityMultDisplay).toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></div>
+        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${spawnRarityMultDisplay.toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></div>
         <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
         <div class="reward-list">${rewardStr}</div>
       </div>
