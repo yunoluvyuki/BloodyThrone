@@ -1373,19 +1373,19 @@ function updateResources(){
 
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
-    t.classList.toggle('active',t.dataset.tab===name);
+    t.classList.toggle('active', t.dataset.tab === name);
   });
   document.querySelectorAll('.tab-pane').forEach(p=>{
-    p.classList.toggle('active',p.id==='tab-'+name);
+    p.classList.toggle('active', p.id === 'tab-' + name);
   });
-  if(name==='battle')renderBattle();
-  if(name==='inventory')renderInventory();
-  if(name==='shop')renderShop();
-  if(name==='archive'){
-    updateQuintUI();renderGlossary();
-    document.getElementById('archive-dot').style.display='none';
+  if(name === 'battle') renderBattle();
+  if(name === 'archive'){
+    updateQuintUI();
+    renderGlossary();
+    document.getElementById('archive-dot').style.display = 'none';
   }
 }
+
 function hasAffordableMasteryUpgrade(){
   const ups=S.masteryUpgrades||{};
   return RARITY_UPGRADES.some(up=>{
@@ -1674,9 +1674,13 @@ document.querySelectorAll('#fund-filters .filter-tab').forEach(t=>{
 // MAIN RENDER
 // ═══════════════════════════════════════════════════════
 function renderAll(){
-  renderStats();renderFundamentals();renderBattle();renderShop();
-  updateQuintUI();renderGlossary();
-  updateBattleUI();updateResources();
+  renderStats();
+  renderFundamentals();
+  renderBattle();
+  updateQuintUI();
+  renderGlossary();
+  updateBattleUI();
+  updateResources();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1684,36 +1688,32 @@ function renderAll(){
 // ═══════════════════════════════════════════════════════
 let frameCount=0,fpsTimer=0,lastFrame=performance.now();
 function gameLoop(){
-  const now=performance.now();
-  const dt=(now-lastFrame)/1000;
-  lastFrame=now;
+  const now = performance.now();
+  const dt = (now - lastFrame) / 1000;
+  lastFrame = now;
   frameCount++;
-  fpsTimer+=dt;
-  if(fpsTimer>=1){
-    document.getElementById('fps-display').textContent='FPS '+frameCount;
-    frameCount=0;fpsTimer=0;
+  fpsTimer += dt;
+  if(fpsTimer >= 1){
+    document.getElementById('fps-display').textContent = 'FPS ' + frameCount;
+    frameCount = 0;
+    fpsTimer = 0;
   }
   battleTick();
   checkQuintMilestone();
-  S.activeTime=(S.activeTime||0)+dt;
-  // Update UI periodically
-  if(frameCount%3===0){
+  S.activeTime = (S.activeTime || 0) + dt;
+  if(frameCount % 3 === 0){
     updateBattleUI();
     updateResources();
     updateArchiveDot();
-    document.getElementById('active-time').textContent=fmtTime(S.activeTime);
+    document.getElementById('active-time').textContent = fmtTime(S.activeTime);
   }
-  if(frameCount%30===0){
-    renderStats();renderFundamentals();
-    const archActive=document.getElementById('tab-archive').classList.contains('active');
+  if(frameCount % 30 === 0){
+    renderStats();
+    renderFundamentals();
+    const archActive = document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
-      if(document.getElementById('arch-treasury').classList.contains('active'))updateQuintUI();
+      if(document.getElementById('arch-treasury').classList.contains('active')) updateQuintUI();
     }
-    // renderBattle() removed from periodic loop — it is called on every real
-    // state change (startBattle/stopBattle/onWin/unlockNextCreature/tab-switch/load).
-    // Keeping it here caused full innerHTML replacement every ~500 ms which
-    // destroyed the button under the cursor and reset its :hover state → flicker.
-    if(document.getElementById('tab-shop').classList.contains('active'))renderShop();
     saveGame();
   }
   requestAnimationFrame(gameLoop);
