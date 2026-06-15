@@ -534,7 +534,9 @@ const SHOP_ITEMS = [
   {id:'test_atk',name:'test atk',desc:'test upgrade atk',effect:'atk +1%',cost:{old:0},statBonus:{atk:1}},// +1%
   {id:'test_mnd',name:'test mnd',desc:'test upgrade mnd',effect:'mnd +1%',cost:{old:0},statBonus:{mnd:1}},// +1%
   {id:'test_mxd',name:'test mxd',desc:'test upgrade mxd',effect:'mxd +1%',cost:{old:0},statBonus:{mxd:1}},// +1%
-  {id:'test_mxd',name:'test mxd',desc:'test upgrade mxd',effect:'mxd +1%',cost:{old:0},statBonus:{mxd:1}},// +1%
+  {id:'test_spd',name:'test spd',desc:'test upgrade spd',effect:'spd +1%',cost:{old:0},statBonus:{spd:1}},// +1%
+  {id:'test_rgn',name:'test rgn',desc:'test upgrade rgn',effect:'rgn +1%',cost:{old:0},statBonus:{rgn:1}},// +1%
+  {id:'test_rgn',name:'test rgn',desc:'test upgrade rgn',effect:'rgn +1%',cost:{old:0},statBonus:{rgn:1}},// +1%
 
 ];
 
@@ -542,7 +544,7 @@ const SHOP_ITEMS = [
 // GAME STATE
 // ═══════════════════════════════════════════════════════
 const DEFAULT_STATE = ()=>({
-  stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:0,rgn:0,dog:0,crc:0,crd:1.0,arm:0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
+  stats:{hp:50,atk:3,mnd:0.7,mxd:1.2,spd:0,rgn:0,ddc:0,crc:0,crd:1.0,arm:0,mth:0,acc:1.0,blk:0,bld:0,ctr:0},
   resources:{old:0,bronze:0,silver:0,gold:0,plat:0},
   victories:{},
   shopOwned:{},
@@ -1003,23 +1005,16 @@ function firePlayerTurn(){
 
     do {
       let rolled = mnd + Math.random() * (mxd - mnd);
-      if(isCrit) rolled *= (st.crd ?? 1);         // 2. crit multiplier
+      if(isCrit) rolled *= (st.crd ?? 1);
       const isBlock = Math.random() < (c.blk ?? 0);
-      if(isBlock) rolled = Math.max(0, rolled - (c.bld ?? 0)); // 3. block reduction
-      rolled = Math.max(0, rolled - (c.arm ?? 0));             // 4. armor reduction
+      if(isBlock) rolled = Math.max(0, rolled - (c.bld ?? 0));
+      rolled = Math.max(0, rolled - (c.arm ?? 0));
       totalDmg += rolled;
       hits++;
     } while(Math.random() < (st.mth ?? 0) && hits < 10);
 
     // Apply Damage
     B.enemyHP = Math.max(0, B.enemyHP - totalDmg);
-
-    // Counter Check
-    if(Math.random() < (c.ctr ?? 0)){
-      addLog(`<span class="log-warn"><b>${c.name}</b> counters!</span>`);
-      fireEnemyCounterAttack();
-      if(!B.active) return;
-    }
 
     // Log
     const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
@@ -1028,11 +1023,21 @@ function firePlayerTurn(){
     } else {
       addLog(`<span class="log-info">You deal <b>${totalDmg.toFixed(1)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
     }
+
+    if(B.enemyHP <= 0){ onWin(); return; }
+
+    // Counter Check — only if enemy still alive
+    if(Math.random() < (c.ctr ?? 0)){
+      addLog(`<span class="log-warn"><b>${c.name}</b> counters!</span>`);
+      fireEnemyCounterAttack();
+      if(!B.active) return;
+    }
   }
 
   // Win Check
   if(B.enemyHP <= 0) onWin();
 }
+
 function fireEnemyTurn(){
   const c = B.creature;
   const st = S.stats;
@@ -1089,6 +1094,53 @@ function fireEnemyTurn(){
   // Lose Check
   if(B.playerHP <= 0) onLose();
 }
+
+function fireEnemyCounterAttack(){
+  const c = B.creature;
+  const st = S.stats;
+
+  // Damage Calc (no hit check, counter always hits)
+  const isCrit = Math.random() < (c.crc ?? 0);
+  const mnd = c.atk * (c.mnd ?? 0.7);
+  const mxd = c.atk * (c.mxd ?? 1.0);
+  let totalDmg = 0;
+  let hits = 0;
+
+  do {
+    let rolled = mnd + Math.random() * (mxd - mnd);
+    if(isCrit) rolled *= (c.crd ?? 1);
+    const isBlock = Math.random() < (st.blk ?? 0);
+    if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0));
+    rolled = Math.max(0, rolled - (st.arm ?? 0));
+    totalDmg += rolled;
+    hits++;
+  } while(Math.random() < (c.mth ?? 0) && hits < 10);
+
+  // Apply Damage
+  B.playerHP = Math.max(0, B.playerHP - totalDmg);
+
+  const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
+  if(isCrit){
+    addLog(`<span class="log-crit">✦ ${c.name} counter CRITS — <b>${totalDmg.toFixed(1)}</b> to you!${hitStr}</span>`);
+  } else {
+    addLog(`<span class="log-die"><b>${c.name}</b> counter hits you for <b>${totalDmg.toFixed(1)}</b>.${hitStr}</span>`);
+  }
+
+  // Player counter back
+  if(Math.random() < (st.ctr ?? 0)){
+    const cMnd = st.atk * (st.mnd ?? 0.7);
+    const cMxd = st.atk * (st.mxd ?? 1.0);
+    let counterDmg = cMnd + Math.random() * (cMxd - cMnd);
+    counterDmg = Math.max(0, counterDmg - (c.arm ?? 0));
+    B.enemyHP = Math.max(0, B.enemyHP - counterDmg);
+    addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(1)}</b> to ${c.name}!</span>`);
+    if(B.enemyHP <= 0){ onWin(); return; }
+  }
+
+  // Lose Check
+  if(B.playerHP <= 0) onLose();
+}
+
 function onWin(){
   if(!B.active) return;
   B.active = false;
@@ -1141,10 +1193,13 @@ function onWin(){
     B.active = true;
     B.enemyHP = B.creature.hp;
     B.lastTick = Date.now();
+    B.playerTimer = Math.max(200, 3000 - S.stats.spd);         // ✅ reset timers
+    B.enemyTimer = Math.max(200, 3000 - (B.creature.spd ?? 0)); // ✅ reset timers
   } else {
     stopBattle();
   }
 }
+
 function onLose(){
   B.active=false;
   B.dying=true;
@@ -1221,15 +1276,6 @@ function addLog(html){
   if(log.children.length>50)log.removeChild(log.lastChild);
 }
 
-function renderSessionRewards(){
-  const el=document.getElementById('session-rewards-list');
-  if(!el)return;
-  const entries=Object.entries(S.sessionRewards);
-  if(!entries.length){el.innerHTML='<div style="color:var(--text3);font-size:9px;">Defeat creatures to earn rewards.</div>';return;}
-  el.innerHTML=entries.map(([k,v])=>
-    `<div class="victory-stat"><span>${k.toUpperCase()}</span><span class="vic-gained">+${v.toFixed(3)}</span></div>`
-  ).join('');
-}
 
 // ═══════════════════════════════════════════════════════
 // BLOOD COIN / REINCARNATE
@@ -1270,40 +1316,6 @@ function renderGlossary(){
   ].join('');
 }
 
-// ═══════════════════════════════════════════════════════
-// SHOP
-// ═══════════════════════════════════════════════════════
-function renderShop(){
-  const g=document.getElementById('shop-grid');
-  g.innerHTML=SHOP_ITEMS.map(item=>{
-    const owned=S.shopOwned[item.id]||0;
-    const costStr=Object.entries(item.cost).map(([k,v])=>`${fmt(v)} ${k.toUpperCase()}`).join(' + ');
-    const maxed=item.maxOwned&&owned>=item.maxOwned;
-    const canAfford=!maxed&&Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
-    return`<div class="shop-card">
-      <div class="shop-name">${item.name}</div>
-      <div class="shop-desc">${item.desc}</div>
-      <div class="shop-effect">${item.effect}</div>
-      <div class="shop-cost">Cost: ${costStr}</div>
-      <div class="shop-own">Owned: ${owned}${item.maxOwned?'/'+item.maxOwned:''}</div>
-      <button class="btn-buy" onclick="buyShopItem('${item.id}')" ${canAfford?'':'disabled'}>${maxed?'OWNED':'BUY'}</button>
-    </div>`;
-  }).join('');
-}
-function buyShopItem(id){
-  const item=SHOP_ITEMS.find(x=>x.id===id);
-  if(!item)return;
-  const owned=S.shopOwned[item.id]||0;
-  if(item.maxOwned&&owned>=item.maxOwned){toast('Already owned!');return;}
-  const canAfford=Object.entries(item.cost).every(([k,v])=>(S.resources[k]||0)>=v);
-  if(!canAfford){toast('Not enough resources!');return;}
-  Object.entries(item.cost).forEach(([k,v])=>{S.resources[k]-=v;});
-  Object.entries(item.statBonus).forEach(([k,v])=>{S.stats[k]=(S.stats[k]||0)+v;});
-  if(item.unlock)S[item.unlock]=true;
-  S.shopOwned[item.id]=(S.shopOwned[item.id]||0)+1;
-  toast(`Purchased: ${item.name}!`);
-  renderShop();renderStats();
-}
 
 // ═══════════════════════════════════════════════════════
 // RESOURCES DISPLAY
@@ -1354,53 +1366,11 @@ function updateResources(){
   updateAC();
   updateAR();
 }
-// ═══════════════════════════════════════════════════════
-// INVENTORY
-// ═══════════════════════════════════════════════════════
-const ITEM_ICONS={
-  iron_quill:'🗡',sketch_shield:'🛡',ink_vial:'⚗',wax_seal:'💎',
-  charcoal_blade:'⚔',draft_armor:'🧥',perspective_lens:'🔮',phantom_step:'👟',
-  wax_tablet:'📜',charcoal_sigil:'✦',bone_quill:'🦴',ink_reservoir:'🫙',
-  void_fragment:'💠',master_palette:'🎨',draft_crown:'👑',
-};
-const INV_SLOTS=35;
-function renderInventory(){
-  const g=document.getElementById('inventory-grid');
-  const owned=SHOP_ITEMS.filter(item=>(S.shopOwned[item.id]||0)>0);
-  // Build flat slot list: each owned item occupies 1 slot (qty shown as badge)
-  const slots=[];
-  owned.forEach(item=>slots.push(item));
-  const totalSlots=Math.max(INV_SLOTS,Math.ceil(slots.length/5)*5);
-  let cells='';
-  for(let i=0;i<totalSlots;i++){
-    const item=slots[i];
-    if(item){
-      const qty=S.shopOwned[item.id]||0;
-      const icon=ITEM_ICONS[item.id]||'✦';
-      cells+=`<div class="inv-cell has-item">
-        <div class="inv-icon">${icon}</div>
-        ${qty>1?`<div class="inv-qty">×${qty}</div>`:''}
-        <div class="inv-tooltip">
-          <div class="inv-tooltip-name">${item.name}</div>
-          <div class="inv-tooltip-desc">${item.desc}</div>
-          <div class="inv-tooltip-effect">${item.effect}</div>
-          ${qty>1?`<div class="inv-tooltip-qty">Owned: ${qty}</div>`:''}
-        </div>
-      </div>`;
-    } else {
-      cells+=`<div class="inv-cell"></div>`;
-    }
-  }
-  g.innerHTML=`<div class="inv-wrap">
-    <div class="inv-label">— Bag —</div>
-    <div class="inv-grid">${cells}</div>
-    ${owned.length===0?`<div class="inv-empty-msg" style="text-align:center;padding:12px 0;">Empty. Visit the Shop.</div>`:''}
-  </div>`;
-}
 
 // ═══════════════════════════════════════════════════════
 // TAB SWITCHING & NOTIFICATIONS
 // ═══════════════════════════════════════════════════════
+
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>{
     t.classList.toggle('active',t.dataset.tab===name);
