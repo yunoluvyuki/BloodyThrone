@@ -66,7 +66,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .sort-label{font-size:11px;color:var(--text3);}
 #stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2px;padding:5px 8px;}
 .stat-cell{background:var(--bg3);border:1px solid var(--border);padding:3px 6px;display:flex;flex-direction:column;}
-.stat-name{font-size:16px;color:#ffffff;font-weogjt:bold;text-transform:uppercase;}
+.stat-name{font-size:16px;color:#ffffff;font-weight:bold;text-transform:uppercase;}
 .stat-val{font-size:16px;color:#ffffff;font-weight:bold;line-height:1.2;}
 .stat-icon{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle;}
 .si-hp{background:var(--red2);}
