@@ -101,7 +101,6 @@ function updateBattleUI(){
     if(turnEl) turnEl.textContent = '—';
     if(ptimerBar){ ptimerBar.style.width = '0%'; ptimerText.textContent = '—'; }
     if(etimerBar){ etimerBar.style.width = '0%'; etimerText.textContent = '—'; }
-    updateBattleStats();
     return;
   }
 
@@ -139,47 +138,6 @@ function updateBattleUI(){
   document.getElementById('battle-status').textContent = B.active
     ? `Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${c.atk.toFixed(1)} | Your turn: ${(Math.max(200, 3000 - S.stats.spd) / 1000).toFixed(1)}s | Enemy turn: ${(Math.max(200, 3000 - (c.spd ?? 0)) / 1000).toFixed(1)}s`
     : 'Battle paused.';
-
-  updateBattleStats();
-}
-
-function updateBattleStats(){
-  const c = B.creature;
-  const st = S.stats;
-  const dash = '—';
-  const pct = v => (v * 100).toFixed(1) + '%';
-  const x2 = v => v.toFixed(2) + '×';
-  const n1 = v => v.toFixed(1);
-
-  const pMinDmg = st.atk * (st.mnd ?? 0.7);
-  const pMaxDmg = st.atk * (st.mxd ?? 1.0);
-  const eMinDmg = c ? c.atk * (c.mnd ?? 0.7) : 0;
-  const eMaxDmg = c ? c.atk * (c.mxd ?? 1.0) : 0;
-
-  const offRows = [
-    {name:'ATK',              p:fmt(st.atk),                                                        e:c ? fmt(c.atk) : dash},
-    {name:'Min Damage',       p:n1(pMinDmg),                                                        e:c ? n1(eMinDmg) : dash},
-    {name:'Max Damage',       p:n1(pMaxDmg),                                                        e:c ? n1(eMaxDmg) : dash},
-    {name:'Turn Speed',       p:(Math.max(200, 3000 - st.spd) / 1000).toFixed(1)+'s',               e:c ? (Math.max(200, 3000 - (c.spd ?? 0)) / 1000).toFixed(1)+'s' : dash},
-    {name:'Accuracy',         p:pct(st.acc ?? 1),                                                   e:c ? pct(c.acc ?? 1) : dash},
-    {name:'Crit Chance',      p:pct(st.crc ?? 0),                                                   e:c ? pct(c.crc ?? 0) : dash},
-    {name:'Crit Damage',      p:x2(st.crd ?? 1),                                                    e:c ? x2(c.crd ?? 1) : dash},
-    {name:'Multi-Hit Chance', p:pct(st.mth ?? 0),                                                   e:c ? pct(c.mth ?? 0) : dash},
-  ];
-
-  const defRows = [
-    {name:'HP',             p:fmt(st.hp),              e:c ? fmt(c.hp) : dash},
-    {name:'HP Regen',       p:n1(st.rgn ?? 0)+'/s',    e:'0/s'},
-    {name:'Armor',          p:fmt(st.arm ?? 0),        e:c ? fmt(c.arm ?? 0) : dash},
-    {name:'Block Chance',   p:pct(st.blk ?? 0),        e:c ? pct(c.blk ?? 0) : dash},
-    {name:'Block Damage',   p:fmt(st.bld ?? 0),        e:c ? fmt(c.bld ?? 0) : dash},
-    {name:'Dodge Chance',   p:pct(st.ddc ?? 0),        e:c ? pct(c.ddc ?? 0) : dash},
-    {name:'Counter Chance', p:pct(st.ctr ?? 0),        e:c ? pct(c.ctr ?? 0) : dash},
-  ];
-
-  const row = (s, dot) => `<div class="bsp-row"><div class="bsp-name"><span class="bsp-dot" style="background:${dot}"></span>${s.name}</div><div class="bsp-you">${s.p}</div><div class="bsp-enemy">${s.e}</div></div>`;
-  document.getElementById('bsp-off').innerHTML = offRows.map(s => row(s, '#e74c3c')).join('');
-  document.getElementById('bsp-def').innerHTML = defRows.map(s => row(s, '#4ecdc4')).join('');
 }
 
 function stopBattle(){

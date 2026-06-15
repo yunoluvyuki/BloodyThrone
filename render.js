@@ -8,7 +8,7 @@ function renderStats(){
   g.innerHTML=defs.map(d=>`
     <div class="stat-cell">
       <div class="stat-name"><span class="stat-icon ${d.icon}"></span>${d.label}</div>
-      <div class="stat-val">: ${formatStat(d.key,S.stats[d.key]??0)}</div>
+      <div class="stat-val">:${formatStat(d.key,S.stats[d.key]??0)}</div>
     </div>`).join('');
 }
 const FUND_DEFS={
@@ -84,16 +84,18 @@ function renderBattle(){
     const spawnBadge=spawnRarity?`<span style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${spawnRarityColor};color:#fff;">${RARITY_LABELS[spawnRarity]}</span>`:'';
     return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
       <div class="card-top">
-        <div class="card-art" style="position:relative;">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`:SVGs[c.id]||`<div style="color:${color};font-size:22px;opacity:0.4;">✦</div>`}</div>
+        <div class="card-art">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
         <div class="card-info">
-          <div class="card-name">${c.name}</div>
-          <div class="card-tagline">${c.tag}</div>
-          <div class="card-stats">
-            <span class="card-atk">✏ ${fmt(c.atk*spawnRarityMultDisplay)}</span> /
-            <span class="card-def">🛡 ${c.arm}</span>
-            <span class="card-hp">⚡ ${fmt(c.hp*spawnRarityMultDisplay)}</span>
-            ${countStr}
-          </div>
+          <div class="card-name" style="color:${spawnRarityColor||'#ffffff'};text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">${c.name}</div>
+          <div class="stat-grid">${STAT_DEFS.map(d=>{
+            const base=d.key==='hp'?c.hp:d.key==='atk'?c.atk:d.key==='arm'?c.arm:{mnd:0.7,mxd:1.0,spd:0,rgn:0,ddc:0,crc:0,crd:1,mth:0,acc:1,blk:0,bld:0,ctr:0}[d.key];
+            const val=(c[d.key]??base)*(['atk','hp'].includes(d.key)?spawnRarityMultDisplay:1);
+            return `<div class="stat-cell">
+              <div class="stat-name"><span class="stat-icon ${d.icon}"></span>${d.label}</div>
+              <div class="stat-val">:${formatStat(d.key,val)}</div>
+            </div>`;
+          }).join('')}</div>
+          ${countStr}
         </div>
       </div>
       <div class="card-rewards">
