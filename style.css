@@ -74,14 +74,15 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .si-mnd{width:22px;height:22px;background:url('attached_assets/img/icon/mnd.png') center/contain no-repeat;border-radius:0;}
 .si-mxd{width:22px;height:22px;background:url('attached_assets/img/icon/mxd.png') center/contain no-repeat;border-radius:0;}
 .si-spd{width:22px;height:22px;background:url('attached_assets/img/icon/spd.png') center/contain no-repeat;border-radius:0;}
-.si-rgn{background:var(--green);}
+.si-rgn{width:22px;height:22px;background:url('attached_assets/img/icon/rgn.png') center/contain no-repeat;border-radius:0;}
 .si-dog{background:#48c9b0;}
 .si-crc{width:22px;height:22px;background:url('attached_assets/img/icon/crc.png') center/contain no-repeat;border-radius:0;}
 .si-crd{background:#e74c3c;}
 .si-arm{background:#7fb3d3;}
 .si-asp{background:#a569bd;}
 .si-armp{background:#c0392b;}
-.si-mth{background:#1a9e7f;}
+.si-mth{width:22px;height:22px;background:url('attached_assets/img/icon/mth.png') center/contain no-repeat;border-radius:0;}
+.si-acc{width:22px;height:22px;background:url('attached_assets/img/icon/acc.png') center/contain no-repeat;border-radius:0;}
 #fund-section{padding:0;}
 #fund-header{padding:2px 6px;display:flex;align-items:center;}
 #fund-header .label{font-size:11px;color:var(--text2);letter-spacing:1px;}
