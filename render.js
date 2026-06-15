@@ -100,7 +100,7 @@ function renderBattle(){
         </div>
       </div>
       <div class="card-rewards">
-        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${(calcGlossaryMult()*spawnRarityMultDisplay).toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>0?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/${c.vicReq}</span></div>
+        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${(calcGlossaryMult()*spawnRarityMultDisplay).toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></div>
         <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
         <div class="reward-list">${rewardStr}</div>
       </div>

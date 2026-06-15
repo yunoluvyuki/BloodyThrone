@@ -82,7 +82,6 @@ function startBattle(creatureId){
 }
 function updateBattleUI(){
   const c = B.creature;
-  const turnEl = document.getElementById('turn-display');
   const ptimerBar = document.getElementById('ptimer-bar');
   const etimerBar = document.getElementById('etimer-bar');
   const ptimerText = document.getElementById('ptimer-text');
@@ -98,8 +97,7 @@ function updateBattleUI(){
     document.getElementById('player-hp-bar').style.width = ppct + '%';
     document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
     document.getElementById('battle-art').innerHTML = '';
-    document.getElementById('battle-status').textContent = 'No active battle.';
-    if(turnEl) turnEl.textContent = '—';
+
     if(ptimerBar){ ptimerBar.style.width = '0%'; ptimerText.textContent = '—'; }
     if(etimerBar){ etimerBar.style.width = '0%'; etimerText.textContent = '—'; }
     return;
@@ -130,15 +128,8 @@ function updateBattleUI(){
     if(etimerBar){ etimerBar.style.width = eFill + '%'; etimerText.textContent = (Math.max(0, B.enemyTimer) / 1000).toFixed(1) + 's'; }
   }
 
-  if(turnEl){
-    if(B.dying) turnEl.textContent = 'DEFEATED — RECOVERING...';
-    else if(B.active) turnEl.textContent = `YOUR TURN: ${(Math.max(200, 3000 - S.stats.spd) / 1000).toFixed(1)}s | ENEMY TURN: ${(Math.max(200, 3000 - (c.spd ?? 0)) / 1000).toFixed(1)}s | KILLS: ${S.victories[c.id] || 0}/${c.vicReq}`;
-    else turnEl.textContent = '—';
-  }
 
-  document.getElementById('battle-status').textContent = B.active
-    ? `Your ATK: ${S.stats.atk.toFixed(1)} | Enemy ATK: ${c.atk.toFixed(1)} | Your turn: ${(Math.max(200, 3000 - S.stats.spd) / 1000).toFixed(1)}s | Enemy turn: ${(Math.max(200, 3000 - (c.spd ?? 0)) / 1000).toFixed(1)}s`
-    : 'Battle paused.';
+
 }
 
 function stopBattle(){
