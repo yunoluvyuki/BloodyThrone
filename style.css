@@ -188,7 +188,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-status{font-size:10px;color:var(--text2);margin-top:8px;padding:6px;background:var(--bg3);border:1px solid var(--border);}
 #battle-timers{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
 .timer-row{display:flex;align-items:center;gap:6px;}
-.timer-label{font-size:8px;color:var(--text3);letter-spacing:1px;width:70px;flex-shrink:0;}
+.timer-label{font-size:8px;color:var(--text3);letter-spacing:1px;width:90px;flex-shrink:0;white-space:nowrap;}
 .timer-bar-wrap{flex:1;height:6px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
 .timer-fill{height:100%;transition:width 0.1s linear;}
 .tfill-player{background:#e74c3c;}
