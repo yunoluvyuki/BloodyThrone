@@ -353,3 +353,6 @@ if(S.protocols.autoChallenge&&!B.active){
   const first=CREATURES.find(c=>isUnlocked(c.id)&&!isMaxed(c));
   if(first)startBattle(first.id);
 }
+
+// Kick off the game loop
+requestAnimationFrame(gameLoop);
