@@ -358,7 +358,7 @@ function onWin(){
   // Reward Multipliers
   const rewardMult = 1 + (S.reincarnations * 0.05);
   const rarityMult = RARITY_MULTS[B.rarity || 'common'] || 1;
-  const n = S.victories[c.id]; // win count after increment
+  const n = S.victories[c.id] - 1;
   const decayMult = 1 / (1 + 0.3 * n);
   if(rarityMult > 1) addLog(`<span style="color:${RARITY_COLORS[B.rarity]}">★ ${RARITY_LABELS[B.rarity]} bonus ×${rarityMult} applied!</span>`);
 
@@ -395,8 +395,8 @@ function onWin(){
     B.active = true;
     B.enemyHP = B.creature.hp;
     B.lastTick = Date.now();
-    B.playerTimer = Math.max(200, 3000 - S.stats.spd);         // ✅ reset timers
-    B.enemyTimer = Math.max(200, 3000 - (B.creature.spd ?? 0)); // ✅ reset timers
+    B.playerTimer = Math.max(200, 3000 - S.stats.spd);         
+    B.enemyTimer = Math.max(200, 3000 - (B.creature.spd ?? 0)); 
   } else {
     stopBattle();
   }

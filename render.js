@@ -69,7 +69,8 @@ function renderBattle(){
     const isCurrent=S.currentCreature===c.id;
     const pct=Math.min(100,vic/c.vicReq*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
-    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
+    const decayMult=1/(1+0.3*vic);
+    const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay*decayMult).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
     const countStr='';
     let btnHtml='';
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
@@ -99,9 +100,8 @@ function renderBattle(){
         </div>
       </div>
       <div class="card-rewards">
-        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${spawnRarityMultDisplay.toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></div>
-        <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
-        <div class="reward-list">${rewardStr}</div>
+      <div class="rewards-header"><span>${rewardStr}</span><span class="vic">Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></span></div>
+      <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
       </div>
       <div class="card-btn">${btnHtml}</div>
     </div>`;
