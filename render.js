@@ -71,7 +71,7 @@ function renderBattle(){
     const pct=Math.min(100,vic/c.vicReq*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
     const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
-    const countStr=c.count!=null?`<span style="margin-left:4px;color:var(--text3);">${c.count}</span>`:'';
+    const countStr='';
     let btnHtml='';
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
     else if(isCurrent)btnHtml=`<button class="btn-challenge btn-current" onclick="stopBattle()">FIGHTING</button>`;
