@@ -71,12 +71,12 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .stat-icon{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle;flex-shrink:0;}
 .si-hp{width:22px;height:22px;background:url('attached_assets/img/icon/hp.png') center/contain no-repeat;border-radius:0;}
 .si-atk{width:22px;height:22px;background:url('attached_assets/img/icon/atk.png') center/contain no-repeat;border-radius:0;}
-.si-mnd{background:var(--blue);}
-.si-mxd{background:var(--cyan);}
-.si-spd{background:#5dade2;}
+.si-mnd{width:22px;height:22px;background:url('attached_assets/img/icon/mnd.png') center/contain no-repeat;border-radius:0;}
+.si-mxd{width:22px;height:22px;background:url('attached_assets/img/icon/mxd.png') center/contain no-repeat;border-radius:0;}
+.si-spd{width:22px;height:22px;background:url('attached_assets/img/icon/spd.png') center/contain no-repeat;border-radius:0;}
 .si-rgn{background:var(--green);}
 .si-dog{background:#48c9b0;}
-.si-crc{background:#f39c12;}
+.si-crc{width:22px;height:22px;background:url('attached_assets/img/icon/crc.png') center/contain no-repeat;border-radius:0;}
 .si-crd{background:#e74c3c;}
 .si-arm{background:#7fb3d3;}
 .si-asp{background:#a569bd;}
