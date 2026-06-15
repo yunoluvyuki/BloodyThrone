@@ -81,11 +81,12 @@ function renderBattle(){
     const borderColor=spawnRarity?spawnRarityColor:maxed?'#333':`${color}44`;
     const rarityGlow=spawnRarity&&spawnRarity!=='common'?`box-shadow:0 0 8px ${spawnRarityColor}55;`:'';
     const spawnBg=spawnRarity?(RARITY_BG[spawnRarity]||'transparent'):'transparent';
-    const spawnBadge=spawnRarity?`<span style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:bold;letter-spacing:1px;padding:1px 4px;background:${spawnRarityColor};color:#fff;">${RARITY_LABELS[spawnRarity]}</span>`:'';
+    const spawnBadge=spawnRarity?`<span style="display:inline-block;font-size:9px;font-weight:bold;letter-spacing:1px;padding:2px 6px;background:${spawnRarityColor};color:#fff;margin-bottom:4px;">${RARITY_LABELS[spawnRarity]}</span>`:'';
     return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
       <div class="card-top">
-        <div class="card-art">${spawnBadge}${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
+        <div class="card-art" style="position:relative;">${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
         <div class="card-info">
+          ${spawnBadge}
           <div class="card-name" style="color:${spawnRarityColor||'#ffffff'};text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">${c.name}</div>
           <div class="stat-grid">${STAT_DEFS.map(d=>{
             const base=d.key==='hp'?c.hp:d.key==='atk'?c.atk:d.key==='arm'?c.arm:{mnd:0.7,mxd:1.0,spd:0,rgn:0,ddc:0,crc:0,crd:1,mth:0,acc:1,blk:0,bld:0,ctr:0}[d.key];
@@ -99,7 +100,7 @@ function renderBattle(){
         </div>
       </div>
       <div class="card-rewards">
-        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${(calcGlossaryMult()*spawnRarityMultDisplay).toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>0?'var(--green)':'var(--text3)'}">${Math.min(vic,c.vicReq)}</span>/${c.vicReq}</span></div>
+        <div class="rewards-header"><span style="color:${maxed?'var(--text3)':''}">REWARDS ×${(calcGlossaryMult()*spawnRarityMultDisplay).toFixed(2)}</span><span class="vic">${c.vicReq} Victories | <span style="color:${vic>0?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/${c.vicReq}</span></div>
         <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
         <div class="reward-list">${rewardStr}</div>
       </div>

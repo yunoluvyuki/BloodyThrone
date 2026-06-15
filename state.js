@@ -37,7 +37,7 @@ let B = {
 
 
 const STAT_DEFS=[
-  {key:'hp',label:'HP',icon:'si-hp',cat:'defense',fmt:'n'},
+  {key:'hp',label:'HP\u00A0',icon:'si-hp',cat:'defense',fmt:'n'},
   {key:'atk',label:'ATK',icon:'si-atk',cat:'offense',fmt:'n'},
   {key:'mnd',label:'MND',icon:'si-mnd',cat:'offense',fmt:'pct'},
   {key:'mxd',label:'MXD',icon:'si-mxd',cat:'offense',fmt:'pct'},

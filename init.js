@@ -139,7 +139,7 @@ function setupSettings(){
     ['.protocol-title',10],['.protocol-sub',10],['.toggle-label',10],
     ['.protocol-val',8],['#battle-intro',11],['.card-name',16],
     ['.card-stats',16],['.new-badge',12],
-    ['.rewards-header',8],['.reward-item',8],['.btn-challenge',9],
+    ['.rewards-header',12],['.reward-item',8],['.btn-challenge',9],
     ['.btn-maxed',9],['#battle-creature-name',16],['#battle-creature-tag',10],
     ['.hp-label',9],['#battle-log',9],['.battle-btn',9],['#battle-status',10],
     ['.timer-label',8],['.timer-text',8],['#victory-panel h3',10],
