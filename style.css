@@ -70,7 +70,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .stat-val{font-size:17px;color:#ffffff;font-weight:bold;line-height:1.2;}
 .stat-icon{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle;}
 .si-hp{background:var(--red2);}
-.si-atk{background:url('attached_assets/img/icon/atk.png') center/contain no-repeat;border-radius:0;}
+.si-atk{width:22px;height:22px;background:url('attached_assets/img/icon/atk.png') center/contain no-repeat;border-radius:0;}
 .si-mnd{background:var(--blue);}
 .si-mxd{background:var(--cyan);}
 .si-spd{background:#5dade2;}
