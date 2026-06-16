@@ -104,6 +104,10 @@ function renderBattle(){
 function renderMastery(){
   const el=document.getElementById('mastery-content');
   if(!el)return;
+  // Main Game Mastery owns this tab; WB Mastery is a separate system.
+  el.innerHTML=masterySectionHTML();
+  if(typeof setupMainGameMasteryTree==='function')setupMainGameMasteryTree();
+  return;
   const ups=S.masteryUpgrades||{};
   const ch=getRarityChances();
   const common=Math.max(0,100-ch.uncommon-ch.rare-ch.epic-ch.legendary);
