@@ -63,6 +63,7 @@ function getSpawnRarity(id){
 function startBattle(creatureId){
   const c = getCreature(creatureId);
   if(!c) return;
+  if(B.dying){ toast('Still recovering from defeat!', 2000); return; }
   S.currentCreature = creatureId;
   B.rarity = getSpawnRarity(creatureId);
   const rarityMult = RARITY_MULTS[B.rarity] || 1;
@@ -87,7 +88,7 @@ function updateBattleUI(){
   const ptimerText = document.getElementById('ptimer-text');
   const etimerText = document.getElementById('etimer-text');
 
-  if(!c){
+  if(!c || B.dying){
     const ppct = Math.max(0, B.playerHP / maxHP() * 100);
     document.getElementById('battle-creature-name').textContent = 'SELECT A CREATURE';
     document.getElementById('battle-creature-name').style.color = 'var(--white)';
@@ -136,6 +137,7 @@ function stopBattle(){
   B.active=false;
   S.currentCreature=null;
   B.creature=null;
+  B.creature=null;
   renderBattle();
   updateBattleUI();
   document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
@@ -150,13 +152,14 @@ function battleTick(){
       document.getElementById('death-overlay').style.display = 'none';
       B.dying = false;
       B.playerHP = maxHP();
-      if(S.protocols.autoRetry && B.creature){
-        startBattle(B.creature.id);
+      renderBattle();
+    if(S.protocols.autoRetry && B.creature){
+      startBattle(B.creature.id);
       } else {
         B.active = false;
         S.currentCreature = null;
+        }
       }
-    }
     return;
   }
   if(!B.active || !B.creature) return;
@@ -407,9 +410,13 @@ function onLose(){
   B.dying=true;
   B.deathStart=Date.now();
   S.deaths=(S.deaths||0)+1;
+  const defeatedName=B.creature?B.creature.name:'unknown';
+  S.currentCreature=null;
+  B.creature=null;
   document.getElementById('death-overlay').style.display='block';
-  addLog(`<span class="log-die">✗ You were defeated by ${B.creature.name}. (Deaths: ${S.deaths})</span>`);
+  addLog(`<span class="log-die">✗ You were defeated by ${defeatedName}. (Deaths: ${S.deaths})</span>`);
   updateBattleUI();
+  renderBattle();
 }
 
 function addLog(html){

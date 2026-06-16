@@ -75,7 +75,7 @@ function renderBattle(){
     let btnHtml='';
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
     else if(isCurrent)btnHtml=`<button class="btn-challenge btn-current" onclick="stopBattle()">FIGHTING</button>`;
-    else btnHtml=`<button class="btn-challenge" onclick="startBattle('${c.id}')">CHALLENGE</button>`;
+    else btnHtml=B.dying?`<button class="btn-challenge" disabled style="opacity:0.4;cursor:not-allowed;">RECOVERING</button>`:`<button class="btn-challenge" onclick="startBattle('${c.id}')">CHALLENGE</button>`;
     const spawnRarity=maxed?null:getSpawnRarity(c.id);
     const spawnRarityColor=spawnRarity?(RARITY_COLORS[spawnRarity]||'#888'):null;
     const borderColor=spawnRarity?spawnRarityColor:maxed?'#333':`${color}44`;
