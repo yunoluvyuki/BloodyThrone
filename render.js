@@ -145,35 +145,19 @@ function renderMastery(){
 // CODEX
 // ═══════════════════════════════════════════════════════
 function renderCodex(){
-  const total=CREATURES.length;
-  const unlocked=CREATURES.filter(c=>getVictories(c.id)>0).length;
-  const grid=document.getElementById('codex-grid');
-  if(!grid) return;
-  // Show unlocked + locked fillers up to 20 slots minimum
-  const unlockList=CREATURES.filter(c=>getVictories(c.id)>0);
-  const lockFiller=Array.from({length:Math.max(0,20-unlockList.length)});
-  grid.innerHTML=[
-    ...unlockList.map(c=>`<div class="codex-card unlocked">${SVGs[c.id]||''}</div>`),
-    ...lockFiller.map((_,i)=>`<div class="codex-card locked"><div class="codex-q">?</div><div class="codex-chance">CHANCE: 100%</div><div class="codex-locked-name">??? ???</div></div>`)
-  ].join('');
-  function renderCodex(){
-  const total=CREATURES.length;
-  const unlocked=CREATURES.filter(c=>getVictories(c.id)>0).length;
-  const grid=document.getElementById('codex-grid');
+  const total = CREATURES.length;
+  const unlocked = CREATURES.filter(c => getVictories(c.id) > 0).length;
+  const grid = document.getElementById('codex-grid');
   if(!grid) return;
   const bonusCount = S.codexBonusApplied || 0;
-  const bonusPct   = (Math.pow(1.01, bonusCount) - 1) * 100;
-  const header = `<div style="margin-bottom:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);font-size:9px;letter-spacing:1px;color:var(--text2);">
-    CODEX UNLOCKS: <span style="color:var(--white);font-weight:bold;">${unlocked}</span> / ${total}
-    &nbsp;|&nbsp; BONUS: <span style="color:var(--green);">ATK +${bonusPct.toFixed(1)}% &nbsp; HP +${bonusPct.toFixed(1)}%</span>
-  </div>`;
-  const unlockList=CREATURES.filter(c=>getVictories(c.id)>0);
-  const lockFiller=Array.from({length:Math.max(0,20-unlockList.length)});
+  const bonusPct = (Math.pow(1.01, bonusCount) - 1) * 100;
+  const header = `...`;            // the header markup from the inner version
+  const unlockList = CREATURES.filter(c => getVictories(c.id) > 0);
+  const lockFiller = Array.from({length: Math.max(0, 20 - unlockList.length)});
   grid.innerHTML = header + [
-    ...unlockList.map(c=>`<div class="codex-card unlocked">${SVGs[c.id]||''}</div>`),
-    ...lockFiller.map(()=>`<div class="codex-card locked"><div class="codex-q">?</div><div class="codex-chance">CHANCE: 100%</div><div class="codex-locked-name">??? ???</div></div>`)
+    ...unlockList.map(c => `<div class="codex-card unlocked">${SVGs[c.id]||''}</div>`),
+    ...lockFiller.map(() => `<div class="codex-card locked">...</div>`)
   ].join('');
-  }
 }
 
 // ═══════════════════════════════════════════════════════
