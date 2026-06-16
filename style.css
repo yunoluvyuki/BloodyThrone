@@ -385,6 +385,8 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .mcoin-producing-val{font-size:14px;font-weight:bold;text-align:right;}
 .mcoin-producing-sub{font-size:14px;color:var(--text3);text-align:right;margin-top:1px;}
 .mcoin-locked{opacity:0.35;filter:blur(1.5px);}
+/* ── TREASURY: force all text white EXCEPT the M.Coin names ── */
+#arch-treasury *:not(.mcoin-concept-name){color:var(--white) !important;}
 /* ═══════════════════════════════════════════════════════
    EQUIPMENT SYSTEM
    ═══════════════════════════════════════════════════════ */
