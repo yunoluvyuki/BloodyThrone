@@ -159,9 +159,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-art img{width:100%;height:100%;object-fit:cover;}
 #battle-creature-name,#player-name{font-size:18px;color:var(--white);font-weight:bold;letter-spacing:2px;}
 #battle-creature-tag{font-size:10px;color:var(--text2);font-style:italic;}
-.hp-bar-wrap{margin-bottom:2px;}
-.hp-label{font-size:9px;color:var(--text2);display:flex;justify-content:space-between;margin-bottom:2px;}
-.hp-bar{height:8px;background:var(--bg4);border:1px solid var(--border2);}
+.hp-bar-wrap{margin-bottom:2px;background:transparent;border:none;overflow:visible;}
+.hp-label{font-size:9px;color:#fff;display:flex;justify-content:space-between;margin-bottom:2px;}
+.hp-bar{height:16px;background:var(--bg4);border:1px solid var(--border);overflow:hidden;}
 .hp-fill{height:100%;transition:width .1s;position:relative;}
 .hp-fill.player{background:linear-gradient(90deg,var(--green),#52d68a);}
 .hp-fill.enemy{background:linear-gradient(90deg,var(--red),var(--red2));}
@@ -188,14 +188,14 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-status{font-size:10px;color:var(--text2);margin-top:8px;padding:6px;background:var(--bg3);border:1px solid var(--border);}
 #battle-timers{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
 .timer-row{display:flex;align-items:center;gap:6px;}
-.timer-label{font-size:8px;color:var(--text3);letter-spacing:1px;width:90px;flex-shrink:0;white-space:nowrap;}
-.timer-bar-wrap{flex:1;height:6px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.timer-label{font-size:8px;color:#fff;letter-spacing:1px;width:90px;flex-shrink:0;white-space:nowrap;}
+.timer-bar-wrap{flex:1;height:16px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
 .timer-fill{height:100%;transition:width 0.1s linear;}
 .tfill-player{background:#e74c3c;}
 .tfill-enemy{background:#9b59b6;}
-.timer-text{font-size:8px;color:var(--text2);width:28px;text-align:right;flex-shrink:0;}
+.timer-text{font-size:8px;color:#fff;width:28px;text-align:right;flex-shrink:0;}
 .timer-block{display:flex;flex-direction:column;gap:3px;}
-.timer-block .timer-bar-wrap{flex:none;width:100%;height:6px;}
+.timer-block .timer-bar-wrap{flex:none;width:100%;height:16px;}
 .timer-block .timer-text{align-self:flex-end;}
 #victory-panel{background:var(--bg2);border:1px solid var(--border);padding:12px;}
 #victory-panel h3{font-size:10px;color:var(--text2);letter-spacing:1px;margin-bottom:8px;}
