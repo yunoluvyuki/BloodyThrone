@@ -240,9 +240,13 @@ function setupSettings(){
 
   // Battle controls
   document.getElementById('btn-flee').addEventListener('click',()=>{
-    if(B.active){addLog(`<span class="log-die">✗ You fled from ${B.creature?B.creature.name:'battle'}.`);stopBattle();}
-    else toast('No active battle to flee from.');
-  });
+  if(B.active){
+    addLog(`<span class="log-die">✗ You fled from ${B.creature ? B.creature.name : 'battle'}. (5s recovery)</span>`);
+    stopBattle(true);
+  } else {
+    toast('No active battle to flee from.');
+  }
+});
 
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
@@ -309,6 +313,7 @@ function gameLoop(){
     fpsTimer = 0;
   }
   battleTick();
+  checkQuintMilestone();
   S.activeTime = (S.activeTime || 0) + dt;
   if(frameCount % 3 === 0){
     updateBattleUI();

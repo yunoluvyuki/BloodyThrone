@@ -96,7 +96,7 @@ function updateBattleUI(){
     document.getElementById('enemy-hp-bar').style.width = '0%';
     document.getElementById('enemy-hp-text').textContent = '—';
     document.getElementById('player-hp-bar').style.width = ppct + '%';
-    document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
+    document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(2)} / ${maxHP().toFixed(2)}`;
     document.getElementById('battle-art').innerHTML = '';
 
     if(ptimerBar){ ptimerBar.style.width = '0%'; ptimerText.textContent = '—'; }
@@ -115,9 +115,9 @@ function updateBattleUI(){
   const epct = Math.max(0, B.enemyHP / c.hp * 100);
   const ppct = Math.max(0, B.playerHP / maxHP() * 100);
   document.getElementById('enemy-hp-bar').style.width = epct + '%';
-  document.getElementById('enemy-hp-text').textContent = `${B.enemyHP.toFixed(1)} / ${c.hp}`;
+  document.getElementById('enemy-hp-text').textContent = `${B.enemyHP.toFixed(2)} / ${c.hp}`;
   document.getElementById('player-hp-bar').style.width = ppct + '%';
-  document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(1)} / ${maxHP().toFixed(1)}`;
+  document.getElementById('player-hp-text').textContent = `${Math.max(0, B.playerHP).toFixed(2)} / ${maxHP().toFixed(2)}`;
 
   // Timer bars
   if(B.active && !B.dying){
@@ -125,43 +125,52 @@ function updateBattleUI(){
     const eInterval = Math.max(200, 3000 - (c.spd ?? 0));
     const pFill = Math.max(0, Math.min(100, (1 - B.playerTimer / pInterval) * 100));
     const eFill = Math.max(0, Math.min(100, (1 - B.enemyTimer / eInterval) * 100));
-    if(ptimerBar){ ptimerBar.style.width = pFill + '%'; ptimerText.textContent = (Math.max(0, B.playerTimer) / 1000).toFixed(1) + 's'; }
-    if(etimerBar){ etimerBar.style.width = eFill + '%'; etimerText.textContent = (Math.max(0, B.enemyTimer) / 1000).toFixed(1) + 's'; }
+    if(ptimerBar){ ptimerBar.style.width = pFill + '%'; ptimerText.textContent = (Math.max(0, B.playerTimer) / 1000).toFixed(2) + 's'; }
+    if(etimerBar){ etimerBar.style.width = eFill + '%'; etimerText.textContent = (Math.max(0, B.enemyTimer) / 1000).toFixed(2) + 's'; }
   }
 
 
 
 }
 
-function stopBattle(){
-  B.active=false;
-  S.currentCreature=null;
-  B.creature=null;
-  B.creature=null;
-  renderBattle();
-  updateBattleUI();
-  document.getElementById('ac-details').textContent=S.protocols.autoChallenge?'ENABLED':'DISABLED';
+function stopBattle(fled = false){
+  B.active = false;
+  S.currentCreature = null;
+  B.creature = null;
+  if(fled){
+    B.dying = true;
+    B.deathStart = Date.now();
+    B.fleeRecovery = true;
+    document.getElementById('death-overlay').style.display = 'block';
+  } else {
+    renderBattle();
+    updateBattleUI();
+  }
+  document.getElementById('ac-details').textContent = S.protocols.autoChallenge ? 'ENABLED' : 'DISABLED';
 }
 
 function battleTick(){
   if(B.dying){
-    const elapsed = (Date.now() - B.deathStart) / 1000;
-    const remaining = Math.max(0, 10 - elapsed);
-    document.getElementById('death-timer').textContent = Math.ceil(remaining);
-    if(remaining <= 0){
-      document.getElementById('death-overlay').style.display = 'none';
-      B.dying = false;
-      B.playerHP = maxHP();
-      renderBattle();
-    if(S.protocols.autoRetry && B.creature){
+  const duration = B.fleeRecovery ? 5 : 10;
+  const elapsed = (Date.now() - B.deathStart) / 1000;
+  const remaining = Math.max(0, duration - elapsed);
+  document.getElementById('death-timer').textContent = Math.ceil(remaining);
+  if(remaining <= 0){
+    document.getElementById('death-overlay').style.display = 'none';
+    const wasFlee = B.fleeRecovery;
+    B.dying = false;
+    B.fleeRecovery = false;
+    B.playerHP = maxHP();
+    renderBattle();
+    if(!wasFlee && S.protocols.autoRetry && B.creature){
       startBattle(B.creature.id);
-      } else {
-        B.active = false;
-        S.currentCreature = null;
-        }
-      }
-    return;
+    } else {
+      B.active = false;
+      S.currentCreature = null;
+    }
   }
+  return;
+}
   if(!B.active || !B.creature) return;
   const now = Date.now();
   const dt = Math.min(now - B.lastTick, 500);
@@ -223,9 +232,9 @@ function firePlayerTurn(){
     // Log
     const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
     if(isCrit){
-      addLog(`<span class="log-crit">✦ CRIT — <b>${totalDmg.toFixed(1)}</b> to ${c.name}!${hitStr}</span>`);
+      addLog(`<span class="log-crit">✦ CRIT — <b>${totalDmg.toFixed(2)}</b> to ${c.name}!${hitStr}</span>`);
     } else {
-      addLog(`<span class="log-info">You deal <b>${totalDmg.toFixed(1)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
+      addLog(`<span class="log-info">You deal <b>${totalDmg.toFixed(2)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
     }
 
     if(B.enemyHP <= 0){ onWin(); return; }
@@ -282,16 +291,16 @@ function fireEnemyTurn(){
       let counterDmg = cMnd + Math.random() * (cMxd - cMnd);
       counterDmg = Math.max(0, counterDmg - (c.arm ?? 0));
       B.enemyHP = Math.max(0, B.enemyHP - counterDmg);
-      addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(1)}</b> to ${c.name}!</span>`);
+      addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(2)}</b> to ${c.name}!</span>`);
       if(B.enemyHP <= 0){ onWin(); return; }
     }
 
     // Log
     const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
     if(isCrit){
-      addLog(`<span class="log-crit">✦ ${c.name} CRITS — <b>${totalDmg.toFixed(1)}</b> to you!${hitStr}</span>`);
+      addLog(`<span class="log-crit">✦ ${c.name} CRITS — <b>${totalDmg.toFixed(2)}</b> to you!${hitStr}</span>`);
     } else {
-      addLog(`<span class="log-die"><b>${c.name}</b> hits you for <b>${totalDmg.toFixed(1)}</b>.${hitStr}</span>`);
+      addLog(`<span class="log-die"><b>${c.name}</b> hits you for <b>${totalDmg.toFixed(2)}</b>.${hitStr}</span>`);
     }
   }
 
@@ -325,9 +334,9 @@ function fireEnemyCounterAttack(){
 
   const hitStr = hits > 1 ? ` <span style="color:var(--cyan)">(${hits} hits!)</span>` : '';
   if(isCrit){
-    addLog(`<span class="log-crit">✦ ${c.name} counter CRITS — <b>${totalDmg.toFixed(1)}</b> to you!${hitStr}</span>`);
+    addLog(`<span class="log-crit">✦ ${c.name} counter CRITS — <b>${totalDmg.toFixed(2)}</b> to you!${hitStr}</span>`);
   } else {
-    addLog(`<span class="log-die"><b>${c.name}</b> counter hits you for <b>${totalDmg.toFixed(1)}</b>.${hitStr}</span>`);
+    addLog(`<span class="log-die"><b>${c.name}</b> counter hits you for <b>${totalDmg.toFixed(2)}</b>.${hitStr}</span>`);
   }
 
   // Player counter back
@@ -337,7 +346,7 @@ function fireEnemyCounterAttack(){
     let counterDmg = cMnd + Math.random() * (cMxd - cMnd);
     counterDmg = Math.max(0, counterDmg - (c.arm ?? 0));
     B.enemyHP = Math.max(0, B.enemyHP - counterDmg);
-    addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(1)}</b> to ${c.name}!</span>`);
+    addLog(`<span class="log-crit">↩ COUNTER — <b>${counterDmg.toFixed(2)}</b> to ${c.name}!</span>`);
     if(B.enemyHP <= 0){ onWin(); return; }
   }
 
@@ -377,6 +386,16 @@ function onWin(){
       } else if(['bronze','silver','gold','plat'].includes(k)){
         if(!S.sessionEarned) S.sessionEarned = {bronze:0,silver:0,gold:0,plat:0};
         S.sessionEarned[k] = (S.sessionEarned[k] || 0) + amount;
+      }
+      // Codex bonus: first victory on a creature = +1% ATK and HP
+      if(S.victories[c.id] === 1){
+      const atkBonus = S.stats.atk * 0.01;
+      const hpBonus  = S.stats.hp  * 0.01;
+      S.stats.atk += atkBonus;
+      S.stats.hp  += hpBonus;
+      S.codexBonusApplied = (S.codexBonusApplied || 0) + 1;
+      addLog(`<span style="color:var(--green)">📖 CODEX UNLOCK — ATK +1% / HP +1% (${S.codexBonusApplied} total)</span>`);
+      toast(`Codex unlock! ATK & HP +1%`, 3000);
       }
     } else if(S.stats[k] !== undefined){
       S.stats[k] += amount;

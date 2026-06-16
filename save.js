@@ -33,6 +33,7 @@ function loadGame(){
     S.sessionEarned = Object.assign({bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
     S.mCoins = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.mCoins || {});
     B.playerHP = (loaded.savedPlayerHP && loaded.savedPlayerHP > 0) ? loaded.savedPlayerHP : maxHP();
+    S.codexBonusApplied = loaded.codexBonusApplied || 0;
   }catch(e){console.error('Load failed', e);}
   initBattleQueue();
 }
