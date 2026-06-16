@@ -27,9 +27,9 @@ function loadGame(){
     S.spawnRarity = Object.assign({}, loaded.spawnRarity || {});
     S.deaths = loaded.deaths || 0;
     S.reincarnations = loaded.reincarnations || 0;
-    S.bloodPending = loaded.bloodPending || 0;
-    S.bloodLifetime = loaded.bloodLifetime || 0;
-    S.lifetimeEarned = Object.assign({old:0}, loaded.lifetimeEarned || {});
+    S.bloodPending = loaded.bloodPending || loaded.quintPending || 0;
+    S.bloodLifetime = loaded.bloodLifetime || loaded.quintLifetime || 0;
+    S.lifetimeEarned = Object.assign({old: loaded.lifeOld || 0}, loaded.lifetimeEarned || {});
     S.sessionEarned = Object.assign({bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
     S.mCoins = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.mCoins || {});
     B.playerHP = (loaded.savedPlayerHP && loaded.savedPlayerHP > 0) ? loaded.savedPlayerHP : maxHP();
