@@ -248,7 +248,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
 .shop-card{background:var(--bg2);border:1px solid var(--border);padding:10px;}
 .shop-name{font-size:14px;color:var(--white);font-weight:bold;margin-bottom:4px;}
-.shop-desc{font-size:14px;color:var(--text2);font-weight:bold;margin-bottom:6px;}
+.shop-desc{font-size:11px;color:var(--text2);font-weight:bold;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .shop-effect{font-size:14px;color:var(--green);font-weight:bold;margin-bottom:6px;}
 .shop-cost{font-size:14px;color:var(--yellow);font-weight:bold;margin-bottom:6px;}
 .shop-own{font-size:14px;color:var(--text3);font-weight:bold;margin-bottom:6px;}
