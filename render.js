@@ -55,8 +55,7 @@ function renderBattle(){
   const hidden=CREATURES.length-visible.length-defeated;
   let html=`<div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-bottom:10px;">
     ${defeated>0?`<div style="font-size:8px;color:var(--text3);">${defeated} defeated</div>`:''}
-    <div style="flex:1;height:1px;background:var(--text3);opacity:0.2;"></div>
-    ${hidden>0?`<div style="font-size:8px;color:var(--text3);font-style:italic;opacity:0.6;">${hidden} in the dark…</div>`:''}
+    ${hidden>0?`<div style="font-size:14px;color:#ffffff;font-weight:bold;">${hidden} in the dark…</div>`:''}
   </div>`;
   html+=visible.map(c=>{
     const color='#888';
