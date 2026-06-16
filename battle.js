@@ -36,11 +36,11 @@ function isUnlocked(id){return S.battleUnlocked&&S.battleUnlocked.includes(id);}
 
 function getRarityChances(){
   const ups=S.masteryUpgrades||{};
-  const unc=30+(ups.unc_rate||0)*1;
-  const rare=20+(ups.rare_rate||0)*0.5;
-  const epic=10+(ups.epic_rate||0)*0.2;
-  const leg=10+(ups.leg_rate||0)*0.05;
-  return{uncommon:Math.min(unc,40),rare:Math.min(rare,15),epic:Math.min(epic,5),legendary:Math.min(leg,2)};
+  const unc=0+(ups.unc_rate||0)*1;
+  const rare=0+(ups.rare_rate||0)*0.5;
+  const epic=0+(ups.epic_rate||0)*0.2;
+  const leg=0+(ups.leg_rate||0)*0.05;
+  return{uncommon:Math.min(unc,50),rare:Math.min(rare,25),epic:Math.min(epic,10),legendary:Math.min(leg,5)};
 }
 function rollRarity(){
   const ch=getRarityChances();
