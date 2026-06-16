@@ -332,7 +332,14 @@ function gameLoop(){
     if(archActive){
       if(document.getElementById('arch-treasury').classList.contains('active')) updateQuintUI();
     }
-    if(document.getElementById('tab-shop').classList.contains('active')) renderShop(); 
+    if(document.getElementById('tab-shop').classList.contains('active')){
+      const affordKey = SHOP_ITEMS.map(item => {
+        const owned = S.shopOwned[item.id] || 0;
+        const maxed = item.maxOwned && owned >= item.maxOwned;
+        return maxed ? 'M' : Object.entries(item.cost).every(([k,v]) => (S.resources[k]||0) >= v) ? '1' : '0';
+      }).join('');
+      if(affordKey !== gameLoop._lastShopKey){ gameLoop._lastShopKey = affordKey; renderShop(); }
+    }
     saveGame();
   }
   requestAnimationFrame(gameLoop);

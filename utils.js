@@ -32,6 +32,6 @@ function formatStat(key,val){
   const d=STAT_DEFS.find(x=>x.key===key);
   if(!d)return fmtStat(val);
   if(d.fmt==='pct')return(val*100).toFixed(1)+'%';
-  if(d.fmt==='x')return val.toFixed(2)+'x';
+  if(d.fmt==='x')return 'x'+val.toFixed(2);
   return fmtStat(val);
 }
