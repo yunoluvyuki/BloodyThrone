@@ -75,6 +75,7 @@ function startBattle(creatureId){
   const c = getCreature(creatureId);
   if(!c) return;
   if(B.dying){ toast('Still recovering from defeat!', 2000); return; }
+  B.resting = false;
   S.currentCreature = creatureId;
   B.rarity = getSpawnRarity(creatureId);
   const rarityMult = RARITY_MULTS[B.rarity] || 1;
@@ -173,7 +174,7 @@ function battleTick(){
     const wasFlee = B.fleeRecovery;
     B.dying = false;
     B.fleeRecovery = false;
-    B.playerHP = maxHP();
+    if(!wasFlee) B.playerHP = maxHP();   // full heal only on actual defeat
     renderBattle();
     if(!wasFlee && S.protocols.autoRetry && B.creature){
       startBattle(B.creature.id);
@@ -208,6 +209,47 @@ function regenTick(){
   if((S.stats.rgn ?? 0) <= 0) return;
   B.playerHP = Math.min(maxHP(), B.playerHP + S.stats.rgn);
 }
+
+// ── REST ──────────────────────────────────────────────
+// Heals 10% of max HP per second until full or interrupted.
+function restToggle(){
+  if(B.dying){ toast('Still recovering!', 2000); return; }
+  if(B.resting){
+    // Stop resting
+    B.resting = false;
+    addLog(`<span class="log-info">You stop resting.</span>`);
+    renderBattle();
+    return;
+  }
+  // Cannot rest during an active battle
+  if(B.active){
+    toast('Cannot rest during combat! Flee first.', 2000);
+    return;
+  }
+  if(B.playerHP >= maxHP()){
+    toast('Already at full HP.', 2000);
+    return;
+  }
+  B.resting = true;
+  addLog(`<span class="log-info">You begin resting — recovering 10% HP/sec.</span>`);
+  renderBattle();
+  updateBattleUI();
+}
+
+// Called every frame from gameLoop with dt (seconds).
+function restTick(dt){
+  if(!B.resting) return;
+  if(B.active || B.dying){ B.resting = false; return; }
+  const mhp = maxHP();
+  B.playerHP = Math.min(mhp, B.playerHP + mhp * 0.10 * dt);
+  if(B.playerHP >= mhp){
+    B.playerHP = mhp;
+    B.resting = false;
+    addLog(`<span class="log-win">✓ Fully rested.</span>`);
+    renderBattle();
+  }
+}
+
 
 function firePlayerTurn(){
   const c = B.creature;

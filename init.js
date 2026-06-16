@@ -248,6 +248,9 @@ function setupSettings(){
     toast('No active battle to flee from.');
   }
 });
+  document.getElementById('btn-rest').addEventListener('click',()=>{
+    restToggle();
+  });
 
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
@@ -317,6 +320,7 @@ function gameLoop(){
     fpsTimer = 0;
   }
   battleTick();
+  restTick(dt);
   masteryAutoTick(dt);
   checkBloodMilestone();
   S.activeTime = (S.activeTime || 0) + dt;
@@ -333,10 +337,6 @@ function gameLoop(){
     const archActive = document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
       if(document.getElementById('arch-treasury').classList.contains('active')) updateBloodUI();
-      else if(document.getElementById('arch-masterpiece').classList.contains('active')){
-        const bk = Math.floor(S.bloodPending||0);
-        if(bk !== gameLoop._lastBloodKey){ gameLoop._lastBloodKey = bk; renderMastery(); }
-      }
     }
     if(document.getElementById('tab-shop').classList.contains('active')){
       const affordKey = SHOP_ITEMS.map(item => {
