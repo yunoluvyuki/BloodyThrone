@@ -49,7 +49,7 @@ function milestoneTick(){
 
   // Each effective M.Old generates 1 Blood Coin/sec
   if(effectiveMOld > 0){
-    const gained = effectiveMOld;
+    const gained = effectiveMOld * (typeof masteryGainMult==='function' ? masteryGainMult('blood') : 1);
     S.bloodPending = (S.bloodPending || 0) + gained;
     S.bloodLifetime = (S.bloodLifetime || 0) + gained;
   }

@@ -28,9 +28,10 @@ function renderShop(){
   if(!g) return;
   g.innerHTML = SHOP_ITEMS.map(item => {
     const owned = S.shopOwned[item.id] || 0;
-    const costStr = Object.entries(item.cost).map(([k,v]) => `${fmt(v)} ${k.toUpperCase()}`).join(' + ');
+    const cost = effCost(item.cost);
+    const costStr = Object.entries(cost).map(([k,v]) => `${fmt(v)} ${k.toUpperCase()}`).join(' + ');
     const maxed = item.maxOwned && owned >= item.maxOwned;
-    const canAfford = !maxed && Object.entries(item.cost).every(([k,v]) => (S.resources[k] || 0) >= v);
+    const canAfford = !maxed && Object.entries(cost).every(([k,v]) => (S.resources[k] || 0) >= v);
     const iconHtml = Object.keys(item.statBonus).map(k => {
       const def = STAT_DEFS.find(d => d.key === k);
       return def ? `<span class="stat-icon ${def.icon}" title="${def.label}"></span>` : '';
@@ -62,7 +63,7 @@ function renderBattle(){
     const isCurrent=S.currentCreature===c.id;
     const pct=Math.min(100,vic/c.vicReq*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
-    const decayMult=1/(1+0.3*vic);
+    const decayMult=1/(1+masteryDecayCoef()*vic);
     const rewardStr=Object.entries(c.rewards).map(([k,v])=>`<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} +${(v*spawnRarityMultDisplay*decayMult).toFixed(2).replace(/\.00$/,'')}</span>`).join('');
     let btnHtml='';
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
@@ -123,9 +124,10 @@ function renderMastery(){
     const isMaxed=level>=up.maxLevel;
     const cost={};
     Object.entries(up.base).forEach(([res,amt])=>{ cost[res]=Math.floor(amt*Math.pow(up.scale,level)); });
-    const canAfford=!isMaxed&&Object.entries(cost).every(([res,amt])=>(S.resources[res]||0)>=amt);
+    const effc=effCost(cost);
+    const canAfford=!isMaxed&&Object.entries(effc).every(([res,amt])=>(S.resources[res]||0)>=amt);
     const rc=RARITY_COLORS[up.rarity];
-    const costStr=Object.entries(cost).map(([res,amt])=>`${res.toUpperCase()} ${fmt(amt)}`).join(' + ');
+    const costStr=Object.entries(effc).map(([res,amt])=>`${res.toUpperCase()} ${fmt(amt)}`).join(' + ');
     html+=`<div style="border:1px solid ${rc}44;padding:10px;background:${rc}0d;">
       <div style="font-size:10px;font-weight:bold;color:${rc};letter-spacing:1px;margin-bottom:3px;">${up.label}</div>
       <div style="font-size:8px;color:var(--text3);margin-bottom:8px;">${up.desc}</div>
@@ -137,6 +139,7 @@ function renderMastery(){
       }
     </div>`;
   });
+  html+=masterySectionHTML();
   html+='</div>';
   el.innerHTML=html;
 }
@@ -236,7 +239,7 @@ function renderAll(){
 const MCOIN_DEFS = [
   {
     key: 'old',
-    name: 'M.Old',
+    name: 'Old Coin',
     sub: 'Blood Coin Gain',
     color: '#aaaaaa',
     trackKey: 'lifetimeEarned', // persists
@@ -245,7 +248,7 @@ const MCOIN_DEFS = [
   },
   {
     key: 'bronze',
-    name: 'M.Bronze',
+    name: 'Bronze Coin',
     sub: 'Produces M.Old',
     color: '#cd7f32',
     trackKey: 'sessionEarned',
@@ -254,7 +257,7 @@ const MCOIN_DEFS = [
   },
   {
     key: 'silver',
-    name: 'M.Silver',
+    name: 'Silver Coin',
     sub: 'Produces M.Bronze',
     color: '#aaaacc',
     trackKey: 'sessionEarned',
@@ -263,7 +266,7 @@ const MCOIN_DEFS = [
   },
   {
     key: 'gold',
-    name: 'M.Gold',
+    name: 'Gold Coin',
     sub: 'Produces M.Silver',
     color: '#f0b429',
     trackKey: 'sessionEarned',
@@ -272,7 +275,7 @@ const MCOIN_DEFS = [
   },
   {
     key: 'plat',
-    name: 'M.Platinum',
+    name: 'Platinum Coin',
     sub: 'Produces M.Gold',
     color: '#a8d8ea',
     trackKey: 'sessionEarned',
@@ -341,7 +344,7 @@ function renderMCoinSynth() {
 
     // Producing: what this M.Coin outputs per second
     let producingVal = count;
-    let producingSub = count > 0 ? (def.key === 'old' ? '+' + fmt(count) + ' Blood/s' : '+' + fmt(count) + ' M.' + (idx > 0 ? MCOIN_DEFS[idx - 1].name.split('.')[1] : 'Old') + '/s') : '—';
+    let producingSub = count > 0 ? (def.key === 'old' ? '+' + fmt(count) + ' Blood/s' : '+' + fmt(count) + ' ' + (idx > 0 ? MCOIN_DEFS[idx - 1].name : 'Old Coin') + '/s') : '—';
     const producingColor = count > 0 ? def.color : 'var(--text3)';
 
     // Lock rows where no total earned and index > 0 (not yet reached)
@@ -356,7 +359,6 @@ function renderMCoinSynth() {
       <!-- TOTAL -->
       <div class="mcoin-col-total">
         <div class="mcoin-total-val">${fmt(total)}</div>
-        <div style="font-size:7px;color:var(--text3);">${def.lifetime ? 'lifetime' : 'this run'}</div>
       </div>
       <!-- MILESTONE BAR -->
       <div class="mcoin-col-milestone">

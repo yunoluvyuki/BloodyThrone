@@ -151,7 +151,7 @@ function stopBattle(fled = false){
 
 function battleTick(){
   if(B.dying){
-  const duration = B.fleeRecovery ? 5 : 10;
+  const duration = B.fleeRecovery ? 5 * masteryFleeTimeMult() : 10 * masteryDeathTimeMult();
   const elapsed = (Date.now() - B.deathStart) / 1000;
   const remaining = Math.max(0, duration - elapsed);
   document.getElementById('death-timer').textContent = Math.ceil(remaining);
@@ -211,8 +211,9 @@ function firePlayerTurn(){
 
     // Damage Calc
     const isCrit = Math.random() < (st.crc ?? 0);
-    const mnd = st.atk * (st.mnd ?? 0.7);
-    const mxd = st.atk * (st.mxd ?? 1.0);
+    const atkEff = st.atk * masteryAtkMult();
+    const mnd = atkEff * (st.mnd ?? 0.7);
+    const mxd = atkEff * (st.mxd ?? 1.0);
     let totalDmg = 0;
     let hits = 0;
 
@@ -362,22 +363,23 @@ function onWin(){
 
   // Victory Tracking
   if(!S.victories[c.id]) S.victories[c.id] = 0;
-  S.victories[c.id]++;
-  const justCompleted = S.victories[c.id] === c.vicReq;
-  addLog(`<span class="log-win">✓ Defeated ${c.name}! (${S.victories[c.id]}/${c.vicReq})</span>`);
+  const prevVic = S.victories[c.id];
+  S.victories[c.id] += 1 + masteryBonusVictories();
+  const justCompleted = prevVic < c.vicReq && S.victories[c.id] >= c.vicReq;
+  addLog(`<span class="log-win">✓ Defeated ${c.name}! (${Math.min(S.victories[c.id], c.vicReq)}/${c.vicReq})</span>`);
   if(justCompleted) unlockNextCreature();
 
   // Reward Multipliers
   const rewardMult = 1 + (S.reincarnations * 0.05);
   const rarityMult = RARITY_MULTS[B.rarity || 'common'] || 1;
-  const n = S.victories[c.id] - 1;
-  const decayMult = 1 / (1 + 0.3 * n);
+  const n = prevVic;
+  const decayMult = 1 / (1 + masteryDecayCoef() * n);
   if(rarityMult > 1) addLog(`<span style="color:${RARITY_COLORS[B.rarity]}">★ ${RARITY_LABELS[B.rarity]} bonus ×${rarityMult} applied!</span>`);
 
   // Apply Rewards
   const gainStrs = [];
   Object.entries(c.rewards).forEach(([k, v]) => {
-    const amount = v * rewardMult * rarityMult * decayMult;
+    const amount = v * rewardMult * rarityMult * decayMult * masteryGainMult(k);
     if(['old', 'bronze', 'silver'].includes(k)){
       S.resources[k] = (S.resources[k] || 0) + amount;
       if(k === 'old'){
@@ -388,7 +390,7 @@ function onWin(){
         S.sessionEarned[k] = (S.sessionEarned[k] || 0) + amount;
       }
       // Codex bonus: first victory on a creature = +1% ATK and HP
-      if(S.victories[c.id] === 1){
+      if(prevVic === 0){
       const atkBonus = S.stats.atk * 0.01;
       const hpBonus  = S.stats.hp  * 0.01;
       S.stats.atk += atkBonus;
@@ -449,6 +451,3 @@ function addLog(html){
   if(log.children.length>50)log.removeChild(log.lastChild);
 }
 
-// ═══════════════════════════════════════════════════════
-// BLOOD COIN MILESTONE CHECK
-// ═══════════════════════════════════════════════════════

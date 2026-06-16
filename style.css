@@ -368,8 +368,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 /* ── M.COIN SYNTHESIZER ───────────────────────────────── */
 #treasury-layout{align-items:flex-start;}
 #mcoin-synthesizer{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--border);}
-#mcoin-header{display:grid;grid-template-columns:140px 90px 1fr 60px 80px;gap:0;padding:8px 12px;border-bottom:1px solid var(--border);font-size:14px;letter-spacing:1.5px;color:var(--text3);}
-.mcoin-row{display:grid;grid-template-columns:140px 90px 1fr 60px 80px;gap:0;padding:10px 12px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+#mcoin-header{display:grid;grid-template-columns:175px 80px 1fr 64px 110px;column-gap:12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:14px;letter-spacing:1px;color:var(--text3);}
+.mcoin-row{display:grid;grid-template-columns:175px 80px 1fr 64px 110px;column-gap:12px;padding:10px 12px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+.mcoin-col-count,.mcoin-col-producing{text-align:right;}
 .mcoin-row:last-child{border-bottom:none;}
 .mcoin-row:hover{background:var(--bg3);}
 .mcoin-col-concept,.mcoin-col-total,.mcoin-col-milestone,.mcoin-col-count,.mcoin-col-producing{padding:0 4px;}
@@ -387,6 +388,8 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .mcoin-locked{opacity:0.35;filter:blur(1.5px);}
 /* ── TREASURY: force all text white EXCEPT the M.Coin names ── */
 #arch-treasury *:not(.mcoin-concept-name){color:var(--white) !important;}
+/* ── TREASURY: force all text to 14px ── */
+#arch-treasury *{font-size:14px !important;}
 /* ═══════════════════════════════════════════════════════
    EQUIPMENT SYSTEM
    ═══════════════════════════════════════════════════════ */

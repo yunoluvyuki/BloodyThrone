@@ -24,7 +24,7 @@ function toast(msg,dur=2500){
 function getCreature(id){return CREATURES.find(c=>c.id===id);}
 function getVictories(id){return S.victories[id]||0;}
 function isMaxed(creature){return getVictories(creature.id)>=creature.vicReq;}
-function maxHP(){return S.stats.hp;}
+function maxHP(){return S.stats.hp * (typeof masteryHpMult==='function' ? masteryHpMult() : 1);}
 
 
 // formatStat — formats a stat value according to STAT_DEFS fmt type
