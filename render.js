@@ -17,8 +17,6 @@ const FUND_DEFS={
     {key:'decay',label:'DECAY FACTOR',val:()=>'1x',cat:'core'},
     {key:'death_rec',label:'DEATH RECOVERY',val:()=>'10s',cat:'stats'},
     {key:'flee_pen',label:'FLEE PENALTY',val:()=>'5s',cat:'stats'},
-    {key:'feat_base',label:'FEAT MEDAL BASE',val:()=>'1.01x',cat:'rarity'},
-    {key:'feat_mult',label:'FEAT MULT',val:()=>'1.02x',cat:'rarity'},
     {key:'blood',label:'BLOOD COIN',val:()=>fmt(S.bloodLifetime),cat:'economy'},
   ]
 };
@@ -329,7 +327,7 @@ function renderMCoinSynth() {
       <!-- TOTAL -->
       <div class="mcoin-col-total">
         <div class="mcoin-total-val">${fmt(total)}</div>
-
+        <div style="font-size:7px;color:var(--text3);">${def.lifetime ? 'lifetime' : 'this run'}</div>
       </div>
       <!-- MILESTONE BAR -->
       <div class="mcoin-col-milestone">

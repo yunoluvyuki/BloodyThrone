@@ -42,7 +42,7 @@
     </div>
   </div>
   <button id="add-btn">+</button>
-  <div id="blood-count">0</div>
+  <div id="quint-count">0</div>
   <div class="fps" id="fps-display">FPS 60</div>
 </div>
 
@@ -134,21 +134,19 @@
       </div>
       <!-- Codex -->
       <div class="prestige-pane" id="arch-codex">
-        <div id="codex-filters"></div>
         <div id="codex-grid"></div>
       </div>
       <!-- Treasury -->
       <div class="prestige-pane active" id="arch-treasury">
         <div id="treasury-layout">
-          <!-- RIGHT: Blood Coin panel (rendered after synth in DOM but floated right via CSS) -->
-          <div id="treasury-panel" style="order:2;">
+          <div id="treasury-panel">
             <div class="treasury-panel-box">
               <div class="treasury-panel-title">PENDING BLOOD COIN</div>
-              <div class="blood-pending" id="blood-pending">+0</div>
-              <div class="blood-sub">PENDING BLOOD COIN</div>
-              <div class="blood-row"><span class="softcap-label">PENDING</span><span class="softcap-val" id="blood-pend-val">+0</span></div>
-              <div class="blood-row"><span class="softcap-label">LIFETIME</span><span class="softcap-val" id="blood-life-val">0</span></div>
-              <div class="blood-row"><span class="softcap-label">RATE</span><span class="softcap-val" id="blood-rate-val">0/s</span></div>
+              <div class="quint-pending" id="quint-pending">+0</div>
+              <div class="quint-sub">PENDING BLOOD COIN</div>
+              <div class="quint-row"><span class="softcap-label">PENDING</span><span class="softcap-val" id="quint-pend-val">+0</span></div>
+              <div class="quint-row"><span class="softcap-label">LIFETIME</span><span class="softcap-val" id="quint-life-val">0</span></div>
+              <div class="quint-row"><span class="softcap-label">FIRST SOFTCAP</span><span class="softcap-val">1000</span></div>
               <button id="reincarnate-btn">REINCARNATE</button>
               <div class="reincarnate-req" id="reincarnate-req">REQUIRES 100 PENDING BLOOD COIN</div>
             </div>
@@ -158,17 +156,6 @@
                 <div><div style="color:var(--text3);font-size:8px;">ACTIVE TIME</div><div id="active-time">0m</div></div>
               </div>
             </div>
-          </div>
-          <!-- LEFT: M.Coin Synthesizer -->
-          <div id="mcoin-synthesizer" style="order:1;">
-            <div id="mcoin-header">
-              <div class="mcoin-col-concept">CONCEPT</div>
-              <div class="mcoin-col-total">TOTAL EARNED</div>
-              <div class="mcoin-col-milestone">MILESTONE</div>
-              <div class="mcoin-col-count">COUNT</div>
-              <div class="mcoin-col-producing">PRODUCING</div>
-            </div>
-            <div id="mcoin-rows"><!-- filled by renderMCoinSynth() --></div>
           </div>
         </div>
       </div>
