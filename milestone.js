@@ -50,8 +50,8 @@ function milestoneTick(){
   // Each effective M.Old generates 1 Blood Coin/sec
   if(effectiveMOld > 0){
     const gained = effectiveMOld;
-    S.quintPending = (S.quintPending || 0) + gained;
-    S.quintLifetime = (S.quintLifetime || 0) + gained;
+    S.bloodPending = (S.bloodPending || 0) + gained;
+    S.bloodLifetime = (S.bloodLifetime || 0) + gained;
   }
 }
 

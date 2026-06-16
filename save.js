@@ -28,8 +28,8 @@ function loadGame(){
     S.deaths = loaded.deaths || 0;
     S.lifeOld = loaded.lifeOld || 0;
     S.reincarnations = loaded.reincarnations || 0;
-    S.quintPending = loaded.quintPending || 0;
-    S.quintLifetime = loaded.quintLifetime || 0;
+    S.bloodPending = loaded.bloodPending || 0;
+    S.bloodLifetime = loaded.bloodLifetime || 0;
     S.lifetimeEarned = Object.assign({old:0}, loaded.lifetimeEarned || {});
     S.sessionEarned = Object.assign({bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
     S.mCoins = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.mCoins || {});

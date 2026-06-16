@@ -70,7 +70,7 @@ function updateArchiveDot(){
   if(!dot)return;
   const archActive=document.getElementById('tab-archive').classList.contains('active');
   if(archActive){dot.style.display='none';return;}
-  const ready=(S.quintPending>=100)||hasAffordableMasteryUpgrade();
+  const ready=(S.bloodPending>=100)||hasAffordableMasteryUpgrade();
   dot.style.display=ready?'block':'none';
 }
 document.querySelectorAll('.nav-tab').forEach(t=>{
@@ -138,8 +138,8 @@ function setupSettings(){
   ['.timer-label',14],['.timer-text',14],['#victory-panel h3',14],
   ['.victory-stat',14],['#death-overlay h2',14],['#death-overlay .timer',14],
   ['.prestige-tab',14],
-  ['.treasury-panel-title',14],['.quint-pending',14],
-  ['.quint-sub',14],['.quint-row',14],['#reincarnate-btn',14],['.reincarnate-req',14],
+  ['.treasury-panel-title',14],['.blood-pending',14],
+  ['.blood-sub',14],['.blood-row',14],['#reincarnate-btn',14],['.reincarnate-req',14],
   ['.settings-row-label',14],['.settings-check-label',14],
   ['.settings-check-sublabel',14],['.zoom-val',14],['.zoom-btn',14],
   ];
@@ -244,7 +244,6 @@ function setupSettings(){
     else toast('No active battle to flee from.');
   });
 
-  // Add / Quintessence shortcut
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
     document.querySelectorAll('.prestige-tab').forEach(x=>x.classList.toggle('active',x.dataset.arch==='treasury'));
@@ -254,9 +253,9 @@ function setupSettings(){
 
   // Reincarnate
   document.getElementById('reincarnate-btn').addEventListener('click',()=>{
-    if(S.quintPending<100){toast('Need 100 pending Blood Coin to reincarnate!');return;}
+    if(S.bloodPending<100){toast('Need 100 pending Blood Coin to reincarnate!');return;}
     if(!confirm('REINCARNATE: Your progress resets, but you keep a permanent bonus. Continue?'))return;
-    S.quintLifetime+=S.quintPending;
+    S.bloodLifetime+=S.bloodPending;
     S.reincarnations++;
     const bonus=(1+S.reincarnations*0.05).toFixed(2);
     toast(`Reincarnated! Permanent bonus: ${bonus}x — you feel sharper.`,5000);
@@ -265,7 +264,7 @@ function setupSettings(){
     S.victories={};
     S.resources={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.currentCreature=null;
-    S.quintPending=0;
+    S.bloodPending=0;
     S.battleUnlocked=[];
     S.battleQueue=[];
     S.sessionEarned={bronze:0,silver:0,gold:0,plat:0};

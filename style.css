@@ -365,3 +365,23 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .inv-tooltip-effect{font-size:8px;color:#5a9a50;}
 .inv-tooltip-qty{font-size:8px;color:#666;margin-top:2px;}
 .inv-empty-msg{color:var(--text3);font-size:11px;padding:20px 0;}
+/* ── M.COIN SYNTHESIZER ───────────────────────────────── */
+#treasury-layout{align-items:flex-start;}
+#mcoin-synthesizer{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--border);}
+#mcoin-header{display:grid;grid-template-columns:140px 90px 1fr 60px 80px;gap:0;padding:8px 12px;border-bottom:1px solid var(--border);font-size:8px;letter-spacing:1.5px;color:var(--text3);}
+.mcoin-row{display:grid;grid-template-columns:140px 90px 1fr 60px 80px;gap:0;padding:10px 12px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+.mcoin-row:last-child{border-bottom:none;}
+.mcoin-row:hover{background:var(--bg3);}
+.mcoin-col-concept,.mcoin-col-total,.mcoin-col-milestone,.mcoin-col-count,.mcoin-col-producing{padding:0 4px;}
+.mcoin-concept-name{font-size:12px;font-weight:bold;color:var(--white);letter-spacing:0.5px;}
+.mcoin-concept-sub{font-size:8px;color:var(--text3);margin-top:2px;}
+.mcoin-total-val{font-size:11px;color:var(--text2);}
+.mcoin-milestone-wrap{display:flex;flex-direction:column;gap:3px;}
+.mcoin-milestone-bar-bg{height:6px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;}
+.mcoin-milestone-bar-fill{height:100%;transition:width 0.4s;}
+.mcoin-milestone-labels{display:flex;justify-content:space-between;font-size:7px;color:var(--text3);}
+.mcoin-milestone-eta{font-size:8px;font-weight:bold;}
+.mcoin-count-val{font-size:14px;font-weight:bold;color:var(--white);text-align:right;}
+.mcoin-producing-val{font-size:13px;font-weight:bold;text-align:right;}
+.mcoin-producing-sub{font-size:7px;color:var(--text3);text-align:right;margin-top:1px;}
+.mcoin-locked{opacity:0.35;filter:blur(1.5px);}

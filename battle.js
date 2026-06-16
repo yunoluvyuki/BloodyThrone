@@ -435,7 +435,7 @@ function addLog(html){
 // BLOOD COIN MILESTONE CHECK
 // ═══════════════════════════════════════════════════════
 function checkQuintMilestone(){
-  if(S.resources.old>=S.quintPending*100+100){
-    S.quintPending+=1;
+  if(S.resources.old>=S.bloodPending*100+100){
+    S.bloodPending+=1;
   }
 }
