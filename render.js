@@ -107,7 +107,11 @@ function renderMastery(){
   const ups=S.masteryUpgrades||{};
   const ch=getRarityChances();
   const common=Math.max(0,100-ch.uncommon-ch.rare-ch.epic-ch.legendary);
-  let html=`<div style="margin-bottom:14px;padding:10px;background:var(--bg3);border:1px solid var(--border);">
+  let html=`<div style="margin-bottom:10px;padding:8px 12px;background:#1a0e2e;border:1px solid var(--purple2);display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:14px;letter-spacing:1px;color:var(--purple2);font-weight:bold;">BLOOD COIN AVAILABLE</span>
+    <span style="font-size:14px;color:var(--white);font-weight:bold;">${fmt(S.bloodPending||0)}</span>
+  </div>
+  <div style="margin-bottom:14px;padding:10px;background:var(--bg3);border:1px solid var(--border);">
     <div style="font-size:9px;letter-spacing:2px;color:var(--text3);margin-bottom:8px;">CURRENT SPAWN CHANCES</div>
     <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:10px;">
       <span style="color:#888;">COMMON ${common.toFixed(2)}%</span>
@@ -125,9 +129,9 @@ function renderMastery(){
     const cost={};
     Object.entries(up.base).forEach(([res,amt])=>{ cost[res]=Math.floor(amt*Math.pow(up.scale,level)); });
     const effc=effCost(cost);
-    const canAfford=!isMaxed&&Object.entries(effc).every(([res,amt])=>(S.resources[res]||0)>=amt);
+    const canAfford=!isMaxed&&canAffordCost(effc);
     const rc=RARITY_COLORS[up.rarity];
-    const costStr=Object.entries(effc).map(([res,amt])=>`${res.toUpperCase()} ${fmt(amt)}`).join(' + ');
+    const costStr=Object.entries(effc).map(([res,amt])=>`${(COIN_LABELS[res]||res.toUpperCase())} ${fmt(amt)}`).join(' + ');
     html+=`<div style="border:1px solid ${rc}44;padding:10px;background:${rc}0d;">
       <div style="font-size:10px;font-weight:bold;color:${rc};letter-spacing:1px;margin-bottom:3px;">${up.label}</div>
       <div style="font-size:8px;color:var(--text3);margin-bottom:8px;">${up.desc}</div>

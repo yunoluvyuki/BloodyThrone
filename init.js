@@ -333,6 +333,10 @@ function gameLoop(){
     const archActive = document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
       if(document.getElementById('arch-treasury').classList.contains('active')) updateBloodUI();
+      else if(document.getElementById('arch-masterpiece').classList.contains('active')){
+        const bk = Math.floor(S.bloodPending||0);
+        if(bk !== gameLoop._lastBloodKey){ gameLoop._lastBloodKey = bk; renderMastery(); }
+      }
     }
     if(document.getElementById('tab-shop').classList.contains('active')){
       const affordKey = SHOP_ITEMS.map(item => {

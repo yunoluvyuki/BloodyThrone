@@ -7,9 +7,8 @@ function buyShopItem(id){
   const owned = S.shopOwned[item.id] || 0;
   if(item.maxOwned && owned >= item.maxOwned){ toast('Already owned!'); return; }
   const cost = effCost(item.cost);
-  const canAfford = Object.entries(cost).every(([k,v]) => (S.resources[k] || 0) >= v);
-  if(!canAfford){ toast('Not enough resources!'); return; }
-  Object.entries(cost).forEach(([k,v]) => { S.resources[k] -= v; });
+  if(!canAffordCost(cost)){ toast('Not enough resources!'); return; }
+  spendCost(cost);
   Object.entries(item.statBonus).forEach(([k,v]) => {
     const val = item.isPct ? S.stats[k] * v : v; 
     S.stats[k] = (S.stats[k] || 0) + val;
@@ -30,8 +29,8 @@ function buyMasteryUpgrade(id){
   const rawCost={};
   Object.entries(up.base).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)); });
   const cost=effCost(rawCost);
-  if(!Object.entries(cost).every(([res,amt])=>(S.resources[res]||0)>=amt)){toast('Not enough resources.',2000);return;}
-  Object.entries(cost).forEach(([res,amt])=>{ S.resources[res]-=amt; });
+  if(!canAffordCost(cost)){toast('Not enough Blood Coin.',2000);return;}
+  spendCost(cost);
   S.masteryUpgrades[id]=level+1;
   renderMastery();
   renderStats();

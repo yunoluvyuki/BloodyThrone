@@ -79,8 +79,8 @@ const RARITY_LABELS={common:'COMMON',uncommon:'UNCOMMON',rare:'RARE',epic:'EPIC'
 const RARITY_MULTS={common:1,uncommon:1.5,rare:3,epic:6,legendary:15};
 const RARITY_BG={common:'rgba(80,80,80,0.15)',uncommon:'rgba(39,174,96,0.4)',rare:'rgba(41,128,185,0.18)',epic:'rgba(155,89,182,0.2)',legendary:'rgba(240,180,41,0.15)'};
 const RARITY_UPGRADES=[
-  {id:'unc_rate',rarity:'uncommon',label:'UNCOMMON ATTUNEMENT',desc:'+1% uncommon spawn chance per level.',base:{old:500},scale:1.8,maxLevel:19,perLevel:1},
-  {id:'rare_rate',rarity:'rare',label:'RARE ATTUNEMENT',desc:'+0.5% rare spawn chance per level.',base:{old:5000,bronze:50},scale:2,maxLevel:20,perLevel:0.5},
-  {id:'epic_rate',rarity:'epic',label:'EPIC ATTUNEMENT',desc:'+0.2% epic spawn chance per level.',base:{old:30000,bronze:500},scale:2,maxLevel:20,perLevel:0.2},
-  {id:'leg_rate',rarity:'legendary',label:'LEGENDARY ATTUNEMENT',desc:'+0.05% legendary spawn chance per level.',base:{old:200000,bronze:5000,silver:5},scale:2,maxLevel:20,perLevel:0.05},
+  {id:'unc_rate',rarity:'uncommon',label:'UNCOMMON ATTUNEMENT',desc:'+1% uncommon spawn chance per level.',base:{blood:8},scale:1.8,maxLevel:19,perLevel:1},
+  {id:'rare_rate',rarity:'rare',label:'RARE ATTUNEMENT',desc:'+0.5% rare spawn chance per level.',base:{blood:15},scale:2,maxLevel:20,perLevel:0.5},
+  {id:'epic_rate',rarity:'epic',label:'EPIC ATTUNEMENT',desc:'+0.2% epic spawn chance per level.',base:{blood:25},scale:2,maxLevel:20,perLevel:0.2},
+  {id:'leg_rate',rarity:'legendary',label:'LEGENDARY ATTUNEMENT',desc:'+0.05% legendary spawn chance per level.',base:{blood:40},scale:2,maxLevel:20,perLevel:0.05},
 ];

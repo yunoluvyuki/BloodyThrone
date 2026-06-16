@@ -141,6 +141,8 @@ function stopBattle(fled = false){
     B.dying = true;
     B.deathStart = Date.now();
     B.fleeRecovery = true;
+    document.getElementById('death-overlay-title').textContent = 'FLED';
+    document.getElementById('death-overlay-sub').textContent = 'RECOVERING...';
     document.getElementById('death-overlay').style.display = 'block';
   } else {
     renderBattle();
@@ -438,6 +440,8 @@ function onLose(){
   const defeatedName=B.creature?B.creature.name:'unknown';
   S.currentCreature=null;
   B.creature=null;
+  document.getElementById('death-overlay-title').textContent = 'DEFEATED';
+  document.getElementById('death-overlay-sub').textContent = 'RECOVERING...';
   document.getElementById('death-overlay').style.display='block';
   addLog(`<span class="log-die">✗ You were defeated by ${defeatedName}. (Deaths: ${S.deaths})</span>`);
   updateBattleUI();
@@ -450,4 +454,3 @@ function addLog(html){
   log.innerHTML=`<div class="log-entry">${html}</div>`+log.innerHTML;
   if(log.children.length>50)log.removeChild(log.lastChild);
 }
-
