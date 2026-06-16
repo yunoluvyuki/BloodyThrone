@@ -26,7 +26,6 @@ function loadGame(){
     S.shopOwned = Object.assign({}, loaded.shopOwned || {});
     S.spawnRarity = Object.assign({}, loaded.spawnRarity || {});
     S.deaths = loaded.deaths || 0;
-    S.lifeOld = loaded.lifeOld || 0;
     S.reincarnations = loaded.reincarnations || 0;
     S.bloodPending = loaded.bloodPending || 0;
     S.bloodLifetime = loaded.bloodLifetime || 0;

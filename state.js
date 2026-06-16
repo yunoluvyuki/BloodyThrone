@@ -12,7 +12,6 @@ const DEFAULT_STATE = ()=>({
   reincarnations:0,
   activeTime:0,
   deaths:0,
-  lifeOld:0,
   lastSave:Date.now(),
   settings:{lightMode:false,combatLog:true,uiZoom:120,battleNav:'manual',numNotation:'mixed',fontSize:16},
   protocols:{autoChallenge:false,autoRetry:false},

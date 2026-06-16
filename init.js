@@ -172,7 +172,7 @@ function setupSettings(){
   document.getElementById('chk-hide-scroll').addEventListener('change',function(){
     document.body.style.overflow=this.checked?'hidden':'';
     document.getElementById('content-area').style.setProperty('--scrollbar-width',this.checked?'0':'5px');
-    document.querySelectorAll('#content-area,#left-sidebar').forEach(el=>{el.style.scrollbarWidth=this.checked?'none':'auto';});
+    document.getElementById('content-area').style.scrollbarWidth=this.checked?'none':'auto';
   });
   document.getElementById('chk-highlights').addEventListener('change',function(){
     document.querySelectorAll('.stat-cell,.res-block').forEach(el=>{

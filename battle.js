@@ -372,7 +372,6 @@ function onWin(){
     if(['old', 'bronze', 'silver'].includes(k)){
       S.resources[k] = (S.resources[k] || 0) + amount;
       if(k === 'old'){
-        S.lifeOld = (S.lifeOld || 0) + amount;
         if(!S.lifetimeEarned) S.lifetimeEarned = {old:0};
         S.lifetimeEarned.old = (S.lifetimeEarned.old || 0) + amount;
       } else if(['bronze','silver','gold','plat'].includes(k)){

@@ -13,10 +13,6 @@ function renderStats(){
 }
 const FUND_DEFS={
   all:[
-    {key:'reincarnate',label:'REINCARNATIONS',val:()=>S.reincarnations+'x',cat:'core'},
-    {key:'decay',label:'DECAY FACTOR',val:()=>'1x',cat:'core'},
-    {key:'death_rec',label:'DEATH RECOVERY',val:()=>'10s',cat:'stats'},
-    {key:'flee_pen',label:'FLEE PENALTY',val:()=>'5s',cat:'stats'},
     {key:'blood',label:'BLOOD COIN',val:()=>fmt(S.bloodLifetime),cat:'economy'},
   ]
 };
