@@ -396,8 +396,9 @@ function onWin(){
   if(!S.victories[c.id]) S.victories[c.id] = 0;
   const prevVic = S.victories[c.id];
   S.victories[c.id] += 1 + masteryBonusVictories();
-  const justCompleted = prevVic < c.vicReq && S.victories[c.id] >= c.vicReq;
-  addLog(`<span class="log-win">✓ Defeated ${c.name}! (${Math.min(S.victories[c.id], c.vicReq)}/${c.vicReq})</span>`);
+  const cap = effVicReq(c);
+  const justCompleted = prevVic < cap && S.victories[c.id] >= cap;
+  addLog(`<span class="log-win">✓ Defeated ${c.name}! (${Math.min(S.victories[c.id], cap)}/${cap})</span>`);
   if(justCompleted) unlockNextCreature();
 
   // Reward Multipliers

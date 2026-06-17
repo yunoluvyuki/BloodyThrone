@@ -23,7 +23,9 @@ function toast(msg,dur=2500){
 }
 function getCreature(id){return CREATURES.find(c=>c.id===id);}
 function getVictories(id){return S.victories[id]||0;}
-function isMaxed(creature){return getVictories(creature.id)>=creature.vicReq;}
+// Effective win cap for a creature = base vicReq + CONQUEST bonus.
+function effVicReq(creature){return creature.vicReq + (typeof masteryVicReqBonus==='function' ? masteryVicReqBonus() : 0);}
+function isMaxed(creature){return getVictories(creature.id)>=effVicReq(creature);}
 function maxHP(){return S.stats.hp * (typeof masteryHpMult==='function' ? masteryHpMult() : 1);}
 
 

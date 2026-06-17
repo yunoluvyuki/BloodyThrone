@@ -61,7 +61,8 @@ function renderBattle(){
     const vic=getVictories(c.id);
     const maxed=isMaxed(c);
     const isCurrent=S.currentCreature===c.id;
-    const pct=Math.min(100,vic/c.vicReq*100);
+    const cap=effVicReq(c);
+    const pct=Math.min(100,vic/cap*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
     const decayMult=1/(1+masteryDecayCoef()*vic);
     const rewardStr=Object.entries(c.rewards).map(([k,v])=>{const rv=v*spawnRarityMultDisplay*decayMult;const sign=rv>=0?'+':'';return `<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} ${sign}${rv.toFixed(2).replace(/\.00$/,'')}</span>`;}).join('');
@@ -92,7 +93,7 @@ function renderBattle(){
         </div>
       </div>
       <div class="card-rewards">
-      <div class="rewards-header"><span>${rewardStr}</span><span class="vic">Victories | <span style="color:${vic>=c.vicReq?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,c.vicReq)}</span>/<span style="font-weight:bold;">${c.vicReq}</span></span></div>
+      <div class="rewards-header"><span>${rewardStr}</span><span class="vic">Victories | <span style="color:${vic>=cap?'var(--green)':'#fff'};font-weight:bold;">${Math.min(vic,cap)}</span>/<span style="font-weight:bold;">${cap}</span></span></div>
       <div class="victories-bar"><div class="victories-fill" style="width:${pct}%;background:${maxed?'#2a5a2a':color}"></div></div>
       </div>
       <div class="card-btn">${btnHtml}</div>
@@ -106,9 +107,11 @@ let masteryActiveCat = 'COMBAT';
 let masterySelectedId = null;
 
 // Steeper cost ramp: base × scale^level × MASTERY_RAMP^(level²).
+// Upgrades with noRamp:true skip the steep ramp (plain base × scale^level).
 // MASTERY_RAMP is defined in shop.js (loaded alongside this file).
 function masteryLevelCost(up, level){
-  return effCost(Object.fromEntries(Object.entries(up.base).map(([r,a]) => [r, Math.floor(a * Math.pow(up.scale, level) * Math.pow(MASTERY_RAMP, level * level))])));
+  const rampMult = up.noRamp ? 1 : Math.pow(MASTERY_RAMP, level * level);
+  return effCost(Object.fromEntries(Object.entries(up.base).map(([r,a]) => [r, Math.floor(a * Math.pow(up.scale, level) * rampMult)])));
 }
 function masteryCostStr(cost){
   return Object.entries(cost).map(([r,a]) => `${fmt(a)} ${COIN_LABELS[r]||r.toUpperCase()}`).join(' + ');
