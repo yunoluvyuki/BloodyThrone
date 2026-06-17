@@ -101,51 +101,110 @@ function renderBattle(){
   g.innerHTML=html;
 }
 
+// ── MASTERY UI (tabbed node grid + detail panel) ──────
+let masteryActiveCat = 'COMBAT';
+let masterySelectedId = null;
+
+function masteryLevelCost(up, level){
+  return effCost(Object.fromEntries(Object.entries(up.base).map(([r,a]) => [r, Math.floor(a * Math.pow(up.scale, level))])));
+}
+function masteryCostStr(cost){
+  return Object.entries(cost).map(([r,a]) => `${fmt(a)} ${COIN_LABELS[r]||r.toUpperCase()}`).join(' + ');
+}
+function selectMasteryNode(id){ masterySelectedId = id; renderMastery(); }
+function setMasteryCat(cat){ masteryActiveCat = cat; const first = MASTERY_UPGRADES.find(u=>u.cat===cat); masterySelectedId = first ? first.id : null; renderMastery(); }
+
 function renderMastery(){
   const el=document.getElementById('mastery-content');
   if(!el)return;
-  // Main Game Mastery owns this tab; WB Mastery is a separate system.
-  el.innerHTML=masterySectionHTML();
-  if(typeof setupMainGameMasteryTree==='function')setupMainGameMasteryTree();
-  return;
   const ups=S.masteryUpgrades||{};
-  const ch=getRarityChances();
-  const common=Math.max(0,100-ch.uncommon-ch.rare-ch.epic-ch.legendary);
-  let html=`<div style="margin-bottom:14px;padding:10px;background:var(--bg3);border:1px solid var(--border);">
-    <div style="font-size:9px;letter-spacing:2px;color:var(--text3);margin-bottom:8px;">CURRENT SPAWN CHANCES</div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:10px;">
-      <span style="color:#888;">COMMON ${common.toFixed(2)}%</span>
-      <span style="color:var(--g-uncommon);">UNCOMMON ${ch.uncommon.toFixed(2)}%</span>
-      <span style="color:var(--g-rare);">RARE ${ch.rare.toFixed(2)}%</span>
-      <span style="color:var(--g-epic);">EPIC ${ch.epic.toFixed(2)}%</span>
-      <span style="color:var(--g-legendary);">LEGENDARY ${ch.legendary.toFixed(2)}%</span>
-    </div>
-  </div>
-  <div style="font-size:9px;color:var(--text3);margin-bottom:10px;">Rarer enemies drop <b style="color:var(--white);">multiplied rewards</b>: ×1.5 / ×3 / ×7 / ×15</div>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">`;
-  RARITY_UPGRADES.forEach(up=>{
+
+  // Default selection
+  if(!masterySelectedId){
+    const first = MASTERY_UPGRADES.find(u=>u.cat===masteryActiveCat);
+    masterySelectedId = first ? first.id : null;
+  }
+
+  // Category tabs
+  const tabsHtml = MASTERY_CATS.map(cat=>{
+    const active = cat===masteryActiveCat;
+    return `<button class="mast-tab${active?' active':''}" onclick="setMasteryCat('${cat}')">${cat}</button>`;
+  }).join('');
+
+  // Node grid for active category
+  const nodes = MASTERY_UPGRADES.filter(u=>u.cat===masteryActiveCat);
+  const nodesHtml = nodes.map(up=>{
     const level=ups[up.id]||0;
     const isMaxed=level>=up.maxLevel;
-    const cost={};
-    Object.entries(up.base).forEach(([res,amt])=>{ cost[res]=Math.floor(amt*Math.pow(up.scale,level)); });
-    const effc=effCost(cost);
-    const canAfford=!isMaxed&&Object.entries(effc).every(([res,amt])=>(S.resources[res]||0)>=amt);
-    const rc=RARITY_COLORS[up.rarity];
-    const costStr=Object.entries(effc).map(([res,amt])=>`${res.toUpperCase()} ${fmt(amt)}`).join(' + ');
-    html+=`<div style="border:1px solid ${rc}44;padding:10px;background:${rc}0d;">
-      <div style="font-size:10px;font-weight:bold;color:${rc};letter-spacing:1px;margin-bottom:3px;">${up.label}</div>
-      <div style="font-size:8px;color:var(--text3);margin-bottom:8px;">${up.desc}</div>
-      <div style="font-size:9px;color:var(--text2);margin-bottom:6px;">Level <span style="color:var(--white);font-weight:bold;">${level}</span> / ${up.maxLevel}</div>
-      ${isMaxed
-        ?`<div style="font-size:9px;text-align:center;color:${rc};padding:4px 0;">✦ MAXED</div>`
-        :`<div style="font-size:8px;color:${canAfford?'var(--text2)':'var(--text4)'};margin-bottom:6px;">${costStr}</div>
-          <button onclick="buyMasteryUpgrade('${up.id}')" style="width:100%;padding:5px;background:${canAfford?rc+'22':'var(--bg3)'};border:1px solid ${canAfford?rc:'var(--border)'};color:${canAfford?rc:'var(--text3)'};cursor:${canAfford?'pointer':'not-allowed'};font-family:inherit;font-size:9px;letter-spacing:1px;text-transform:uppercase;">UPGRADE</button>`
-      }
+    const cost=masteryLevelCost(up, level);
+    const afford=!isMaxed && canAffordCost(cost);
+    const sel = up.id===masterySelectedId;
+    const state = isMaxed?'maxed':(afford?'afford':'locked');
+    return `<button class="mast-node ${state}${sel?' selected':''}" style="--nc:${up.color};" onclick="selectMasteryNode('${up.id}')">
+      <span class="mast-node-name">${up.label}</span>
+      <span class="mast-node-lvl">${level}/${up.maxLevel}</span>
+    </button>`;
+  }).join('');
+
+  // Detail panel for selected node
+  let detailHtml = `<div class="mast-detail-empty">Select a node</div>`;
+  const up = MASTERY_UPGRADES.find(u=>u.id===masterySelectedId);
+  if(up){
+    const level=ups[up.id]||0;
+    const isMaxed=level>=up.maxLevel;
+    const cost=masteryLevelCost(up, level);
+    const afford=!isMaxed && canAffordCost(cost);
+    const nowStr=masteryEffectStr(up, level);
+    const nextStr=isMaxed?'':masteryEffectStr(up, level+1);
+    detailHtml=`
+      <div class="mast-d-title" style="color:${up.color};">${up.label}</div>
+      <div class="mast-d-cat">${up.cat}</div>
+      <div class="mast-d-desc">${up.desc}</div>
+      <div class="mast-d-sep"></div>
+      <div class="mast-d-label">CURRENT LEVEL</div>
+      <div class="mast-d-row">${level} / ${up.maxLevel}<span class="mast-d-eff" style="color:${up.color};">${nowStr}</span></div>
+      ${isMaxed ? `<div class="mast-d-maxed">✦ MAXED</div>` : `
+        <div class="mast-d-label next">NEXT LEVEL</div>
+        <div class="mast-d-row">${level+1} / ${up.maxLevel}<span class="mast-d-eff next-eff">${nextStr}</span></div>
+        <div class="mast-d-sep"></div>
+        <div class="mast-d-label">COST</div>
+        <div class="mast-d-cost ${afford?'ok':'no'}">${masteryCostStr(cost)}</div>
+        <button class="mast-d-btn ${afford?'can':'cant'}" onclick="buyMasteryUpgrade('${up.id}')" ${afford?'':'disabled'}>UPGRADE</button>
+      `}
+    `;
+  }
+
+  const bonusesHtml = masteryBonusSummaryHTML();
+
+  el.innerHTML=`
+    <div class="mast-wrap">
+      <div class="mast-main">
+        <div class="mast-tabs">${tabsHtml}</div>
+        <div class="mast-grid">${nodesHtml}</div>
+      </div>
+      <div class="mast-side">
+        <div class="mast-side-title">SELECTED NODE</div>
+        <div class="mast-detail">${detailHtml}</div>
+      </div>
+    </div>
+    <div class="mast-bonuses">
+      <div class="mast-bonuses-title">YOUR BONUSES</div>
+      ${bonusesHtml}
     </div>`;
+}
+
+// Build the "Your Bonuses" summary from current mastery levels
+function masteryBonusSummaryHTML(){
+  const rows=[];
+  const atkLvl=mLvl('stat_atk'), hpLvl=mLvl('stat_hp');
+  if(atkLvl>0) rows.push(['ATK', `+${(atkLvl*masteryDef('stat_atk').per*100).toFixed(0)}%`, '#e74c3c']);
+  if(hpLvl>0)  rows.push(['Max HP', `+${(hpLvl*masteryDef('stat_hp').per*100).toFixed(0)}%`, '#27ae60']);
+  ['old','bronze','silver','gold','plat','blood'].forEach(coin=>{
+    const m=masteryGainMult(coin);
+    if(m>1) rows.push([`${COIN_LABELS[coin]} gain`, `+${((m-1)*100).toFixed(0)}%`, '#f0b429']);
   });
-  html+=masterySectionHTML();
-  html+='</div>';
-  el.innerHTML=html;
+  if(rows.length===0) return `<div class="mast-bonus-empty">No bonuses yet — upgrade some nodes!</div>`;
+  return rows.map(([label,val,col])=>`<div class="mast-bonus-row"><span>${label}</span><b style="color:${col};">${val}</b></div>`).join('');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -215,7 +274,7 @@ function updateBloodUI(){
   document.getElementById('blood-pend-val').textContent='+'+fmt(S.bloodPending);
   document.getElementById('blood-life-val').textContent=fmt(S.bloodLifetime);
   const bloodCountEl=document.getElementById('blood-count');
-  if(bloodCountEl)bloodCountEl.textContent=fmt(S.bloodPending);
+  if(bloodCountEl)bloodCountEl.textContent=fmt(S.blood||0);
   const ready=S.bloodPending>=100;
   const rb=document.getElementById('reincarnate-btn');
   rb.className=ready?'ready':'';

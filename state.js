@@ -7,6 +7,7 @@ const DEFAULT_STATE = ()=>({
   victories:{},
   shopOwned:{},
   currentCreature:null,
+  blood:0,
   bloodPending:0,
   bloodLifetime:0,
   reincarnations:0,

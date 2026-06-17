@@ -63,15 +63,17 @@ function masteryDef(id){ return MASTERY_UPGRADES.find(u => u.id === id); }
 function mLvl(id){ return (S.masteryUpgrades && S.masteryUpgrades[id]) || 0; }
 
 // ── CURRENCY HELPERS (handle Blood Coin vs normal resources) ──
+// Spendable Blood Coin lives in S.blood. S.bloodPending accumulates passively
+// and is only converted into S.blood when the player reincarnates.
 function currencyBalance(key){
-  return key === 'blood' ? (S.bloodPending || 0) : (S.resources[key] || 0);
+  return key === 'blood' ? (S.blood || 0) : (S.resources[key] || 0);
 }
 function canAffordCost(cost){
   return Object.entries(cost).every(([k, v]) => currencyBalance(k) >= v);
 }
 function spendCost(cost){
   Object.entries(cost).forEach(([k, v]) => {
-    if(k === 'blood') S.bloodPending = (S.bloodPending || 0) - v;
+    if(k === 'blood') S.blood = (S.blood || 0) - v;
     else S.resources[k] = (S.resources[k] || 0) - v;
   });
 }
@@ -250,7 +252,7 @@ function mainGameMasteryTreeHTML(){
         <p>Existing mastery upgrades arranged as a dark manuscript tree. Effects, costs, max levels, and save data are unchanged.</p>
       </div>
       <div class="mg-mastery-summary">
-        <div><span>Blood Coin</span><b>${fmt(S.bloodPending||0)}</b></div>
+        <div><span>Blood Coin</span><b>${fmt(S.blood||0)}</b></div><div><span>Pending</span><b>${fmt(S.bloodPending||0)}</b></div>
         <div><span>Ranks</span><b>${ownedRanks}/${totalRanks}</b></div>
         <div><span>Maxed</span><b>${maxedCount}/${MASTERY_UPGRADES.length}</b></div>
       </div>
@@ -431,7 +433,7 @@ function mainGameMasteryTreeHTML(){
         <h2>Blood Mastery Manuscript</h2>
       </div>
       <div class="mg-radial-summary">
-        <div><span>Blood Coin</span><b>${fmt(S.bloodPending||0)}</b></div>
+        <div><span>Blood Coin</span><b>${fmt(S.blood||0)}</b></div><div><span>Pending</span><b>${fmt(S.bloodPending||0)}</b></div>
         <div><span>Ranks</span><b>${ownedRanks}/${totalRanks}</b></div>
         <div><span>Maxed</span><b>${maxedCount}/${MASTERY_UPGRADES.length}</b></div>
       </div>

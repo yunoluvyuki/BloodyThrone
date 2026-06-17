@@ -50,7 +50,7 @@ function switchTab(name){
   });
   if(name === 'battle') renderBattle();
   if(name === 'inventory') renderInventory();
-  if(name === 'shop') renderShop();   
+  if(name === 'shop'){ renderShop(); document.getElementById('shop-dot').style.display = 'none'; }
   if(name === 'archive'){
     updateBloodUI();
     renderCodex();
@@ -73,6 +73,21 @@ function updateArchiveDot(){
   if(archActive){dot.style.display='none';return;}
   const ready=(S.bloodPending>=100)||hasAffordableMasteryUpgrade();
   dot.style.display=ready?'block':'none';
+}
+function hasAffordableShopItem(){
+  return SHOP_ITEMS.some(item=>{
+    const owned=S.shopOwned[item.id]||0;
+    if(item.maxOwned && owned>=item.maxOwned)return false;
+    const cost=shopScaledCost(item);
+    return Object.entries(cost).every(([res,amt])=>(S.resources[res]||0)>=amt);
+  });
+}
+function updateShopDot(){
+  const dot=document.getElementById('shop-dot');
+  if(!dot)return;
+  const shopActive=document.getElementById('tab-shop').classList.contains('active');
+  if(shopActive){dot.style.display='none';return;}
+  dot.style.display=hasAffordableShopItem()?'block':'none';
 }
 document.querySelectorAll('.nav-tab').forEach(t=>{
   t.addEventListener('click',()=>switchTab(t.dataset.tab));
@@ -268,8 +283,8 @@ function setupSettings(){
 
   // Reincarnate
   document.getElementById('reincarnate-btn').addEventListener('click',()=>{
-    if(S.bloodPending<100){toast('Need 100 pending Blood Coin to reincarnate!');return;}
-    if(!confirm('REINCARNATE: Your progress resets, but you keep a permanent bonus. Continue?'))return;
+    if(!confirm('REINCARNATE: Your progress resets, but you keep a permanent bonus and gain your pending Blood Coin. Continue?'))return;
+    S.blood=(S.blood||0)+S.bloodPending;
     S.bloodLifetime+=S.bloodPending;
     S.reincarnations++;
     const bonus=(1+S.reincarnations*0.05).toFixed(2);
@@ -323,7 +338,6 @@ function gameLoop(){
   frameCount++;
   fpsTimer += rawDt;
   if(fpsTimer >= 1){
-    document.getElementById('fps-display').textContent = 'FPS ' + frameCount;
     frameCount = 0;
     fpsTimer = 0;
   }
@@ -337,6 +351,7 @@ function gameLoop(){
     updateBattleUI();
     updateResources();
     updateArchiveDot();
+    updateShopDot();
     document.getElementById('active-time').textContent = fmtTime(S.activeTime);
   }
   if(frameCount % 30 === 0){
@@ -351,7 +366,7 @@ function gameLoop(){
       const affordKey = SHOP_ITEMS.map(item => {
         const owned = S.shopOwned[item.id] || 0;
         const maxed = item.maxOwned && owned >= item.maxOwned;
-        return maxed ? 'M' : Object.entries(effCost(item.cost)).every(([k,v]) => (S.resources[k]||0) >= v) ? '1' : '0';
+        return maxed ? 'M' : Object.entries(shopScaledCost(item)).every(([k,v]) => (S.resources[k]||0) >= v) ? '1' : '0';
       }).join('');
       if(affordKey !== gameLoop._lastShopKey){ gameLoop._lastShopKey = affordKey; renderShop(); }
     }

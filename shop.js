@@ -1,11 +1,30 @@
 // ═══════════════════════════════════════════════════════
 // SHOP & MASTERY UPGRADES
 // ═══════════════════════════════════════════════════════
-// Cost scales ×10 per purchase: buy #1 = base, #2 = base×10, #3 = base×100, ...
+// Cost scaling per purchase (owned = how many already bought):
+//   OLD    = base.old × 10^owned   (buy#1=1, #2=10, ...)
+//   Extra coin tiers each start at 100 on their threshold buy and ×10 after:
+//     BRONZE  buy #6  (owned>=5)
+//     SILVER  buy #20 (owned>=19)
+//     GOLD    buy #50 (owned>=49)
+//     PLAT    buy #70 (owned>=69)
+const SHOP_COIN_TIERS = [
+  { coin:'bronze', startOwned:5  },
+  { coin:'silver', startOwned:19 },
+  { coin:'gold',   startOwned:49 },
+  { coin:'plat',   startOwned:69 },
+];
 function shopScaledCost(item){
   const owned = S.shopOwned[item.id] || 0;
   const scaled = {};
+  // Old (and any other base resources) scale ×10 per purchase
   Object.entries(item.cost).forEach(([k,v]) => { scaled[k] = v * Math.pow(10, owned); });
+  // Extra coin surcharges from their threshold onward
+  SHOP_COIN_TIERS.forEach(t => {
+    if(owned >= t.startOwned){
+      scaled[t.coin] = (scaled[t.coin] || 0) + 100 * Math.pow(10, owned - t.startOwned);
+    }
+  });
   return effCost(scaled);
 }
 
@@ -38,8 +57,9 @@ function buyMasteryUpgrade(id){
   const rawCost={};
   Object.entries(up.base).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)); });
   const cost=effCost(rawCost);
-  if(!Object.entries(cost).every(([res,amt])=>(S.resources[res]||0)>=amt)){toast('Not enough resources.',2000);return;}
-  Object.entries(cost).forEach(([res,amt])=>{ S.resources[res]-=amt; });
+  // Use mastery.js currency helpers (they handle Blood Coin from S.bloodPending)
+  if(!canAffordCost(cost)){toast('Not enough resources.',2000);return;}
+  spendCost(cost);
   S.masteryUpgrades[id]=level+1;
   renderMastery();
   renderStats();
