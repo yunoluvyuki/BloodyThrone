@@ -248,9 +248,16 @@ function setupSettings(){
     toast('No active battle to flee from.');
   }
 });
-  document.getElementById('btn-rest').addEventListener('click',()=>{
-    restToggle();
+  function setGameSpeed(s){
+    S.gameSpeed = s;
+    document.querySelectorAll('.speed-btn').forEach(b=>{
+      b.classList.toggle('active', Number(b.dataset.speed) === s);
+    });
+  }
+  document.querySelectorAll('.speed-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>setGameSpeed(Number(btn.dataset.speed)));
   });
+  setGameSpeed(S.gameSpeed || 1);
 
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
@@ -310,10 +317,11 @@ document.querySelectorAll('#fund-filters .filter-tab').forEach(t=>{
 let frameCount=0,fpsTimer=0,lastFrame=performance.now();
 function gameLoop(){
   const now = performance.now();
-  const dt = (now - lastFrame) / 1000;
+  const rawDt = (now - lastFrame) / 1000;
   lastFrame = now;
+  const dt = rawDt * (S.gameSpeed || 1);
   frameCount++;
-  fpsTimer += dt;
+  fpsTimer += rawDt;
   if(fpsTimer >= 1){
     document.getElementById('fps-display').textContent = 'FPS ' + frameCount;
     frameCount = 0;
@@ -321,6 +329,7 @@ function gameLoop(){
   }
   battleTick();
   restTick(dt);
+  regenTick(dt);
   masteryAutoTick(dt);
   checkBloodMilestone();
   S.activeTime = (S.activeTime || 0) + dt;

@@ -21,7 +21,7 @@ function initBattleQueue(){
 }
 function unlockNextCreature(){
   if(!S.battleQueue||S.battleQueue.length===0)return;
-  const window=Math.min(4,S.battleQueue.length);
+  const window=Math.min(2,S.battleQueue.length);
   const pick=Math.floor(Math.random()*window);
   const id=S.battleQueue.splice(pick,1)[0];
   S.battleUnlocked.push(id);
@@ -75,7 +75,6 @@ function startBattle(creatureId){
   const c = getCreature(creatureId);
   if(!c) return;
   if(B.dying){ toast('Still recovering from defeat!', 2000); return; }
-  B.resting = false;
   S.currentCreature = creatureId;
   B.rarity = getSpawnRarity(creatureId);
   const rarityMult = RARITY_MULTS[B.rarity] || 1;
@@ -166,7 +165,7 @@ function stopBattle(fled = false){
 function battleTick(){
   if(B.dying){
   const duration = B.fleeRecovery ? 5 * masteryFleeTimeMult() : 10 * masteryDeathTimeMult();
-  const elapsed = (Date.now() - B.deathStart) / 1000;
+  const elapsed = ((Date.now() - B.deathStart) / 1000) * (S.gameSpeed || 1);
   const remaining = Math.max(0, duration - elapsed);
   document.getElementById('death-timer').textContent = Math.ceil(remaining);
   if(remaining <= 0){
@@ -176,8 +175,8 @@ function battleTick(){
     B.fleeRecovery = false;
     if(!wasFlee) B.playerHP = maxHP();   // full heal only on actual defeat
     renderBattle();
-    if(!wasFlee && S.protocols.autoRetry && B.creature){
-      startBattle(B.creature.id);
+    if(!wasFlee && S.protocols.autoRetry && B.lastCreatureId){
+      startBattle(B.lastCreatureId);
     } else {
       B.active = false;
       S.currentCreature = null;
@@ -187,7 +186,7 @@ function battleTick(){
 }
   if(!B.active || !B.creature) return;
   const now = Date.now();
-  const dt = Math.min(now - B.lastTick, 500);
+  const dt = Math.min(now - B.lastTick, 500) * (S.gameSpeed || 1);
   B.lastTick = now;
   B.playerTimer -= dt;
   B.enemyTimer -= dt;
@@ -204,50 +203,27 @@ function battleTick(){
   }
 }
 
-function regenTick(){
+function regenTick(dt){
   if(!B.active || B.dying) return;
-  if((S.stats.rgn ?? 0) <= 0) return;
-  B.playerHP = Math.min(maxHP(), B.playerHP + S.stats.rgn);
+  // Player regen
+  if((S.stats.rgn ?? 0) > 0){
+    B.playerHP = Math.min(maxHP(), B.playerHP + S.stats.rgn * (dt || 0));
+  }
+  // Enemy regen
+  if(B.creature && (B.creature.rgn ?? 0) > 0 && B.enemyHP > 0){
+    B.enemyHP = Math.min(B.creature.hp, B.enemyHP + B.creature.rgn * (dt || 0));
+  }
 }
 
 // ── REST ──────────────────────────────────────────────
 // Heals 10% of max HP per second until full or interrupted.
-function restToggle(){
-  if(B.dying){ toast('Still recovering!', 2000); return; }
-  if(B.resting){
-    // Stop resting
-    B.resting = false;
-    addLog(`<span class="log-info">You stop resting.</span>`);
-    renderBattle();
-    return;
-  }
-  // Cannot rest during an active battle
-  if(B.active){
-    toast('Cannot rest during combat! Flee first.', 2000);
-    return;
-  }
-  if(B.playerHP >= maxHP()){
-    toast('Already at full HP.', 2000);
-    return;
-  }
-  B.resting = true;
-  addLog(`<span class="log-info">You begin resting — recovering 10% HP/sec.</span>`);
-  renderBattle();
-  updateBattleUI();
-}
-
-// Called every frame from gameLoop with dt (seconds).
+// Passive heal: +10% max HP per second while idle
+// (not in battle, not in defeat/flee recovery). Scales with game speed via dt.
 function restTick(dt){
-  if(!B.resting) return;
-  if(B.active || B.dying){ B.resting = false; return; }
+  if(B.active || B.dying) return;        // skip during battle, recovery, or flee
   const mhp = maxHP();
-  B.playerHP = Math.min(mhp, B.playerHP + mhp * 0.10 * dt);
-  if(B.playerHP >= mhp){
-    B.playerHP = mhp;
-    B.resting = false;
-    addLog(`<span class="log-win">✓ Fully rested.</span>`);
-    renderBattle();
-  }
+  if(B.playerHP >= mhp) return;          // already full
+  B.playerHP = Math.min(mhp, B.playerHP + mhp * 0.10 * (dt || 0));
 }
 
 
@@ -290,7 +266,7 @@ function firePlayerTurn(){
     if(isCrit){
       addLog(`<span class="log-crit">✦ CRIT — <b>${totalDmg.toFixed(2)}</b> to ${c.name}!${hitStr}</span>`);
     } else {
-      addLog(`<span class="log-info">You deal <b>${totalDmg.toFixed(2)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
+      addLog(`<span class="log-pdmg">You deal <b>${totalDmg.toFixed(2)}</b> to <b>${c.name}</b>.${hitStr}</span>`);
     }
 
     if(B.enemyHP <= 0){ onWin(); return; }
@@ -457,7 +433,7 @@ function onWin(){
     } else if(S.stats[k] !== undefined){
       S.stats[k] += amount;
     }
-    gainStrs.push(`${RESOURCE_LABELS[k] || k.toUpperCase()} +${amount.toFixed(2)}`);
+    gainStrs.push(`${RESOURCE_LABELS[k] || k.toUpperCase()} ${amount >= 0 ? '+' : ''}${amount.toFixed(2)}`);
   });
   addLog(`<span class="log-reward">↳ Rewards: ${gainStrs.join(', ')}</span>`);
 
@@ -491,6 +467,7 @@ function onLose(){
   B.deathStart=Date.now();
   S.deaths=(S.deaths||0)+1;
   const defeatedName=B.creature?B.creature.name:'unknown';
+  B.lastCreatureId = B.creature ? B.creature.id : null;
   S.currentCreature=null;
   B.creature=null;
   document.getElementById('death-overlay-title').textContent = 'DEFEATED';

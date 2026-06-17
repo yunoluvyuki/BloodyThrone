@@ -99,8 +99,8 @@ function masteryAtkMult(){ const d = masteryDef('stat_atk'); return 1 + mLvl('st
 function masteryHpMult(){  const d = masteryDef('stat_hp');  return 1 + mLvl('stat_hp')  * d.per; }
 function masteryDeathTimeMult(){ const d = masteryDef('time_death'); return Math.max(d.floor, 1 - mLvl('time_death') * d.per); }
 function masteryFleeTimeMult(){  const d = masteryDef('time_flee');  return Math.max(d.floor, 1 - mLvl('time_flee')  * d.per); }
-// Reward decay coefficient (base 0.3, lower = gentler)
-function masteryDecayCoef(){ const d = masteryDef('decay'); return Math.max(d.floor, 0.3 - mLvl('decay') * d.per); }
+// Reward decay coefficient (base 0.5, lower = gentler)
+function masteryDecayCoef(){ const d = masteryDef('decay'); return Math.max(d.floor, 0.5 - mLvl('decay') * d.per); }
 function masteryBonusVictories(){ const d = masteryDef('victory'); return mLvl('victory') * d.per; }
 
 // Passive generation rate (coins/sec) for a coin, base × surge multiplier
@@ -135,7 +135,7 @@ function masteryEffectStr(up, level){
     case 'statpct': return `+${(level*up.per*100).toFixed(0)}%`;
     case 'cost':    return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
     case 'timecut': return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
-    case 'decay':   return `coef ${Math.max(up.floor, 0.3 - level*up.per).toFixed(2)}`;
+    case 'decay':   return `coef ${Math.max(up.floor, 0.5 - level*up.per).toFixed(2)}`;
     case 'victory': return `+${level*up.per}/win`;
     case 'auto':    return `${fmt(level*up.per)} ${COIN_LABELS[up.coin]}/s`;
     case 'automult':return `×${(1 + level*up.per).toFixed(2)}`;

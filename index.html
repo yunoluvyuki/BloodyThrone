@@ -5,6 +5,9 @@
 <title>Draft Throne</title>
 <link rel="stylesheet" href="style.css">
 <style id="fs-override"></style>
+<style>
+.speed-btn.active{background:var(--green,#27ae60);color:#fff;font-weight:bold;}
+</style>
 </head>
 <body>
 <div id="zoom-wrap">
@@ -101,7 +104,10 @@
             </div>
             <div id="battle-controls" style="margin-top:8px;display:flex;gap:8px;">
               <button class="battle-btn danger" id="btn-flee">FLEE</button>
-              <button class="battle-btn" id="btn-rest">REST</button>
+              <button class="battle-btn speed-btn" id="btn-speed-1" data-speed="1">1x</button>
+              <button class="battle-btn speed-btn" id="btn-speed-2" data-speed="2">2x</button>
+              <button class="battle-btn speed-btn" id="btn-speed-3" data-speed="3">3x</button>
+              <button class="battle-btn speed-btn" id="btn-speed-4" data-speed="4">4x</button>
             </div>
 
           </div>
