@@ -10,6 +10,7 @@ const DEFAULT_STATE = ()=>({
   blood:0,
   bloodPending:0,
   bloodLifetime:0,
+  bloodBankedLifetime:0,   // total blood ever banked via reincarnate (sum of all banks)
   bloodRef:0,        // blood banked at last reincarnation; drives diminishing-gain caps (0 = no cap yet)
   reincarnations:0,
   activeTime:0,

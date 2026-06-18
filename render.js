@@ -169,7 +169,7 @@ function updateBloodUI(){
   document.getElementById('blood-pending').textContent='+'+fmt(S.bloodPending);
   const bloodPendVal=document.getElementById('blood-pend-val');
   if(bloodPendVal)bloodPendVal.textContent='+'+fmt(S.bloodPending);
-  document.getElementById('blood-life-val').textContent=fmt(S.bloodLifetime);
+  document.getElementById('blood-life-val').textContent=fmt(S.bloodBankedLifetime||0);
   const bloodCountEl=document.getElementById('blood-count');
   if(bloodCountEl)bloodCountEl.textContent=fmt(S.blood||0);
   const ready=S.bloodPending>=100;

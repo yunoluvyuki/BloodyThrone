@@ -30,6 +30,7 @@ function loadGame(){
     S.blood = loaded.blood || 0;
     S.bloodPending = loaded.bloodPending || loaded.quintPending || 0;
     S.bloodLifetime = loaded.bloodLifetime || loaded.quintLifetime || 0;
+    S.bloodBankedLifetime = loaded.bloodBankedLifetime || 0;
     S.bloodRef = loaded.bloodRef || 0;
     S.lifetimeEarned = Object.assign({old: loaded.lifeOld || 0}, loaded.lifetimeEarned || {});
     S.sessionEarned = Object.assign({bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
