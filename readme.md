@@ -23,7 +23,7 @@
 | `render-mastery.js` | Mastery tab UI: renderMastery + node-grid/detail/bonuses helpers (split out of render.js) |
 | `render-mcoin.js` | M.Coin synthesizer UI: `MCOIN_DEFS`, fmtEta, renderMCoinSynth (split out of render.js) |
 | `shop.js` | buyShopItem, shopScaledCost, buyMasteryUpgrade |
-| `mastery.js` | MASTERY_UPGRADES data + effect getters, currency helpers (blood vs resources), decay coef, `MASTERY_CATS`. (Legacy unused radial UI removed.) |
+| `mastery.js` | MASTERY_UPGRADES data + effect getters, currency helpers (blood vs resources), decay value, `MASTERY_CATS`. (Legacy unused radial UI removed.) |
 | `milestone.js` | milestoneTick — passive Blood Coin (pending) generation |
 | `equipment.js` | Equipment system (slots, tiers, drops, salvage, inventory UI) |
 | `save.js` | saveGame, loadGame |
@@ -52,9 +52,7 @@ Two separate balances:
 - **`S.bloodPending`** — accumulates passively via the milestone system. **Cannot be spent.**
 - **`S.blood`** — spendable balance. Mastery upgrades spend from here.
 
-**Reincarnate** (any time, no minimum): banks all pending → `S.blood`, resets pending to 0, also adds to `S.bloodLifetime`, then resets run progress (stats, baseStats, victories, **shop**, resources, equipment, queue, sessionEarned, mCoins). Persists: `S.blood`, `S.bloodLifetime`, `S.reincarnations`, `S.lifetimeEarned.old`. **No reward bonus** (the old `1 + reincarnations * 0.05` multiplier was removed; `rewardMult` is now fixed at 1). `S.reincarnations` still counts up but has no gameplay effect.
-
-**Diminishing Blood gain (`bloodRef`):** on reincarnate, `S.bloodRef` snapshots current `S.bloodLifetime`. Next run, once `S.bloodPending` passes that reference, blood gain halves at each doubling cap (ref×1 → 50%, ×2 → 25%, ×4 → 12.5%, …, forever). First run (bloodRef 0) = no cap. `bloodGainMult()` in milestone.js applies it; persists in save.
+**Reincarnate** (any time, no minimum): banks all pending → `S.blood`, resets pending to 0, also adds to `S.bloodLifetime`, then resets run progress (stats, victories, resources, shop, queue, sessionEarned, mCoins). Persists: `S.blood`, `S.bloodLifetime`, `S.reincarnations`, `S.lifetimeEarned.old`. Reincarnation bonus: `1 + reincarnations * 0.05` on battle rewards.
 
 Topbar shows spendable `S.blood` next to the "BLOOD COIN" button (opens Prestige/Treasury).
 
@@ -76,10 +74,6 @@ Player attack: miss if `random()>acc`; crit if `random()<crc`; `base = max(mnd, 
 
 Enemy attack: dodge if `random()<ddc`; `rawDmg = max(1, enemy.atk/(1+arm*0.15))`; block subtracts `bld`; counter chance `ctr`.
 
-**Shared damage roller (`rollAttackDamage` in battle.js):** all three attack paths (player, enemy, counter) use one helper. **Multi-hit caps at 2 hits** (`hits < 2`): `mth` gives at most one extra hit. **Crit is rolled per-hit** — each hit independently rolls crit, so a 2-hit attack can crit on one and not the other; the log/hit-effect flags crit if any hit crit.
-
-**Hit effects (`hit-effect.js`):** on every damage-dealing hit, the struck portrait (`#battle-art` enemy / `#player-art` player) shakes + red-flashes and floats a damage number (crits brighter + ✦). `DTHit.enemy()/player()` called after each HP subtraction in battle.js. Overlays append to `<body>` as fixed elements so the per-tick innerHTML redraw doesn't wipe them.
-
 **Regen (`regenTick`, per-second, scales with game speed):** player heals `S.stats.rgn`/sec, enemy heals `creature.rgn`/sec (capped at its max HP). Only during active battle.
 
 **Recovery:** defeat = 10s (full heal after), flee = 5s (keeps current HP, no heal). Recovery timer scales with game speed. Auto-retry re-challenges the same creature after defeat (uses `B.lastCreatureId`).
@@ -100,7 +94,7 @@ Enemy attack: dodge if `random()<ddc`; `rawDmg = max(1, enemy.atk/(1+arm*0.15))`
 
 ## Reward Decay
 
-`reward = base / (1 + coef * n)`, `n` = wins on that creature. Coef base **0.5**, softened by ENDURING SPOILS mastery (**−0.005/level, max 50 → coef 0.25 at max**, floor 0.05). `masteryDecayCoef()` in mastery.js — used by both battle.js (actual) and render.js (card display).
+`reward = base / (1 + decay * n)`, `n` = wins on that creature. Decay base **0.5**, softened by ENDURING SPOILS mastery (−0.005/level, max 50 → 0.25 at max, floor 0.05). `masteryDecay()` in mastery.js — used by both battle.js (actual) and render.js (card display).
 
 ---
 
@@ -116,15 +110,13 @@ BUY button: green when affordable, grey/disabled otherwise, white text w/ black 
 
 ---
 
-## Mastery (`MASTERY_UPGRADES` in mastery.js, UI in render-mastery.js `renderMastery`)
+## Mastery (`MASTERY_UPGRADES` in mastery.js, UI in render.js `renderMastery`)
 
 New tabbed UI: category tabs (COMBAT/ECONOMY/AUTOMATION/UTILITY) → node grid → right "SELECTED NODE" detail panel (current/next effect, cost, UPGRADE button) → bottom "YOUR BONUSES" summary. All upgrades paid in **Blood Coin** (from `S.blood`).
 
 Currency helpers in mastery.js: `currencyBalance`, `canAffordCost`, `spendCost` (blood → `S.blood`, others → `S.resources`). `buyMasteryUpgrade` (shop.js) uses these.
 
-Cost per level: `base × scale^level × MASTERY_RAMP^(level²)` — a steep `level²` ramp (`MASTERY_RAMP = 1.07`, defined in shop.js) on top of per-upgrade `scale`. Upgrades flagged **`noRamp:true`** skip the ramp (plain `base × scale^level`) — used for long-grind upgrades (BLOOD HARVEST, SWIFT REVIVAL, LIGHT FEET, ENDURING SPOILS). Formula lives in `masteryLevelCost` (render-mastery.js) and `buyMasteryUpgrade` (shop.js) — keep them in sync. Effect getters: `masteryGainMult`, `masteryAtkMult`, `masteryHpMult`, `masteryAutoRate`, `masteryDecayCoef`, `masteryVicReqBonus`, etc.
-
-**CONQUEST** (`viccap` type): raises the per-enemy win cap by +2/level (`masteryVicReqBonus`). Effective cap = `creature.vicReq + bonus` via `effVicReq()` in utils.js (used by isMaxed, battle.js, render.js). Base `vicReq` is now **3** for all creatures. **WELLSPRING** (`auto`): generates `0.01% × level` of that coin's run-earned total per sec (×SURGE mult). **SWIFT REVIVAL / LIGHT FEET** (`timeflat`): flat −sec recovery reduction, floored at 1s.
+Cost per level: `base × scale^level` (per-upgrade scale). Effect getters: `masteryGainMult`, `masteryAtkMult`, `masteryHpMult`, `masteryAutoRate`, `masteryDecay`, etc.
 
 (Live mastery UI is `renderMastery` in render-mastery.js. The old radial "manuscript" render code in mastery.js was unused dead code and has been removed.)
 
@@ -155,12 +147,8 @@ Shows unlocked creatures (≥1 victory) + mystery locked slots. `renderCodex()`.
 
 ## Known / Open Items
 
-**Intentional (do NOT "fix" — confirmed by design):**
-- `crd` default `0.0` → crits do 0 dmg until CRD upgrades bought. Intended.
-- RGN/ARM/BLD shop upgrades are `isPct` on stats starting at 0 → do nothing. Intended.
-- Boots equipment `spd` bonus is backwards under SPD-as-turn-time. Equipment still in test; not a concern yet.
-
-**Actual open items:**
+- `crd` default is `0.0` → crits do 0 dmg until CRD upgrades bought. Consider `1.0`.
+- RGN/ARM/BLD shop upgrades are `isPct` on stats starting at 0 → currently do nothing.
+- Boots equipment `spd` bonus is backwards under new SPD system.
 - Shop ×10 + coin-tier costs become astronomically large past ~buy 15 (JS precision limit). High tiers are effectively a ceiling, not reachable.
 - Old save files: `S.blood` loads as 0 (must reincarnate once to bank pending).
-- High-level mastery (steep `level²` ramp + scale 10 WELLSPRING/SURGE) reaches numbers past JS precision — effectively soft caps, by design.

@@ -400,7 +400,7 @@ function onWin(){
   const rewardMult = 1; // reincarnation no longer grants a reward bonus
   const rarityMult = RARITY_MULTS[B.rarity || 'common'] || 1;
   const n = prevVic;
-  const decayMult = 1 / (1 + masteryDecayCoef() * n);
+  const decayMult = 1 / (1 + masteryDecay() * n);
   if(rarityMult > 1) addLog(`<span style="color:${RARITY_COLORS[B.rarity]}">★ ${RARITY_LABELS[B.rarity]} bonus ×${rarityMult} applied!</span>`);
 
   // Apply Rewards

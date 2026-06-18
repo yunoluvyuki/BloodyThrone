@@ -5,11 +5,17 @@ let currentSpecFilter='all';
 function renderStats(){
   const g=document.getElementById('stat-grid');
   const defs=currentSpecFilter==='all'?STAT_DEFS:STAT_DEFS.filter(d=>d.cat===currentSpecFilter);
-  g.innerHTML=defs.map(d=>`
+  g.innerHTML=defs.map(d=>{
+    // ATK and HP show their effective value (base × mastery bonus), matching combat.
+    let val=S.stats[d.key]??0;
+    if(d.key==='atk' && typeof masteryAtkMult==='function') val*=masteryAtkMult();
+    if(d.key==='hp'  && typeof masteryHpMult==='function')  val*=masteryHpMult();
+    return `
     <div class="stat-cell">
       <div class="stat-name"><span class="stat-icon ${d.icon}"></span>${d.label}</div>
-      <div class="stat-val">:${formatStat(d.key,S.stats[d.key]??0)}</div>
-    </div>`).join('');
+      <div class="stat-val">:${formatStat(d.key,val)}</div>
+    </div>`;
+  }).join('');
 }
 const FUND_DEFS={
   all:[
@@ -64,11 +70,11 @@ function renderBattle(){
     const cap=effVicReq(c);
     const pct=Math.min(100,vic/cap*100);
     const spawnRarityMultDisplay=RARITY_MULTS[maxed?'common':getSpawnRarity(c.id)]||1;
-    const decayMult=1/(1+masteryDecayCoef()*vic);
+    const decayMult=1/(1+masteryDecay()*vic);
     const rewardStr=Object.entries(c.rewards).map(([k,v])=>{const rv=v*spawnRarityMultDisplay*decayMult;const sign=rv>=0?'+':'';return `<span class="reward-item ${['old','bronze','silver'].includes(k)?'res':''}">${RESOURCE_LABELS[k]||k.toUpperCase()} ${sign}${rv.toFixed(2).replace(/\.00$/,'')}</span>`;}).join('');
     let btnHtml='';
     if(maxed)btnHtml=`<button class="btn-challenge btn-maxed">MAXED</button>`;
-    else if(isCurrent)btnHtml=`<button class="btn-challenge btn-current" onclick="stopBattle()">FIGHTING</button>`;
+    else if(isCurrent)btnHtml=`<button class="btn-challenge btn-current" disabled style="cursor:default;">FIGHTING</button>`;
     else btnHtml=B.dying?`<button class="btn-challenge" disabled style="opacity:0.4;cursor:not-allowed;">RECOVERING</button>`:`<button class="btn-challenge" onclick="startBattle('${c.id}')">CHALLENGE</button>`;
     const spawnRarity=maxed?null:getSpawnRarity(c.id);
     const spawnRarityColor=spawnRarity?(RARITY_COLORS[spawnRarity]||'#888'):null;
@@ -108,7 +114,10 @@ function renderBattle(){
 // ═══════════════════════════════════════════════════════
 function renderCodex(){
   const total = CREATURES.length;
-  const unlocked = CREATURES.filter(c => getVictories(c.id) > 0).length;
+  // A creature is "discovered" if it has EVER granted the codex bonus (persists
+  // across reincarnate) OR has wins this run.
+  const ever = id => (S.codexUnlocked && S.codexUnlocked[id]) || getVictories(id) > 0;
+  const unlocked = CREATURES.filter(c => ever(c.id)).length;
   const grid = document.getElementById('codex-grid');
   if(!grid) return;
   const bonusCount = S.codexBonusApplied || 0;
@@ -132,7 +141,7 @@ function renderCodex(){
       </div>
     </div>`;
 
-  const unlockList = CREATURES.filter(c => getVictories(c.id) > 0);
+  const unlockList = CREATURES.filter(c => ever(c.id));
   const lockCount = Math.max(0, total - unlockList.length);
 
   grid.innerHTML = header + [
@@ -140,10 +149,12 @@ function renderCodex(){
       const vic = getVictories(c.id);
       const rarity = getSpawnRarity(c.id);
       const rc = RARITY_COLORS[rarity] || '#888';
+      // Art: prefer the creature's own image, then its SVG, then name text.
+      const art = c.img
+        ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`
+        : (SVGs[c.id] || `<div style="font-size:9px;color:var(--text3);text-align:center;padding:4px;">${c.name}</div>`);
       return `<div class="codex-card unlocked" title="${c.name}" style="border-color:${rc}44;">
-        ${SVGs[c.id] || `<div style="font-size:9px;color:var(--text3);text-align:center;padding:4px;">${c.name}</div>`}
-        <div class="codex-locked-name" style="color:${rc};">${c.name}</div>
-        <div class="codex-chance">${vic} win${vic!==1?'s':''}</div>
+        ${art}
       </div>`;
     }),
     ...Array.from({length: lockCount}).map(() =>

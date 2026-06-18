@@ -68,14 +68,18 @@ function renderMCoinSynth() {
   if (!S.sessionEarned) S.sessionEarned = { bronze: 0, silver: 0, gold: 0, plat: 0 };
   if (!S.mCoins) S.mCoins = { old: 0, bronze: 0, silver: 0, gold: 0, plat: 0 };
 
-  // Blood coin rate = effectiveMOld from milestoneTick logic
+  // Blood coin rate = effectiveMOld × the same multipliers milestoneTick applies
+  // (BLOOD HARVEST mastery gain + diminishing bloodGainMult throttle), so the
+  // RATE display matches the blood actually generated per second.
   const effectiveMOld =
     (S.mCoins.old || 0) +
     (S.mCoins.bronze || 0) +
     (S.mCoins.silver || 0) +
     (S.mCoins.gold || 0) +
     (S.mCoins.plat || 0);
-  const bloodRate = effectiveMOld; // per second
+  const gainMult = (typeof masteryGainMult === 'function') ? masteryGainMult('blood') : 1;
+  const throttle = (typeof bloodGainMult === 'function') ? bloodGainMult() : 1;
+  const bloodRate = effectiveMOld * gainMult * throttle; // per second, real
 
   // Update rate display in left panel
   const rateEl = document.getElementById('blood-rate-val');

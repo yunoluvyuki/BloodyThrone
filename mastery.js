@@ -115,8 +115,8 @@ function masteryFleeTimeMult(){
   const secs = Math.max(d.floorSec || 1, base - mLvl('time_flee') * d.per);
   return secs / base;
 }
-// Reward decay coefficient (base 0.5, lower = gentler)
-function masteryDecayCoef(){ const d = masteryDef('decay'); return Math.max(d.floor, 0.5 - mLvl('decay') * d.per); }
+// Reward decay value (base 0.7, lower = gentler)
+function masteryDecay(){ const d = masteryDef('decay'); return Math.max(d.floor, 0.7 - mLvl('decay') * d.per); }
 // CONQUEST now raises the per-enemy win cap instead of counting wins faster.
 // Wins always count +1; this returns extra cap (added to creature.vicReq via effVicReq).
 function masteryBonusVictories(){ return 0; }
@@ -163,7 +163,7 @@ function masteryEffectStr(up, level){
     case 'cost':    return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
     case 'timecut': return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
     case 'timeflat':return `${Math.max(up.floorSec||1, (up.base10||10) - level*up.per).toFixed(1)}s revive`;
-    case 'decay':   return `coef ${Math.max(up.floor, 0.5 - level*up.per).toFixed(2)}`;
+    case 'decay':   return `decay ${Math.max(up.floor, 0.7 - level*up.per).toFixed(2)}`;
     case 'victory': return `+${level*up.per}/win`;
     case 'viccap':  return `+${level*up.per} max wins/enemy`;
     case 'auto':    return `${(level*up.per*100).toFixed(2)}% of run ${COIN_LABELS[up.coin]}/s`;
