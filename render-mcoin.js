@@ -7,9 +7,9 @@ const MCOIN_DEFS = [
     name: 'Old Coin',
     sub: 'Blood Coin Gain',
     color: '#aaaaaa',
-    trackKey: 'lifetimeEarned', // persists
+    trackKey: 'sessionEarned', // session Old this run (milestone floored by mOldBest)
     trackField: 'old',
-    lifetime: true,
+    lifetime: false,
   },
   {
     key: 'bronze',
@@ -68,13 +68,14 @@ function renderMCoinSynth() {
   if (!S.sessionEarned) S.sessionEarned = { bronze: 0, silver: 0, gold: 0, plat: 0 };
   if (!S.mCoins) S.mCoins = { old: 0, bronze: 0, silver: 0, gold: 0, plat: 0 };
 
-  // Blood rate = ACCUMULATED M.Old × M.Old MILESTONE LEVEL × mults — matches
-  // the formula in milestoneTick (milestone level scales blood per M.Old).
-  const accumOld = (S.mAccum && S.mAccum.old) || 0;
-  const oldMilestone = (S.mCoins && S.mCoins.old) || 0;
+  // Blood rate = TOTAL M.Old × scale(M.Old level) × mults — matches milestoneTick.
+  const totalOldUI = (typeof mCoinTotal === 'function')
+    ? mCoinTotal('old')
+    : ((S.mCoins.old||0) + (S.mAccum ? (S.mAccum.old||0) : 0));
+  const oldScale = (typeof mScale === 'function') ? mScale((S.mCoins && S.mCoins.old) || 0) : 0;
   const gainMult = (typeof masteryGainMult === 'function') ? masteryGainMult('blood') : 1;
   const throttle = (typeof bloodGainMult === 'function') ? bloodGainMult() : 1;
-  const bloodRate = accumOld * oldMilestone * gainMult * throttle; // per second, real
+  const bloodRate = totalOldUI * oldScale * gainMult * throttle; // per second, real
 
   // Update rate display in left panel
   const rateEl = document.getElementById('blood-rate-val');

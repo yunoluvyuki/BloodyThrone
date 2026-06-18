@@ -34,6 +34,10 @@ function bloodGainMult(){
   return Math.pow(0.5, caps);
 }
 
+// Output scale for a milestone level: level 1 = ×1, 2 = ×2, 3 = ×4, 4 = ×8...
+// (doubles each level). Level 0 = ×0 (tier not active yet).
+function mScale(level){ return level > 0 ? Math.pow(2, level - 1) : 0; }
+
 // ── MILESTONE TICK ────────────────────────────────────
 // Called every second from gameLoop
 // Updates M.Coin counts and generates Blood Coin
@@ -43,38 +47,43 @@ function milestoneTick(){
   if(!S.mCoins) S.mCoins = {old:0,bronze:0,silver:0,gold:0,plat:0};
   if(!S.mAccum) S.mAccum = {old:0,bronze:0,silver:0,gold:0,plat:0};
 
-  // Milestone counts (from crossing earning thresholds) — set the chain's "seed" rate.
-  S.mCoins.old    = getMilestoneCount(S.lifetimeEarned.old || 0);
+  // Milestone levels (from crossing earning thresholds).
+  // M.Old level: based on SESSION Old earned this run (like other coins), but
+  // floored by the highest level ever reached (S.mOldBest, persists across
+  // reincarnate). So M.Old never drops below your best, but a strong run can
+  // push it higher.
+  const oldSessionLevel = getMilestoneCount(S.sessionEarned.old || 0);
+  S.mOldBest = Math.max(S.mOldBest || 0, oldSessionLevel);
+  S.mCoins.old    = Math.max(oldSessionLevel, S.mOldBest);
   S.mCoins.bronze = getMilestoneCount(S.sessionEarned.bronze || 0);
   S.mCoins.silver = getMilestoneCount(S.sessionEarned.silver || 0);
   S.mCoins.gold   = getMilestoneCount(S.sessionEarned.gold   || 0);
   S.mCoins.plat   = getMilestoneCount(S.sessionEarned.plat   || 0);
 
   // ── PRODUCTION CHAIN (per tick = per second) ──────────
-  // TOTAL of a tier = milestone count + accumulated-from-above.
-  // Each tier's TOTAL produces that many of the tier BELOW it per second,
-  // accumulating into S.mAccum (which grows until reincarnate).
-  // Process top→down so each tier sees the up-to-date total above it.
-  // Plat → Gold → Silver → Bronze → Old → Blood.
+  // Each tier's TOTAL = milestone level (base count) + accumulated-from-above.
+  // Each second a tier produces  TOTAL × scale(own level)  of the tier below,
+  // where scale doubles per milestone level (1,2,4,8...).
+  // Plat → Gold → Silver → Bronze → Old → Blood. Process top→down.
   const totalPlat   = S.mCoins.plat   + S.mAccum.plat;
-  S.mAccum.gold   += totalPlat;
+  S.mAccum.gold   += totalPlat   * mScale(S.mCoins.plat);
 
   const totalGold   = S.mCoins.gold   + S.mAccum.gold;
-  S.mAccum.silver += totalGold;
+  S.mAccum.silver += totalGold   * mScale(S.mCoins.gold);
 
   const totalSilver = S.mCoins.silver + S.mAccum.silver;
-  S.mAccum.bronze += totalSilver;
+  S.mAccum.bronze += totalSilver * mScale(S.mCoins.silver);
 
   const totalBronze = S.mCoins.bronze + S.mAccum.bronze;
-  S.mAccum.old    += totalBronze;
+  S.mAccum.old    += totalBronze * mScale(S.mCoins.bronze);
 
   const totalOld    = S.mCoins.old    + S.mAccum.old;
 
-  // Blood/sec = ACCUMULATED M.Old × M.Old MILESTONE LEVEL (multiplier) × mults.
-  // The milestone level scales how much blood each accumulated M.Old is worth
-  // (e.g. milestone 2 → each accumulated M.Old = 2 blood/sec).
-  // Note: if M.Old milestone level is 0 (under 1024 lifetime Old), blood = 0.
-  const bloodQty = S.mAccum.old * S.mCoins.old;
+  // Blood/sec = TOTAL M.Old × scale(M.Old level) × mults.
+  // M.Old level 1 → each M.Old = 1 blood; level 2 → ×2; level 3 → ×4; etc.
+  // Because TOTAL includes the milestone base, M.Old alone keeps blood flowing
+  // even right after reincarnate (when accumulated is 0).
+  const bloodQty = totalOld * mScale(S.mCoins.old);
   if(bloodQty > 0){
     const gained = bloodQty
       * (typeof masteryGainMult==='function' ? masteryGainMult('blood') : 1)

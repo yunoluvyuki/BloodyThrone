@@ -174,6 +174,13 @@ function updateResources(){
   document.getElementById('res-silver').textContent=fmt(S.resources.silver);
   document.getElementById('res-gold').textContent=fmt(S.resources.gold);
   document.getElementById('res-plat').textContent=fmt(S.resources.plat);
+  // Per-coin passive auto-gen rate (WELLSPRING) shown below each coin.
+  ['old','bronze','silver','gold','plat'].forEach(coin=>{
+    const el=document.getElementById('rate-'+coin);
+    if(!el) return;
+    const rate=(typeof masteryAutoRate==='function') ? masteryAutoRate(coin) : 0;
+    el.textContent = rate>0 ? '+'+fmt(rate)+'/s' : '';
+  });
 }
 
 function updateBloodUI(){

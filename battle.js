@@ -411,9 +411,11 @@ function onWin(){
       S.resources[k] = (S.resources[k] || 0) + amount;
       if(k === 'old'){
         if(!S.lifetimeEarned) S.lifetimeEarned = {old:0};
-        S.lifetimeEarned.old = (S.lifetimeEarned.old || 0) + amount;
+        S.lifetimeEarned.old = (S.lifetimeEarned.old || 0) + amount;   // drives M.Old milestone (lifetime)
+        if(!S.sessionEarned) S.sessionEarned = {old:0,bronze:0,silver:0,gold:0,plat:0};
+        S.sessionEarned.old = (S.sessionEarned.old || 0) + amount;     // WELLSPRING basis (session)
       } else if(['bronze','silver','gold','plat'].includes(k)){
-        if(!S.sessionEarned) S.sessionEarned = {bronze:0,silver:0,gold:0,plat:0};
+        if(!S.sessionEarned) S.sessionEarned = {old:0,bronze:0,silver:0,gold:0,plat:0};
         S.sessionEarned[k] = (S.sessionEarned[k] || 0) + amount;
       }
       // Codex bonus: first-ever victory on a creature = +1% ATK and HP.

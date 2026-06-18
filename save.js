@@ -33,9 +33,10 @@ function loadGame(){
     S.bloodBankedLifetime = loaded.bloodBankedLifetime || 0;
     S.bloodRef = loaded.bloodRef || 0;
     S.lifetimeEarned = Object.assign({old: loaded.lifeOld || 0}, loaded.lifetimeEarned || {});
-    S.sessionEarned = Object.assign({bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
+    S.sessionEarned = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.sessionEarned || {});
     S.mCoins = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.mCoins || {});
     S.mAccum = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.mAccum || {});
+    S.mOldBest = loaded.mOldBest || 0;
     B.playerHP = (loaded.savedPlayerHP && loaded.savedPlayerHP > 0) ? loaded.savedPlayerHP : maxHP();
     S.codexBonusApplied = loaded.codexBonusApplied || 0;
     // codexUnlocked: persistent set of creatures that have granted the codex bonus.

@@ -123,11 +123,11 @@ function masteryBonusVictories(){ return 0; }
 function masteryVicReqBonus(){ const d = masteryDef('victory'); return mLvl('victory') * d.per; }
 
 // Passive generation rate (coins/sec) for a coin.
-// WELLSPRING now generates (per × level) as a FRACTION of how much of that coin
-// has been earned this run (session count). old uses lifetimeEarned, others use sessionEarned.
-// SURGE multiplier still applies on top.
+// WELLSPRING generates (per × level) as a FRACTION of how much of that coin
+// has been earned THIS RUN (session count) — consistent for all coins,
+// including old (S.sessionEarned.old). Note: lifetimeEarned.old is separate and
+// still drives the M.Old milestone; sessionEarned.old is only for WELLSPRING.
 function masteryAutoSessionCount(coin){
-  if(coin === 'old') return (S.lifetimeEarned && S.lifetimeEarned.old) || 0;
   return (S.sessionEarned && S.sessionEarned[coin]) || 0;
 }
 function masteryAutoRate(coin){
@@ -145,13 +145,13 @@ function masteryAutoRate(coin){
 function masteryAutoTick(dt){
   if(!S.resources) return;
   if(!S.lifetimeEarned) S.lifetimeEarned = { old:0 };
-  if(!S.sessionEarned)  S.sessionEarned  = { bronze:0, silver:0, gold:0, plat:0 };
+  if(!S.sessionEarned)  S.sessionEarned  = { old:0, bronze:0, silver:0, gold:0, plat:0 };
   ['old','bronze','silver','gold','plat'].forEach(coin => {
     const gain = masteryAutoRate(coin) * dt;
     if(gain <= 0) return;
     S.resources[coin] = (S.resources[coin] || 0) + gain;
-    if(coin === 'old') S.lifetimeEarned.old = (S.lifetimeEarned.old || 0) + gain;
-    else S.sessionEarned[coin] = (S.sessionEarned[coin] || 0) + gain;
+    S.sessionEarned[coin] = (S.sessionEarned[coin] || 0) + gain;       // session (WELLSPRING basis)
+    if(coin === 'old') S.lifetimeEarned.old = (S.lifetimeEarned.old || 0) + gain; // lifetime (drives M.Old milestone)
   });
 }
 

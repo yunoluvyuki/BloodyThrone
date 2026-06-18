@@ -298,7 +298,7 @@ function setupSettings(){
     S.bloodPending=0;
     S.battleUnlocked=[];
     S.battleQueue=[];
-    S.sessionEarned={bronze:0,silver:0,gold:0,plat:0};
+    S.sessionEarned={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.mCoins={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.mAccum={old:0,bronze:0,silver:0,gold:0,plat:0};
     B=freshBattleState();
