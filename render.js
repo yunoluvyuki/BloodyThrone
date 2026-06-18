@@ -167,7 +167,8 @@ function updateResources(){
 
 function updateBloodUI(){
   document.getElementById('blood-pending').textContent='+'+fmt(S.bloodPending);
-  document.getElementById('blood-pend-val').textContent='+'+fmt(S.bloodPending);
+  const bloodPendVal=document.getElementById('blood-pend-val');
+  if(bloodPendVal)bloodPendVal.textContent='+'+fmt(S.bloodPending);
   document.getElementById('blood-life-val').textContent=fmt(S.bloodLifetime);
   const bloodCountEl=document.getElementById('blood-count');
   if(bloodCountEl)bloodCountEl.textContent=fmt(S.blood||0);

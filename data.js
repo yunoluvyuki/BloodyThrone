@@ -411,7 +411,7 @@ const CREATURES = [
     vicReq:3},
   {id:'gravel_ghoul',name:'GRAVEL GHOUL',
     hp:300,atk:25,mnd:1,mxd:1.4,spd:2500,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,blk:0,bld:0,ctr:0,
-    rewards:{atk:0.18,old:0.42},
+    rewards:{atk:5,hp:20,old:400},
     vicReq:3},
   {id:'bile_spawn',name:'BILE SPAWN',
     hp:333,atk:33,mnd:1,mxd:1.4,spd:3333,rgn:0,ddc:0,crc:0,crd:0,arm:3.3,mth:0,acc:0,blk:0,bld:0,ctr:0,
