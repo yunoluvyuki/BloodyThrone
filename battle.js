@@ -240,17 +240,18 @@ function firePlayerTurn(){
     addLog(`<span class="log-info">You swing at <b>${c.name}</b> — MISS!</span>`);
   } else {
 
-    // Damage Calc
-    const isCrit = Math.random() < (st.crc ?? 0);
+    // Damage Calc — crit is rolled per hit inside the loop
     const atkEff = st.atk * masteryAtkMult();
     const mnd = atkEff * (st.mnd ?? 0.7);
     const mxd = atkEff * (st.mxd ?? 1.0);
     let totalDmg = 0;
     let hits = 0;
+    let isCrit = false; // true if ANY hit crit (for log styling)
 
     do {
       let rolled = mnd + Math.random() * (mxd - mnd);
-      if(isCrit) rolled *= (st.crd ?? 1);
+      const hitCrit = Math.random() < (st.crc ?? 0);
+      if(hitCrit){ rolled *= (st.crd ?? 1); isCrit = true; }
       const isBlock = Math.random() < (c.blk ?? 0);
       if(isBlock) rolled = Math.max(0, rolled - (c.bld ?? 0));
       rolled = Math.max(0, rolled - (c.arm ?? 0));
@@ -296,16 +297,17 @@ function fireEnemyTurn(){
     addLog(`<span class="log-info"><b>${c.name}</b> swings at you — MISS!</span>`);
   } else {
 
-    // Damage Calc
-    const isCrit = Math.random() < (c.crc ?? 0);
+    // Damage Calc — crit is rolled per hit inside the loop
     const mnd = c.atk * (c.mnd ?? 0.7);
     const mxd = c.atk * (c.mxd ?? 1.0);
     let totalDmg = 0;
     let hits = 0;
+    let isCrit = false; // true if ANY hit crit (for log styling)
 
     do {
       let rolled = mnd + Math.random() * (mxd - mnd);
-      if(isCrit) rolled *= (c.crd ?? 1);                        // 2. crit multiplier
+      const hitCrit = Math.random() < (c.crc ?? 0);
+      if(hitCrit){ rolled *= (c.crd ?? 1); isCrit = true; } // 2. crit multiplier
       const isBlock = Math.random() < (st.blk ?? 0);
       if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0)); // 3. player block reduction
       rolled = Math.max(0, rolled - (st.arm ?? 0));             // 4. player armor reduction
@@ -344,16 +346,17 @@ function fireEnemyCounterAttack(){
   const c = B.creature;
   const st = S.stats;
 
-  // Damage Calc (no hit check, counter always hits)
-  const isCrit = Math.random() < (c.crc ?? 0);
+  // Damage Calc (no hit check, counter always hits) — crit rolled per hit
   const mnd = c.atk * (c.mnd ?? 0.7);
   const mxd = c.atk * (c.mxd ?? 1.0);
   let totalDmg = 0;
   let hits = 0;
+  let isCrit = false; // true if ANY hit crit (for log styling)
 
   do {
     let rolled = mnd + Math.random() * (mxd - mnd);
-    if(isCrit) rolled *= (c.crd ?? 1);
+    const hitCrit = Math.random() < (c.crc ?? 0);
+    if(hitCrit){ rolled *= (c.crd ?? 1); isCrit = true; }
     const isBlock = Math.random() < (st.blk ?? 0);
     if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0));
     rolled = Math.max(0, rolled - (st.arm ?? 0));
@@ -402,7 +405,7 @@ function onWin(){
   if(justCompleted) unlockNextCreature();
 
   // Reward Multipliers
-  const rewardMult = 1 + (S.reincarnations * 0.05);
+  const rewardMult = 1; // reincarnation no longer grants a reward bonus
   const rarityMult = RARITY_MULTS[B.rarity || 'common'] || 1;
   const n = prevVic;
   const decayMult = 1 / (1 + masteryDecayCoef() * n);

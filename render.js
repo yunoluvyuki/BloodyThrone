@@ -42,7 +42,7 @@ function renderShop(){
       <div class="shop-effect">${iconHtml} ${item.effect}</div>
       <div class="shop-cost">Cost: ${costStr}</div>
       <div class="shop-own">Owned: ${owned}${item.maxOwned ? '/' + item.maxOwned : ''}</div>
-      <button class="btn-buy" onclick="buyShopItem('${item.id}')" ${canAfford ? '' : 'disabled'}>${maxed ? 'OWNED' : 'BUY'}</button>
+      <button class="btn-buy${canAfford ? ' affordable' : ''}" onclick="buyShopItem('${item.id}')" ${canAfford ? '' : 'disabled'}>${maxed ? 'OWNED' : 'BUY'}</button>
     </div>`;
   }).join('');
 }

@@ -283,12 +283,11 @@ function setupSettings(){
 
   // Reincarnate
   document.getElementById('reincarnate-btn').addEventListener('click',()=>{
-    if(!confirm('REINCARNATE: Your progress resets, but you keep a permanent bonus and gain your pending Blood Coin. Continue?'))return;
+    if(!confirm('REINCARNATE: Your progress resets, but you gain your pending Blood Coin. Continue?'))return;
     S.blood=(S.blood||0)+S.bloodPending;
     S.bloodLifetime+=S.bloodPending;
     S.reincarnations++;
-    const bonus=(1+S.reincarnations*0.05).toFixed(2);
-    toast(`Reincarnated! Permanent bonus: ${bonus}x — you feel sharper.`,5000);
+    toast(`Reincarnated! Pending Blood Coin banked.`,5000);
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.baseStats={...base.stats};
