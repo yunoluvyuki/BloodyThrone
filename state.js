@@ -33,13 +33,7 @@ let S = DEFAULT_STATE();
 // ═══════════════════════════════════════════════════════
 // BATTLE STATE
 // ═══════════════════════════════════════════════════════
-let B = {
-  active:false,creature:null,playerHP:0,enemyHP:0,
-  deathTimer:0,dying:false,fleeTimer:0,
-  lastTick:0,turnCount:0,
-  playerTimer:3000,enemyTimer:3000,
-  rarity:'common',
-};
+let B = freshBattleState();
 
 
 const STAT_DEFS=[

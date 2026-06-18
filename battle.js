@@ -227,6 +227,28 @@ function restTick(dt){
 }
 
 
+// Shared per-turn damage roller. Rolls 1–2 hits (multi-hit), each one
+// independently crit / blocked / armor-reduced, in the EXACT Math.random()
+// order the old inline loops used (base → crit → block → multi-hit continue).
+//   atkValue : attacker's effective ATK (already mastery-boosted for the player)
+//   atkr     : attacker stat source (S.stats or creature) — reads mnd/mxd/crc/crd/mth
+//   defr     : defender stat source — reads blk/bld/arm
+// Returns { totalDmg, hits, isCrit }.
+function rollAttackDamage(atkValue, atkr, defr){
+  const mnd = atkValue * (atkr.mnd ?? 0.7);
+  const mxd = atkValue * (atkr.mxd ?? 1.0);
+  let totalDmg = 0, hits = 0, isCrit = false;
+  do {
+    let rolled = mnd + Math.random() * (mxd - mnd);
+    if(Math.random() < (atkr.crc ?? 0)){ rolled *= (atkr.crd ?? 1); isCrit = true; }
+    if(Math.random() < (defr.blk ?? 0)) rolled = Math.max(0, rolled - (defr.bld ?? 0));
+    rolled = Math.max(0, rolled - (defr.arm ?? 0));
+    totalDmg += rolled;
+    hits++;
+  } while(Math.random() < (atkr.mth ?? 0) && hits < 2);
+  return { totalDmg, hits, isCrit };
+}
+
 function firePlayerTurn(){
   const c = B.creature;
   const st = S.stats;
@@ -240,24 +262,9 @@ function firePlayerTurn(){
     addLog(`<span class="log-info">You swing at <b>${c.name}</b> — MISS!</span>`);
   } else {
 
-    // Damage Calc — crit is rolled per hit inside the loop
+    // Damage Calc — player ATK is boosted by mastery before rolling
     const atkEff = st.atk * masteryAtkMult();
-    const mnd = atkEff * (st.mnd ?? 0.7);
-    const mxd = atkEff * (st.mxd ?? 1.0);
-    let totalDmg = 0;
-    let hits = 0;
-    let isCrit = false; // true if ANY hit crit (for log styling)
-
-    do {
-      let rolled = mnd + Math.random() * (mxd - mnd);
-      const hitCrit = Math.random() < (st.crc ?? 0);
-      if(hitCrit){ rolled *= (st.crd ?? 1); isCrit = true; }
-      const isBlock = Math.random() < (c.blk ?? 0);
-      if(isBlock) rolled = Math.max(0, rolled - (c.bld ?? 0));
-      rolled = Math.max(0, rolled - (c.arm ?? 0));
-      totalDmg += rolled;
-      hits++;
-    } while(Math.random() < (st.mth ?? 0) && hits < 2);
+    const { totalDmg, hits, isCrit } = rollAttackDamage(atkEff, st, c);
 
     // Apply Damage
     B.enemyHP = Math.max(0, B.enemyHP - totalDmg);
@@ -297,23 +304,8 @@ function fireEnemyTurn(){
     addLog(`<span class="log-info"><b>${c.name}</b> swings at you — MISS!</span>`);
   } else {
 
-    // Damage Calc — crit is rolled per hit inside the loop
-    const mnd = c.atk * (c.mnd ?? 0.7);
-    const mxd = c.atk * (c.mxd ?? 1.0);
-    let totalDmg = 0;
-    let hits = 0;
-    let isCrit = false; // true if ANY hit crit (for log styling)
-
-    do {
-      let rolled = mnd + Math.random() * (mxd - mnd);
-      const hitCrit = Math.random() < (c.crc ?? 0);
-      if(hitCrit){ rolled *= (c.crd ?? 1); isCrit = true; } // 2. crit multiplier
-      const isBlock = Math.random() < (st.blk ?? 0);
-      if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0)); // 3. player block reduction
-      rolled = Math.max(0, rolled - (st.arm ?? 0));             // 4. player armor reduction
-      totalDmg += rolled;
-      hits++;
-    } while(Math.random() < (c.mth ?? 0) && hits < 2);
+    // Damage Calc — shared roller (attacker=creature, defender=player)
+    const { totalDmg, hits, isCrit } = rollAttackDamage(c.atk, c, st);
 
     // Apply Damage
     B.playerHP = Math.max(0, B.playerHP - totalDmg);
@@ -348,23 +340,8 @@ function fireEnemyCounterAttack(){
   const c = B.creature;
   const st = S.stats;
 
-  // Damage Calc (no hit check, counter always hits) — crit rolled per hit
-  const mnd = c.atk * (c.mnd ?? 0.7);
-  const mxd = c.atk * (c.mxd ?? 1.0);
-  let totalDmg = 0;
-  let hits = 0;
-  let isCrit = false; // true if ANY hit crit (for log styling)
-
-  do {
-    let rolled = mnd + Math.random() * (mxd - mnd);
-    const hitCrit = Math.random() < (c.crc ?? 0);
-    if(hitCrit){ rolled *= (c.crd ?? 1); isCrit = true; }
-    const isBlock = Math.random() < (st.blk ?? 0);
-    if(isBlock) rolled = Math.max(0, rolled - (st.bld ?? 0));
-    rolled = Math.max(0, rolled - (st.arm ?? 0));
-    totalDmg += rolled;
-    hits++;
-  } while(Math.random() < (c.mth ?? 0) && hits < 2);
+  // Damage Calc — shared roller (counter always hits; attacker=creature)
+  const { totalDmg, hits, isCrit } = rollAttackDamage(c.atk, c, st);
 
   // Apply Damage
   B.playerHP = Math.max(0, B.playerHP - totalDmg);

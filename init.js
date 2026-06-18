@@ -239,11 +239,7 @@ function setupSettings(){
     if(confirm('HARD RESET: All progress will be permanently lost. Are you absolutely sure?')){
       localStorage.removeItem('draft_throne_save');
       S = DEFAULT_STATE();
-      B = {
-        active:false, creature:null, playerHP:0, enemyHP:0,
-        deathTimer:0, dying:false, fleeTimer:0, lastTick:0,
-        playerTimer:3000, enemyTimer:3000, rarity:'common'
-      };
+      B = freshBattleState();
       B.playerHP = maxHP();
       initBattleQueue();
       renderAll();
@@ -292,7 +288,7 @@ function setupSettings(){
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.baseStats={...base.stats};
-    S.equipment={equipped:{weapon:null,helmet:null,armor:null,gloves:null,boots:null,ring:null},inventory:[]};
+    S.equipment={equipped:EMPTY_EQUIPMENT(),inventory:[]};
     S.equipNextId=0;
     S.victories={};
     S.shopOwned={};
@@ -303,7 +299,7 @@ function setupSettings(){
     S.battleQueue=[];
     S.sessionEarned={bronze:0,silver:0,gold:0,plat:0};
     S.mCoins={old:0,bronze:0,silver:0,gold:0,plat:0};
-    B={active:false,creature:null,playerHP:0,enemyHP:0,deathTimer:0,dying:false,fleeTimer:0,lastTick:0};
+    B=freshBattleState();
     initBattleQueue();
     renderAll();
   });

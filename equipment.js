@@ -201,7 +201,7 @@ function recalcEquipStats() {
 function initEquipState() {
   if (!S.equipment) {
     S.equipment = {
-      equipped:  { weapon: null, helmet: null, armor: null, gloves: null, boots: null, ring: null },
+      equipped:  EMPTY_EQUIPMENT(),
       inventory: [],
     };
   }
