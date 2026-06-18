@@ -8,8 +8,10 @@ let masterySelectedId = null;
 
 // Steeper cost ramp: base × scale^level × MASTERY_RAMP^(level²).
 // Upgrades with noRamp:true skip the steep ramp (plain base × scale^level).
+// Upgrades with an explicit costs[] array use that per-level cost directly.
 // MASTERY_RAMP is defined in shop.js (loaded alongside this file).
 function masteryLevelCost(up, level){
+  if(up.costs && up.costs[level]) return effCost(up.costs[level]);
   const rampMult = up.noRamp ? 1 : Math.pow(MASTERY_RAMP, level * level);
   return effCost(Object.fromEntries(Object.entries(up.base).map(([r,a]) => [r, Math.floor(a * Math.pow(up.scale, level) * rampMult)])));
 }

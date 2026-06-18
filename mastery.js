@@ -43,7 +43,7 @@ const MASTERY_UPGRADES = [
   { id:'time_death', cat:'UTILITY', type:'timeflat', per:0.1, base10:10, floorSec:1, noRamp:true, label:'SWIFT REVIVAL', desc:'-0.1s defeat recovery time per level (min 1s).', base:{blood:10000}, scale:1.8, maxLevel:90, color:'#9b59b6' },
   { id:'time_flee',  cat:'UTILITY', type:'timeflat', per:0.04, base10:5, floorSec:1, noRamp:true, label:'LIGHT FEET',    desc:'-0.04s flee recovery time per level (min 1s).',   base:{blood:10000}, scale:1.8, maxLevel:100, color:'#9b59b6' },
   { id:'decay',      cat:'UTILITY', type:'decay',   per:0.005, floor:0.05, noRamp:true, label:'ENDURING SPOILS', desc:'Softens reward decay by 0.005 per level.',    base:{blood:100000}, scale:3, maxLevel:50, color:'#2980b9' },
-  { id:'victory',    cat:'UTILITY', type:'viccap',  per:2,                label:'CONQUEST',        desc:'+2 max wins allowed per enemy, per level.',    base:{blood:100},scale:3.0, maxLevel:10, color:'#f0b429' },
+  { id:'victory',    cat:'UTILITY', type:'viccap',  per:1,                label:'CONQUEST',        desc:'+1 max win allowed per enemy, per level.',     base:{blood:100},scale:3.0, maxLevel:3, costs:[{blood:100},{blood:100000000},{blood:100000000000}], color:'#f0b429' },
 
   // ── AUTOMATION: passive coin generation ────────────────
   { id:'auto_old',        cat:'AUTOMATION', type:'auto',     coin:'old',    per:0.0001, label:'OLD WELLSPRING',     desc:'Generate 0.01% of Old earned this run per sec, per level.',      base:{blood:10000},     scale:10, maxLevel:10, color:'#aaaaaa' },

@@ -18,6 +18,17 @@ function initBattleQueue(){
     // Ensure queue is clean (remove any IDs already unlocked)
     S.battleQueue=(S.battleQueue||[]).filter(id=>!S.battleUnlocked.includes(id));
   }
+  ensureFightable();
+}
+
+// Guarantee at least one UNLOCKED creature is not yet maxed. If every unlocked
+// creature is maxed (e.g. vicReq lowered, or all beaten), pull from the queue
+// until a fightable one is unlocked — prevents an empty battle grid dead-end.
+function ensureFightable(){
+  const hasFightable=()=>S.battleUnlocked.some(id=>{const c=getCreature(id);return c&&!isMaxed(c);});
+  while(!hasFightable() && S.battleQueue && S.battleQueue.length>0){
+    S.battleUnlocked.push(S.battleQueue.shift());
+  }
 }
 function unlockNextCreature(){
   if(!S.battleQueue||S.battleQueue.length===0)return;
@@ -383,7 +394,7 @@ function onWin(){
   const cap = effVicReq(c);
   const justCompleted = prevVic < cap && S.victories[c.id] >= cap;
   addLog(`<span class="log-win">✓ Defeated ${c.name}! (${Math.min(S.victories[c.id], cap)}/${cap})</span>`);
-  if(justCompleted) unlockNextCreature();
+  if(justCompleted){ unlockNextCreature(); ensureFightable(); }
 
   // Reward Multipliers
   const rewardMult = 1; // reincarnation no longer grants a reward bonus

@@ -356,6 +356,9 @@ function gameLoop(){
     milestoneTick();
     renderStats();
     renderFundamentals();
+    // Topbar BLOOD COIN count is always visible — keep it live on every tab.
+    const bc=document.getElementById('blood-count');
+    if(bc)bc.textContent=fmt(S.blood||0);
     const archActive = document.getElementById('tab-archive').classList.contains('active');
     if(archActive){
       if(document.getElementById('arch-treasury').classList.contains('active')) updateBloodUI();
