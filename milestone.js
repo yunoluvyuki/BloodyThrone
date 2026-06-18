@@ -21,6 +21,20 @@ function getMilestoneCount(total){
   return count;
 }
 
+// ── DIMINISHING BLOOD GAIN ────────────────────────────
+// Once this session's bloodPending passes the reference (blood banked last
+// reincarnation), gain rate halves at each doubling cap: R×1 → 50%, R×2 → 25%,
+// R×4 → 12.5%, ... Halving continues forever (never hits zero).
+// First run (bloodRef 0) = no cap, full rate.
+function bloodGainMult(){
+  const ref = S.bloodRef || 0;
+  const pending = S.bloodPending || 0;
+  if(ref <= 0 || pending < ref) return 1;        // no reference yet, or below first cap
+  const caps = Math.floor(Math.log2(pending / ref)) + 1; // how many caps passed
+  return Math.pow(0.5, caps);
+}
+
+// ── MILESTONE TICK ────────────────────────────────────
 // Called every second from gameLoop
 // Updates M.Coin counts and generates Blood Coin
 function milestoneTick(){
@@ -49,7 +63,9 @@ function milestoneTick(){
 
   // Each effective M.Old generates 1 Blood Coin/sec
   if(effectiveMOld > 0){
-    const gained = effectiveMOld * (typeof masteryGainMult==='function' ? masteryGainMult('blood') : 1);
+    const gained = effectiveMOld
+      * (typeof masteryGainMult==='function' ? masteryGainMult('blood') : 1)
+      * bloodGainMult();   // diminishing-gain throttle past the reference caps
     S.bloodPending = (S.bloodPending || 0) + gained;
     S.bloodLifetime = (S.bloodLifetime || 0) + gained;
   }

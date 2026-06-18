@@ -286,6 +286,7 @@ function setupSettings(){
     if(!confirm('REINCARNATE: Your progress resets, but you gain your pending Blood Coin. Continue?'))return;
     S.blood=(S.blood||0)+S.bloodPending;
     S.bloodLifetime+=S.bloodPending;
+    S.bloodRef=S.bloodPending;   // reference for next run's diminishing-gain caps
     S.reincarnations++;
     toast(`Reincarnated! Pending Blood Coin banked.`,5000);
     const base=DEFAULT_STATE();
@@ -294,6 +295,7 @@ function setupSettings(){
     S.equipment={equipped:{weapon:null,helmet:null,armor:null,gloves:null,boots:null,ring:null},inventory:[]};
     S.equipNextId=0;
     S.victories={};
+    S.shopOwned={};
     S.resources={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.currentCreature=null;
     S.bloodPending=0;
