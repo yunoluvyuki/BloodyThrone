@@ -64,7 +64,7 @@ function buyMasteryUpgrade(id){
   }else{
     const rawCost={};
     const rampMult = up.noRamp ? 1 : Math.pow(MASTERY_RAMP, level*level);
-    Object.entries(up.base).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)*rampMult); });
+    Object.entries(up.cost).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)*rampMult); });
     cost=effCost(rawCost);
   }
   // Use mastery.js currency helpers (they handle Blood Coin from S.bloodPending)

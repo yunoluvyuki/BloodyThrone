@@ -138,8 +138,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .card-hp{color:var(--red2);}
 .new-badge{position:absolute;top:4px;left:4px;background:var(--red2);color:#fff;font-size:7px;font-weight:bold;padding:1px 4px;letter-spacing:1px;}
 .card-rewards{padding:6px 8px;border-bottom:1px solid var(--border);}
-.rewards-header{font-size:12px;font-weight:bold;color:#fff;display:flex;justify-content:space-between;margin-bottom:3px;}
-.rewards-header .vic{font-size:12px;font-weight:bold;color:#fff;}
+.rewards-header{font-size:12px;font-weight:bold;color:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:3px;}
+.rewards-header > span:first-child{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:2px 0;}
+.rewards-header .vic{font-size:12px;font-weight:bold;color:#fff;flex-shrink:0;white-space:nowrap;text-align:right;}
 .reward-list{display:flex;flex-wrap:wrap;gap:3px;}
 .reward-item{font-size:10px;color:var(--green);padding:1px 4px;}
 .reward-item.res{color:var(--yellow);}

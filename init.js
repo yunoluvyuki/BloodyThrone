@@ -63,7 +63,7 @@ function hasAffordableMasteryUpgrade(){
   return RARITY_UPGRADES.some(up=>{
     const level=ups[up.id]||0;
     if(level>=up.maxLevel)return false;
-    return Object.entries(up.base).every(([res,amt])=>(S.resources[res]||0)>=Math.floor(amt*Math.pow(up.scale,level)));
+    return Object.entries(up.cost).every(([res,amt])=>(S.resources[res]||0)>=Math.floor(amt*Math.pow(up.scale,level)));
   });
 }
 function updateArchiveDot(){
