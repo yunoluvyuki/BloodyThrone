@@ -62,10 +62,10 @@ const MASTERY_UPGRADES = [
 
   // ── RARITY: enemy rarity spawn chance (escalating omens) ───────
   // type:'rarity', noRamp:true. masteryRarityChance(r) = mLvl * per  (in %).
-  { id:'rar_uncommon',  cat:'RARITY', type:'rarity', rarity:'uncommon',  per:0.7, label:'UNCOMMON OMEN',  desc:'+0.7% Uncommon enemy spawn chance per level.',  base:{blood:1000},    scale:1.5, maxLevel:100, noRamp:true, color:'#27ae60' },
-  { id:'rar_rare',      cat:'RARITY', type:'rarity', rarity:'rare',      per:0.4, label:'RARE OMEN',      desc:'+0.4% Rare enemy spawn chance per level.',      base:{blood:10000},   scale:1.5, maxLevel:100, noRamp:true, color:'#2980b9' },
-  { id:'rar_epic',      cat:'RARITY', type:'rarity', rarity:'epic',      per:0.2, label:'EPIC OMEN',      desc:'+0.2% Epic enemy spawn chance per level.',      base:{blood:100000},  scale:1.5, maxLevel:100, noRamp:true, color:'#9b59b6' },
-  { id:'rar_legendary', cat:'RARITY', type:'rarity', rarity:'legendary', per:0.1, label:'LEGENDARY OMEN', desc:'+0.1% Legendary enemy spawn chance per level.', base:{blood:1000000}, scale:1.5, maxLevel:100, noRamp:true, color:'#f0b429' },
+  { id:'rar_uncommon',  cat:'RARITY', type:'rarity', rarity:'uncommon',  per:0.7, label:'UNCOMMON OMEN',  desc:'+0.7% Uncommon enemy spawn chance per level.',  base:{blood:1000},    scale:10, maxLevel:100, noRamp:true, color:'#27ae60' },
+  { id:'rar_rare',      cat:'RARITY', type:'rarity', rarity:'rare',      per:0.4, label:'RARE OMEN',      desc:'+0.4% Rare enemy spawn chance per level.',      base:{blood:10000},   scale:10, maxLevel:100, noRamp:true, color:'#2980b9' },
+  { id:'rar_epic',      cat:'RARITY', type:'rarity', rarity:'epic',      per:0.2, label:'EPIC OMEN',      desc:'+0.2% Epic enemy spawn chance per level.',      base:{blood:100000},  scale:10, maxLevel:100, noRamp:true, color:'#9b59b6' },
+  { id:'rar_legendary', cat:'RARITY', type:'rarity', rarity:'legendary', per:0.1, label:'LEGENDARY OMEN', desc:'+0.1% Legendary enemy spawn chance per level.', base:{blood:1000000}, scale:10, maxLevel:100, noRamp:true, color:'#f0b429' },
 ];
 
 // ── LOOKUP HELPERS ────────────────────────────────────

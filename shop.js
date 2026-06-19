@@ -58,10 +58,15 @@ function buyMasteryUpgrade(id){
   if(!S.masteryUpgrades)S.masteryUpgrades={};
   const level=S.masteryUpgrades[id]||0;
   if(level>=up.maxLevel)return;
-  const rawCost={};
-  const rampMult = up.noRamp ? 1 : Math.pow(MASTERY_RAMP, level*level);
-  Object.entries(up.base).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)*rampMult); });
-  const cost=effCost(rawCost);
+  let cost;
+  if(up.costs && up.costs[level]){
+    cost=effCost(up.costs[level]);   // explicit per-level cost (e.g. CONQUEST)
+  }else{
+    const rawCost={};
+    const rampMult = up.noRamp ? 1 : Math.pow(MASTERY_RAMP, level*level);
+    Object.entries(up.base).forEach(([res,amt])=>{ rawCost[res]=Math.floor(amt*Math.pow(up.scale,level)*rampMult); });
+    cost=effCost(rawCost);
+  }
   // Use mastery.js currency helpers (they handle Blood Coin from S.bloodPending)
   if(!canAffordCost(cost)){toast('Not enough resources.',2000);return;}
   spendCost(cost);
