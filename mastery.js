@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // This ONE file is the source of truth for the Main Mastery Tree. It contains:
 //   1. The real MASTERY_UPGRADES data + all helpers (verbatim from mastery.js)
-//   2. Guarded environment fallbacks (S, fmt, toast, MASTERY_RAMP,
+//   2. Guarded environment fallbacks (S, fmt, toast,
 //      buyMasteryUpgrade) so the tree runs STANDALONE — in the live game the
 //      real versions (state.js / utils.js / shop.js) always win.
 //   3. The gothic tree UI: page/tab data, node layout, connector/link data,
@@ -284,8 +284,7 @@ try { toast; } catch (_) {
 // renderStats — live game repaints the stat panel after a purchase; no-op here.
 try { renderStats; } catch (_) { window.renderStats = function(){}; }
 
-// MASTERY_RAMP — read lazily (TDZ-safe) so shop.js's const wins when present.
-function masteryRampVal(){ try { return MASTERY_RAMP; } catch (_) { return 1.07; } }
+// Mastery cost = cost × scale^level (no extra ramp).
 
 // buyMasteryUpgrade — the real spend/+1 logic. Mirrors shop.js EXACTLY so the
 // standalone behaves identically; in the live game shop.js's version is used.
@@ -297,8 +296,7 @@ try { buyMasteryUpgrade; } catch (_) {
     const level = S.masteryUpgrades[id] || 0;
     if(level >= up.maxLevel) return;
     const rawCost = {};
-    const rampMult = up.noRamp ? 1 : Math.pow(masteryRampVal(), level*level);
-    Object.entries(up.cost).forEach(([res, amt]) => { rawCost[res] = Math.floor(amt * Math.pow(up.scale, level) * rampMult); });
+    Object.entries(up.cost).forEach(([res, amt]) => { rawCost[res] = Math.floor(amt * Math.pow(up.scale, level)); });
     const cost = effCost(rawCost);
     if(!canAffordCost(cost)){ toast('Not enough resources.'); return; }
     spendCost(cost);
@@ -471,9 +469,8 @@ function masteryNodeState(nodeId, cat){
 // ── COST DISPLAY (same formula as buyMasteryUpgrade) ────
 function masteryLevelCost(up, level){
   if(up.costs && up.costs[level]) return effCost(up.costs[level]);
-  const rampMult = up.noRamp ? 1 : Math.pow(masteryRampVal(), level * level);
   return effCost(Object.fromEntries(Object.entries(up.cost).map(([r, a]) =>
-    [r, Math.floor(a * Math.pow(up.scale, level) * rampMult)])));
+    [r, Math.floor(a * Math.pow(up.scale, level))])));
 }
 function masteryCostStr(cost){
   return Object.entries(cost).map(([r, a]) => `${fmt(a)} ${COIN_LABELS[r] || r.toUpperCase()}`).join(' + ');
