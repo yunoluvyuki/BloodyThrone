@@ -42,6 +42,7 @@
 // ═══════════════════════════════════════════════════════
 
 function switchTab(name){
+  document.body.classList.toggle('battle-active', name === 'battle'); // dashboard shows on Battle only
   document.querySelectorAll('.nav-tab').forEach(t=>{
     t.classList.toggle('active', t.dataset.tab === name);
   });

@@ -239,3 +239,40 @@ body{ background:var(--bg); color:var(--text); }
 .log-win{ color:var(--purple2); }
 .log-heal{ color:var(--green); }
 .log-crit, .log-die{ color:var(--red2); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   13. BATTLE LAYOUT FIXES  (Battle screen only — see draft-theme-INSTALL.md
+   for the one JS line that toggles body.battle-active)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 13a. Player-vs-monster fills down to the dashboard — removes the empty gap.
+   #tab-battle becomes a flex column; the battle area grows to touch the
+   bottom dashboard so the two read as one continuous layout. Content stays
+   top-aligned and nothing is clipped (inner areas keep their size). */
+#content-area{ display:flex; flex-direction:column; }
+.tab-pane.active{ flex:1 1 auto; min-height:0; }
+#tab-battle.active{ display:flex; flex-direction:column; }
+#battle-grid{ flex:0 0 auto; }
+#battle-area{ flex:1 1 auto; min-height:0; margin-top:8px; display:flex; }
+#battle-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+#battle-creature-display{ flex:1 1 auto; min-height:0; }
+/* keep the vs-area readable when the window shrinks — let it scroll internally
+   as a last resort instead of clipping portraits / bars / speed controls */
+#battle-top{ flex-wrap:wrap; }
+.battle-side-box{ min-width:260px; }
+
+/* 13b. CURRENT STAT — two-column grid showing ALL stats (matches the original
+   look: every stat listed in 2 columns, full values, no truncation). */
+#stat-grid{ grid-template-columns:1fr 1fr; }
+
+/* 13c. Bottom dashboard panel widths — Stat large, Fund small, Log medium,
+   Protocol small; all stay attached and aligned. */
+#panel-stat{ flex:2.2 1 0; }
+#panel-fund{ flex:1 1 0; }
+#panel-log{ flex:1.5 1 0; }
+#right-sidebar{ flex:1.1 1 0; }
+
+/* 13d. Show the bottom dashboard ONLY on Battle. body.battle-active is toggled
+   by switchTab() (see install note). When hidden, #layout reclaims the space. */
+body:not(.battle-active) #bottom-bar{ display:none; }
+
