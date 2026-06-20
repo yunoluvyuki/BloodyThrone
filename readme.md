@@ -126,7 +126,7 @@ Self-contained tree UI (`.mtree`/`.mnode`, styled by `mastery.css`). Category ta
 
 Currency helpers (mastery.js): `currencyBalance`, `canAffordCost`, `spendCost` (blood → `S.blood`, others → `S.resources`). `buyMasteryUpgrade` lives in **shop.js** (loads first, so it's the live one); mastery.js has a standalone-guarded fallback.
 
-**Cost per level = `cost × scale^level`** (per-upgrade `cost:` object + `scale`). **No ramp** — the old `MASTERY_RAMP^(level²)` surcharge was removed entirely. The cost field is named **`cost:`** (renamed from `base:`). Upgrades may instead define an explicit **`costs:[...]`** per-level array (e.g. CONQUEST) which both the charge (shop.js) and display (`masteryLevelCost`) honor. (`noRamp:true` flags remain in data but are now inert.)
+**Cost per level = `cost × scale^level`** (per-upgrade `cost:` object + `scale`). **No ramp** — the old `MASTERY_RAMP^(level²)` surcharge was removed entirely. The cost field is named **`cost:`** (renamed from `base:`). Upgrades may instead define an explicit **`costs:[...]`** per-level array (e.g. CONQUEST) which both the charge (shop.js) and display (`masteryLevelCost`) honor. (The old `noRamp:true` flags have been removed from the data.)
 
 **Upgrade catalog:**
 - ECONOMY: BLOOD HARVEST (+5% blood/lvl, max 1000), AVARICE ×5 coins (+5% gain/lvl), THRIFT ×5 coins (−1% upgrade cost/lvl, max 99)
@@ -192,4 +192,4 @@ A 5-tier production chain that feeds passive Blood Coin into `S.bloodPending`. `
 - Old save files: `S.blood` loads as 0 (must reincarnate once to bank pending); `sessionEarned.old` starts at 0 (WELLSPRING/M.Old session rebuilds this run).
 - **Milestone chain compounds hard** — doubling `mScale` across 5 tiers can explode to astronomical numbers fast. Gentler knob if needed: `mScale = 1.5^(level-1)`.
 - **Rarity chances can exceed 100%** at full investment (70+40+20+10=140%); since `rollRarity` checks legendary→…→common, commons nearly vanish and top tiers get their full slice first. Intended? If not, keep totals < 100%.
-- `noRamp:true` flags remain in mastery data but are inert (ramp removed).
+- Ramp fully removed: `MASTERY_RAMP` is undefined and `noRamp:true` flags have been deleted from the data. `render-mastery.js` (orphaned, not loaded by index.html) still contains the old ramp code.

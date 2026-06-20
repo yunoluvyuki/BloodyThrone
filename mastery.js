@@ -28,27 +28,27 @@ const MASTERY_UPGRADES = [
 
   { id:'gain_blood',  cat:'ECONOMY', type:'gain',  coin:'blood',  per:0.05, label:'BLOOD HARVEST',     
     desc:'+5% Blood Coin gained per level.',
-    cost:{blood:10},scale:1.2, maxLevel:1000, noRamp:true, color:'#c0392b' },
+    cost:{blood:10},scale:1.2, maxLevel:1000, color:'#c0392b' },
 
   { id:'gain_old',    cat:'ECONOMY', type:'gain',  coin:'old',    per:0.05, label:'OLD AVARICE',
     desc:'+5% Old Coin gained per level.',
-    cost:{blood:100},scale:1.5, maxLevel:100, noRamp:true, color:'#aaaaaa' },
+    cost:{blood:100},scale:1.5, maxLevel:100, color:'#aaaaaa' },
 
   { id:'gain_bronze', cat:'ECONOMY', type:'gain',  coin:'bronze', per:0.05, label:'BRONZE AVARICE',
     desc:'+5% Bronze Coin gained per level.',
-    cost:{blood:1000},scale:1.5, maxLevel:100,  noRamp:true, color:'#cd7f32' },
+    cost:{blood:1000},scale:1.5, maxLevel:100,  color:'#cd7f32' },
     
   { id:'gain_silver', cat:'ECONOMY', type:'gain',  coin:'silver', per:0.05, label:'SILVER AVARICE',
     desc:'+5% Silver Coin gained per level.',
-    cost:{blood:10000},scale:1.5, maxLevel:100, noRamp:true, color:'#aaaacc' },
+    cost:{blood:10000},scale:1.5, maxLevel:100, color:'#aaaacc' },
 
   { id:'gain_gold',   cat:'ECONOMY', type:'gain',  coin:'gold',   per:0.05, label:'GOLD AVARICE',
     desc:'+5% Gold Coin gained per level.',
-    cost:{blood:100000},scale:1.5, maxLevel:100,  noRamp:true, color:'#f0b429' },
+    cost:{blood:100000},scale:1.5, maxLevel:100,  color:'#f0b429' },
 
   { id:'gain_plat',   cat:'ECONOMY', type:'gain',  coin:'plat',   per:0.05, label:'PLATINUM AVARICE',
     desc:'+5% Platinum Coin gained per level.',
-    cost:{blood:1000000},scale:1.5, maxLevel:100, noRamp:true, color:'#a8d8ea' },
+    cost:{blood:1000000},scale:1.5, maxLevel:100, color:'#a8d8ea' },
 
   /// ECONOMY -COST
 
@@ -122,11 +122,11 @@ const MASTERY_UPGRADES = [
   { id:'automult_plat',   cat:'AUTOMATION', type:'automult', coin:'plat',   per:0.5,   label:'PLATINUM SURGE',     desc:'×1.5 Platinum Coin auto-gen per level.',   cost:{blood:500000000}, scale:10, maxLevel:10, color:'#a8d8ea' },
 
   // ── RARITY: enemy rarity spawn chance (escalating omens) ───────
-  // type:'rarity', noRamp:true. masteryRarityChance(r) = mLvl * per  (in %).
-  { id:'rar_uncommon',  cat:'RARITY', type:'rarity', rarity:'uncommon',  per:0.7, label:'UNCOMMON OMEN',  desc:'+0.7% Uncommon enemy spawn chance per level.',  cost:{blood:1000},    scale:10, maxLevel:100, noRamp:true, color:'#27ae60' },
-  { id:'rar_rare',      cat:'RARITY', type:'rarity', rarity:'rare',      per:0.4, label:'RARE OMEN',      desc:'+0.4% Rare enemy spawn chance per level.',      cost:{blood:10000},   scale:10, maxLevel:100, noRamp:true, color:'#2980b9' },
-  { id:'rar_epic',      cat:'RARITY', type:'rarity', rarity:'epic',      per:0.2, label:'EPIC OMEN',      desc:'+0.2% Epic enemy spawn chance per level.',      cost:{blood:100000},  scale:10, maxLevel:100, noRamp:true, color:'#9b59b6' },
-  { id:'rar_legendary', cat:'RARITY', type:'rarity', rarity:'legendary', per:0.1, label:'LEGENDARY OMEN', desc:'+0.1% Legendary enemy spawn chance per level.', cost:{blood:1000000}, scale:10, maxLevel:100, noRamp:true, color:'#f0b429' },
+  // type:'rarity'. masteryRarityChance(r) = mLvl * per  (in %).
+  { id:'rar_uncommon',  cat:'RARITY', type:'rarity', rarity:'uncommon',  per:0.7, label:'UNCOMMON OMEN',  desc:'+0.7% Uncommon enemy spawn chance per level.',  cost:{blood:1000},    scale:10, maxLevel:100, color:'#27ae60' },
+  { id:'rar_rare',      cat:'RARITY', type:'rarity', rarity:'rare',      per:0.4, label:'RARE OMEN',      desc:'+0.4% Rare enemy spawn chance per level.',      cost:{blood:10000},   scale:10, maxLevel:100, color:'#2980b9' },
+  { id:'rar_epic',      cat:'RARITY', type:'rarity', rarity:'epic',      per:0.2, label:'EPIC OMEN',      desc:'+0.2% Epic enemy spawn chance per level.',      cost:{blood:100000},  scale:10, maxLevel:100, color:'#9b59b6' },
+  { id:'rar_legendary', cat:'RARITY', type:'rarity', rarity:'legendary', per:0.1, label:'LEGENDARY OMEN', desc:'+0.1% Legendary enemy spawn chance per level.', cost:{blood:1000000}, scale:10, maxLevel:100, color:'#f0b429' },
 ];
 
 // ── LOOKUP HELPERS ────────────────────────────────────
@@ -154,7 +154,7 @@ function masteryGainMult(coin){
 }
 function masteryCostMult(coin){
   const def = MASTERY_UPGRADES.find(u => u.type === 'cost' && u.coin === coin);
-  return def ? Math.max(def.floor, 1 - mLvl(def.id) * def.per) : 1;
+  return def ? Math.max(def.floor ?? 0.01, 1 - mLvl(def.id) * def.per) : 1;
 }
 function effCost(costObj){
   const out = {};
@@ -177,7 +177,7 @@ function masteryFleeTimeMult(){
   const secs = Math.max(d.floorSec || 1, base - mLvl('time_flee') * d.per);
   return secs / base;
 }
-function masteryDecay(){ const d = masteryDef('decay'); return Math.max(d.floor, 0.7 - mLvl('decay') * d.per); }
+function masteryDecay(){ const d = masteryDef('decay'); return Math.max(d.floor ?? 0.05, 0.7 - mLvl('decay') * d.per); }
 function masteryBonusVictories(){ return 0; }
 // Rarity spawn chance (%). r = 'uncommon'|'rare'|'epic'|'legendary'.
 // effect = level * per. battle.js consumes a rarity chance for spawns; see the
@@ -220,10 +220,10 @@ function masteryEffectStr(up, level){
   switch(up.type){
     case 'gain':    return `+${(level*up.per*100).toFixed(0)}%`;
     case 'statpct': return `+${(level*up.per*100).toFixed(0)}%`;
-    case 'cost':    return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
-    case 'timecut': return `-${((1 - Math.max(up.floor, 1 - level*up.per))*100).toFixed(0)}%`;
+    case 'cost':    return `-${((1 - Math.max(up.floor ?? 0.01, 1 - level*up.per))*100).toFixed(0)}%`;
+    case 'timecut': return `-${((1 - Math.max(up.floor ?? 0.01, 1 - level*up.per))*100).toFixed(0)}%`;
     case 'timeflat':return `${Math.max(up.floorSec||1, (up.base10||10) - level*up.per).toFixed(1)}s revive`;
-    case 'decay':   return `decay ${Math.max(up.floor, 0.7 - level*up.per).toFixed(2)}`;
+    case 'decay':   return `decay ${Math.max(up.floor ?? 0.05, 0.7 - level*up.per).toFixed(2)}`;
     case 'victory': return `+${level*up.per}/win`;
     case 'viccap':  return `+${level*up.per} max wins/enemy`;
     case 'auto':    return `${(level*up.per*100).toFixed(2)}% of run ${COIN_LABELS[up.coin]}/s`;
