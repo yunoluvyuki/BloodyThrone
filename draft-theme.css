@@ -1,0 +1,241 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DRAFT THRONE — GLOBAL DARK-FANTASY THEME OVERRIDE
+   ───────────────────────────────────────────────────────────────────────────
+   Append-only. Add to the game with ONE line, as the LAST tag in <head>:
+       <link rel="stylesheet" href="draft-theme.css">
+   (place it AFTER style.css, mastery.css and the inline <style> blocks so it
+   wins the cascade). It does NOT modify style.css or mastery.css.
+
+   Visual source of truth: the Mastery screen (.mtree-*). This file makes the
+   rest of the game share that language: charcoal panels, thin gray borders,
+   restrained crimson accent, no bright-white tabs, no flat-green buttons,
+   readable muted text. CSS only — no layout, IDs, logic, or behavior changed.
+   Fully reversible: remove the one <link> to revert.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap');
+
+/* ── 1. GLOBAL TOKENS — re-point the existing variables to the new palette ──
+   Everything in style.css already reads these vars, so re-declaring them here
+   (later in the cascade) re-skins the whole game in one place. Muted text
+   ramps are bumped UP for readability per the brief. */
+:root{
+  /* surfaces */
+  --bg:#09090b;            /* page field (was #151515) */
+  --bg2:#111114;           /* panel (was #1c1c1c) */
+  --bg3:#16161a;           /* raised / input (was #242424) */
+  --bg4:#1f1f25;           /* hover (was #2c2c2c) */
+  /* borders */
+  --border:#26262c;        /* soft hairline (was #2e2e2e) */
+  --border2:#3a3a42;       /* visible border (was #3a3a3a) */
+  /* text — brighter than before so nothing disappears into black */
+  --text:#d2cec6;          /* body (was #c0c0c0) */
+  --text2:#9a958c;         /* muted label (was #888) */
+  --text3:#736e66;         /* dim (was #555 — too dim) */
+  --text4:#56524c;         /* locked, still legible (was #3a3a3a) */
+  --white:#f2efe9;         /* warm off-white (was #f0f0f0) */
+  /* accent + semantics — harmonized, restrained */
+  --red:#e0392b;           /* crimson accent + HP (was #c0392b) */
+  --red2:#f24b3f;          /* bright crimson (was #e74c3c) */
+  --green:#2f9e63;         /* muted healing/success (was #27ae60) */
+  --blue:#2f86c2;          /* info (was #2980b9) */
+  --purple2:#9b59b6;       /* prestige / blood (kept) */
+  --yellow:#d99a2b;        /* economy gold / cost (was #e67e22) */
+  --cyan:#29b6d8;          /* automation/info (was #1abc9c) */
+  /* theme helpers used by this file */
+  --dt-accent:#e0392b;
+  --dt-accent-soft:rgba(224,57,43,.14);
+  --dt-panel-grad:linear-gradient(180deg, rgba(20,20,24,.92), rgba(10,10,12,.92));
+  --dt-head-font:'Cinzel', Georgia, serif;
+}
+
+body{ background:var(--bg); color:var(--text); }
+
+/* ── 2. GLOBAL TOP NAVIGATION — one continuous dark command bar ─────────── */
+#topbar{ background:linear-gradient(180deg,#0d0d10,#09090b); border-bottom:1px solid var(--border2); }
+#topbar .title{ color:var(--white); font-family:var(--dt-head-font); font-weight:700; letter-spacing:.18em; }
+.nav-tab{ color:var(--text2); border-right:1px solid var(--border); font-family:var(--dt-head-font);
+  font-weight:600; letter-spacing:.14em; transition:color .15s, background .15s, box-shadow .2s; }
+.nav-tab:hover{ color:var(--text); background:rgba(255,255,255,.02); }
+/* the key fix: active tab is dark + crimson, never a bright white block */
+.nav-tab.active{
+  background:linear-gradient(180deg, var(--dt-accent-soft) 0%, rgba(9,9,11,.6) 100%);
+  color:var(--red2);
+  box-shadow:inset 0 -2px 0 var(--dt-accent), inset 0 0 18px rgba(224,57,43,.10);
+}
+.res-val{ color:var(--white); }
+.res-icon{ color:var(--text2); }
+.res-rate{ color:var(--text3); }
+#blood-count{ color:var(--red2); }
+#add-btn{ background:var(--bg3); border:1px solid var(--border2); color:var(--text2); letter-spacing:.12em; }
+#add-btn:hover{ color:var(--red2); border-color:var(--dt-accent); }
+
+/* ── 3. SHARED PANEL LANGUAGE ──────────────────────────────────────────── */
+.btm-panel, .shop-card, .settings-section, .creature-card, .codex-card,
+.treasury-panel-box, .equip-slot, .equip-bag-item, #mcoin-synthesizer,
+#battle-creature-display, .battle-side-box, #victory-panel, #battle-status{
+  background:var(--bg2);
+  border:1px solid var(--border);
+}
+/* uppercase, spaced, slightly brighter titles with a small accent tick */
+.btm-panel-hdr, .section-header, .settings-title, .treasury-panel-title,
+.equip-panel-title, .mast-side-title{
+  font-family:var(--dt-head-font); color:var(--white);
+  text-transform:uppercase; letter-spacing:.16em;
+}
+.btm-panel-hdr{ border-bottom:1px solid var(--border); position:relative; }
+.btm-panel-hdr::after{ content:''; position:absolute; left:0; bottom:-1px; width:34px; height:2px; background:var(--dt-accent); opacity:.7; }
+#bottom-bar{ background:linear-gradient(180deg,#0d0d10,#09090b); border-top:1px solid var(--border2); }
+
+/* ── 4. BUTTON SYSTEM ──────────────────────────────────────────────────── */
+/* PRIMARY — dark surface, accent border, light text, subtle hover glow.
+   Applied to the action buttons across screens (Challenge / Buy / Unlock /
+   Reincarnate live in their own blocks below for their states). */
+.btn-challenge, .settings-btn, .equip-btn{
+  background:rgba(0,0,0,.4); border:1px solid var(--border2); color:var(--text);
+  font-family:var(--dt-head-font); letter-spacing:.12em; transition:background .18s, box-shadow .18s, border-color .18s, color .18s;
+}
+.btn-challenge:hover, .settings-btn:hover, .equip-btn:hover{
+  border-color:var(--dt-accent); color:var(--white); background:rgba(0,0,0,.6);
+  box-shadow:0 0 14px rgba(224,57,43,.22);
+}
+.btn-challenge{ border-color:var(--dt-accent); color:var(--red2); }
+
+/* SHOP buy button — dark + accent, NOT flat green (matches Mastery Unlock) */
+.btn-buy{ background:rgba(0,0,0,.4); border:1px solid var(--border2); color:var(--text2);
+  font-family:var(--dt-head-font); letter-spacing:.1em; -webkit-text-stroke:0; transition:background .18s, box-shadow .18s, border-color .18s, color .18s; }
+.btn-buy.affordable{ background:rgba(0,0,0,.45); border-color:var(--dt-accent); color:var(--red2); }
+.btn-buy.affordable:hover{ background:rgba(0,0,0,.65); box-shadow:0 0 14px rgba(224,57,43,.28); color:var(--white); }
+.btn-buy:hover{ background:rgba(0,0,0,.6); color:var(--text); }
+.btn-buy:disabled{ color:var(--text4); border-color:var(--border); background:rgba(0,0,0,.3); cursor:default; box-shadow:none; }
+
+/* DANGER (flee, hard reset) — dark red, brightens only on hover/active */
+.battle-btn.danger, #btn-flee{
+  background:rgba(60,12,10,.55); border:1px solid var(--dt-accent); color:#f3b1ab;
+  font-weight:700; letter-spacing:.1em;
+}
+.battle-btn.danger:hover:not(:disabled), #btn-flee:hover:not(:disabled){
+  background:var(--dt-accent); color:#fff; box-shadow:0 0 16px rgba(224,57,43,.4);
+}
+.settings-btn.danger{ background:rgba(60,12,10,.4); border-color:var(--dt-accent); color:#e7948c; }
+.settings-btn.danger:hover{ background:rgba(120,28,24,.5); color:#fff; }
+
+/* SPEED / secondary battle buttons — dark, muted; active = restrained accent */
+.battle-btn{ background:rgba(0,0,0,.35); border:1px solid var(--border2); color:var(--text2); letter-spacing:.08em; }
+.battle-btn:hover:not(:disabled){ background:rgba(0,0,0,.55); color:var(--text); }
+.battle-btn.active, .speed-btn.active{
+  background:var(--dt-accent-soft); border-color:var(--dt-accent); color:var(--red2); font-weight:700;
+}
+
+/* ── 5. CREATURE CARDS (Battle) ────────────────────────────────────────── */
+.creature-card{ transition:border-color .15s, box-shadow .15s; }
+.creature-card:hover{ border-color:var(--border2); box-shadow:0 0 0 1px rgba(224,57,43,.12); }
+.creature-card.selected{ border-color:var(--dt-accent); box-shadow:0 0 14px rgba(224,57,43,.25); }
+.creature-card .card-top{ border-bottom:1px solid var(--border); }
+.card-name{ color:var(--red2); font-family:var(--dt-head-font); letter-spacing:.08em; }
+.card-rewards{ border-bottom:1px solid var(--border); }
+.reward-item{ color:var(--green); }
+.reward-item.res{ color:var(--yellow); }
+/* battle panels — balanced padding + subtle separators */
+#battle-creature-display, .battle-side-box{ background:linear-gradient(180deg,#111114,#0c0c0f); }
+#battle-creature-name, #player-name{ color:var(--white); font-family:var(--dt-head-font); letter-spacing:.12em; }
+.hp-bar, .timer-bar-wrap{ border:1px solid var(--border2); background:#0c0c0f; }
+.hp-fill.player{ background:linear-gradient(90deg,#2f9e63,#46c987); }
+.hp-fill.enemy{ background:linear-gradient(90deg,var(--dt-accent),var(--red2)); }
+.tfill-player{ background:var(--dt-accent); }
+.tfill-enemy{ background:var(--purple2); }
+
+/* ── 6. SHOP CARDS ─────────────────────────────────────────────────────── */
+.shop-card{ padding:12px; }
+.shop-name{ color:var(--white); font-family:var(--dt-head-font); letter-spacing:.06em; }
+.shop-desc{ color:var(--text2); font-weight:normal; }
+.shop-effect{ color:var(--green); }
+.shop-cost{ color:var(--yellow); }
+.shop-own{ color:var(--text); }
+
+/* ── 7. SETTINGS ───────────────────────────────────────────────────────── */
+.settings-section.active-section{ border-color:var(--dt-accent); box-shadow:inset 0 0 24px rgba(224,57,43,.06); }
+.settings-check-label{ color:var(--text); }       /* was too dim */
+.settings-check-sublabel{ color:var(--text2); }
+.settings-row-label{ color:var(--text2); }
+.settings-row-val{ color:var(--text); }
+.danger-zone-header{ background:rgba(224,57,43,.10); border:1px solid rgba(224,57,43,.34); color:var(--red2); }
+/* form controls — dark, thin border, crimson focus, accent checkboxes */
+.settings-select, .notation-input{ background:var(--bg3); border:1px solid var(--border2); color:var(--text); }
+.settings-select:focus, .notation-input:focus{ outline:none; border-color:var(--dt-accent); box-shadow:0 0 0 1px rgba(224,57,43,.3); }
+.settings-check-row input[type=checkbox], .notif-table input[type=checkbox]{ accent-color:var(--dt-accent); }
+.nav-style-btn{ background:var(--bg2); border:1px solid var(--border); color:var(--text3); font-family:var(--dt-head-font); letter-spacing:.06em; }
+.nav-style-btn.active{ background:var(--dt-accent-soft); border-color:var(--dt-accent); color:var(--red2); }
+.notation-cell{ background:var(--bg3); border:1px solid var(--border); }
+.notation-mini-btn{ background:var(--bg3); border:1px solid var(--border2); color:var(--text2); }
+.notation-mini-btn:hover{ color:var(--red2); border-color:var(--dt-accent); }
+.notif-table th{ color:var(--text2); border-bottom:1px solid var(--border); }
+.notif-table td{ border-bottom:1px solid var(--border); }
+.notif-table td:first-child{ color:var(--text2); }
+.zoom-btn{ background:var(--bg3); border:1px solid var(--border2); color:var(--text); }
+.zoom-btn:hover{ border-color:var(--dt-accent); color:var(--red2); }
+
+/* ── 8. FILTER TABS / PROTOCOL TOGGLES (bottom panels) ─────────────────── */
+.filter-tab, .codex-filter, .sort-btn{ color:var(--text2); }
+.filter-tab.active{ background:var(--dt-accent-soft); border:1px solid var(--dt-accent); color:var(--red2); }
+.codex-filter.active{ background:var(--bg3); border-color:var(--border2); color:var(--text); }
+.sort-btn.active{ color:var(--white); }
+.toggle-switch{ background:#0c0c0f; border:1px solid var(--border2); }
+.toggle-switch.on{ background:rgba(224,57,43,.18); border-color:var(--dt-accent); }
+.toggle-switch::after{ background:var(--text3); }
+.toggle-switch.on::after{ background:var(--red2); }
+.protocol-title, .protocol-sub, .toggle-label, .protocol-val{ color:var(--text); }
+#protocols-header .title{ font-family:var(--dt-head-font); letter-spacing:.14em; }
+
+/* ── 9. PRESTIGE — TREASURY & CODEX ────────────────────────────────────── */
+.prestige-tab{ color:var(--text2); text-transform:uppercase; letter-spacing:.12em; font-family:var(--dt-head-font); }
+.prestige-tab.active{ color:var(--red2); border-bottom-color:var(--dt-accent); }
+.treasury-panel-box{ background:var(--dt-panel-grad); }
+.treasury-panel-title{ color:var(--text2); }
+.blood-pending{ color:var(--purple2); }
+#reincarnate-btn{ background:rgba(0,0,0,.4); border:1px solid var(--border2); color:var(--text3); font-family:var(--dt-head-font); letter-spacing:.1em; }
+#reincarnate-btn.ready{ border-color:var(--purple2); color:#c98fe0; background:rgba(40,14,60,.4); }
+#reincarnate-btn.ready:hover{ background:rgba(60,22,86,.55); box-shadow:0 0 14px rgba(155,89,182,.3); }
+.mcoin-row:hover{ background:var(--bg3); }
+.mcoin-milestone-bar-bg{ background:#0c0c0f; border:1px solid var(--border2); }
+/* codex cards */
+.codex-card{ background:var(--bg2); }
+.codex-card.locked{ background:var(--bg2); }            /* unknown: dark but visible, not pure black */
+.codex-card.unlocked{ background:#e9e6df; }             /* clean image frame */
+.codex-card:hover{ border-color:var(--border2); box-shadow:0 0 0 1px rgba(224,57,43,.14); }
+.codex-q{ color:var(--text3); }                         /* '?' stays visible */
+.codex-locked-name, .codex-chance{ color:var(--text4); }
+
+/* ── 10. INVENTORY — slots visible even when empty ─────────────────────── */
+.equip-slot{ background:var(--bg2); border:1px solid var(--border2); }
+.equip-slot.empty{ opacity:1; background:repeating-linear-gradient(135deg,#0e0e11 0 8px,#101013 8px 16px); border:1px dashed var(--border2); }
+.equip-slot-label{ color:var(--text2); }
+.equip-empty-label{ color:var(--text3); }
+.equip-panel-title{ color:var(--text2); }
+.equip-bag-empty, .inv-empty-msg{ color:var(--text2); }
+.equip-stat-pill{ background:var(--bg3); border:1px solid var(--border); color:var(--text2); }
+.equip-btn-equip{ border-color:var(--green); color:#4cc483; }
+.equip-btn-salvage{ border-color:var(--dt-accent); color:#e7948c; }
+/* lighter touch on the legacy ornate .inv-* grid, if present */
+.inv-wrap{ border:1px solid var(--border2); box-shadow:inset 0 0 30px rgba(0,0,0,.6); background:linear-gradient(145deg,#141417,#0e0e11); border-radius:2px; }
+.inv-label{ color:var(--text2); }
+.inv-cell{ background:#0e0e11; border:1px solid var(--border2); box-shadow:inset 0 0 6px rgba(0,0,0,.7); }
+.inv-cell.has-item:hover{ border-color:var(--dt-accent); box-shadow:0 0 8px rgba(224,57,43,.22); }
+
+/* ── 11. SCROLLBARS — one narrow dark style everywhere ─────────────────── */
+::-webkit-scrollbar{ width:8px; height:8px; }
+::-webkit-scrollbar-track{ background:#0a0a0c; }
+::-webkit-scrollbar-thumb{ background:#2a2a30; border:2px solid #0a0a0c; border-radius:6px; }
+::-webkit-scrollbar-thumb:hover{ background:#3a3a42; }
+#content-area::-webkit-scrollbar-thumb,
+.btm-panel-body::-webkit-scrollbar-thumb,
+#battle-log::-webkit-scrollbar-thumb{ background:#2a2a30; }
+
+/* ── 12. MISC ──────────────────────────────────────────────────────────── */
+.section-header{ color:var(--text2); border-bottom:1px solid var(--border); }
+.notification-toast{ background:var(--bg3); border:1px solid var(--border2); color:var(--white); }
+.new-badge{ background:var(--dt-accent); }
+/* combat-log semantic colors — keep meaning, harmonize brightness */
+.log-reward{ color:var(--yellow); }
+.log-win{ color:var(--purple2); }
+.log-heal{ color:var(--green); }
+.log-crit, .log-die{ color:var(--red2); }
