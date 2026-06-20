@@ -1,7 +1,7 @@
-# Draft Throne — Game Design Document (Living Doc)
+# Bloody Throne : Idle RPG — Game Design Document (Living Doc)
 
 > Browser idle/RPG game. No server, no dependencies. Pure HTML/CSS/JS.
-> Save: `localStorage` (key: `draft_throne_save`)
+> Save: `localStorage` (key: `bloody_throne_save`)
 
 > **This file is the project memory.** Update it after every change so future
 > sessions don't need to re-read the whole codebase. Keep it accurate over complete.

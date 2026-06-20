@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// DRAFT THRONE — MAIN MASTERY TREE  (consolidated, single-file logic + UI)
+// BLOODY THRONE : IDLE RPG — MAIN MASTERY TREE  (consolidated, single-file logic + UI)
 // ═══════════════════════════════════════════════════════════════════════════
 // This ONE file is the source of truth for the Main Mastery Tree. It contains:
 //   1. The real MASTERY_UPGRADES data + all helpers (verbatim from mastery.js)

@@ -237,7 +237,7 @@ function setupSettings(){
   document.getElementById('btn-save').addEventListener('click',()=>{saveGame();toast('Game saved!');});
   document.getElementById('btn-hard-reset').addEventListener('click',()=>{
     if(confirm('HARD RESET: All progress will be permanently lost. Are you absolutely sure?')){
-      localStorage.removeItem('draft_throne_save');
+      localStorage.removeItem('bloody_throne_save');
       S = DEFAULT_STATE();
       B = freshBattleState();
       B.playerHP = maxHP();
@@ -247,7 +247,7 @@ function setupSettings(){
     }
   });
   document.getElementById('btn-credits').addEventListener('click',()=>{
-    toast('Draft Throne — fan recreation. Original by the Draft Throne team. Art is pain.',5000);
+    toast('Bloody Throne : Idle RPG — fan recreation. Art is pain.',5000);
   });
 
   // Battle controls

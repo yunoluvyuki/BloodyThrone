@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   DRAFT THRONE — HIT EFFECT (drop-in for the original game)
+   BLOODY THRONE : IDLE RPG — HIT EFFECT (drop-in for the original game)
    Self-contained: injects its own CSS, exposes window.DTHit.
    No dependencies. Include once, then call DTHit.enemy()/player().
 
