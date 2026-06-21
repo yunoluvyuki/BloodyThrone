@@ -269,7 +269,7 @@ function setupSettings(){
   document.querySelectorAll('.speed-btn').forEach(btn=>{
     btn.addEventListener('click',()=>setGameSpeed(Number(btn.dataset.speed)));
   });
-  setGameSpeed(S.gameSpeed || 1);
+  setGameSpeed([4,8,10].includes(S.gameSpeed) ? S.gameSpeed : 4);
 
   document.getElementById('add-btn').addEventListener('click',()=>{
     switchTab('archive');
