@@ -72,7 +72,7 @@ const STAT_DEFS=[
 // ── RARITY SYSTEM ─────────────────────────────────────
 const RARITY_COLORS={common:'#888',uncommon:'#27ae60',rare:'#2980b9',epic:'#9b59b6',legendary:'#f0b429'};
 const RARITY_LABELS={common:'COMMON',uncommon:'UNCOMMON',rare:'RARE',epic:'EPIC',legendary:'LEGENDARY'};
-const RARITY_MULTS={common:1,uncommon:1.5,rare:3,epic:5,legendary:7};
+const RARITY_MULTS={common:1,uncommon:1.2,rare:1.6,epic:2,legendary:3};
 const RARITY_BG={common:'rgba(80,80,80,0.15)',uncommon:'rgba(39,174,96,0.4)',rare:'rgba(41,128,185,0.18)',epic:'rgba(155,89,182,0.2)',legendary:'rgba(240,180,41,0.15)'};
 // Old coin-paid attunement upgrades — REPLACED by the blood-paid RARITY mastery
 // upgrades (rar_uncommon/rar_rare/rar_epic/rar_legendary in mastery.js).

@@ -24,6 +24,7 @@ function loadGame(){
     S.protocols = Object.assign({autoChallenge:false,autoRetry:false}, loaded.protocols || {});
     S.victories = Object.assign({}, loaded.victories || {});
     S.shopOwned = Object.assign({}, loaded.shopOwned || {});
+    // Spawn rarities persist across page loads; they only re-roll on reincarnate.
     S.spawnRarity = Object.assign({}, loaded.spawnRarity || {});
     S.deaths = loaded.deaths || 0;
     S.reincarnations = loaded.reincarnations || 0;
