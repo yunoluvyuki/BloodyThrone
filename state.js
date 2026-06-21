@@ -2,7 +2,7 @@
 // GAME STATE
 // ═══════════════════════════════════════════════════════
 const DEFAULT_STATE = ()=>({
-  stats:{hp:10,atk:2,mnd:0.7,mxd:1.2,spd:3000,rgn:0,ddc:0,crc:0,crd:1.5,arm:0,mth:0,acc:0,blk:0,bld:0,ctr:0},
+  stats:{hp:10,atk:2,mnd:0.7,mxd:1.2,spd:3000,rgn:0,ddc:0,crc:0,crd:1.5,arm:0,mth:0,acc:0,ctr:0},
   resources:{old:0,bronze:0,silver:0,gold:0,plat:0},
   victories:{},
   shopOwned:{},
@@ -53,8 +53,6 @@ const STAT_DEFS=[
   {key:'arm',label:'ARM',icon:'si-arm',cat:'defense',fmt:'n'},
   {key:'mth',label:'MTH',icon:'si-mth',cat:'offense',fmt:'pct'},
   {key:'acc',label:'ACC',icon:'si-acc',cat:'chance',fmt:'pct'},
-  {key:'blk',label:'BLK',icon:'si-blk',cat:'defense',fmt:'pct'},
-  {key:'bld',label:'BLD',icon:'si-bld',cat:'defense',fmt:'n'},
   {key:'ctr',label:'CTR',icon:'si-ctr',cat:'chance',fmt:'pct'},
   ];
   // hp = healt points
@@ -69,8 +67,6 @@ const STAT_DEFS=[
   // arm = armor damage reduction flat
   // mth = multi attack chance
   // acc = accuracy (chance to hit)
-  // blk = block chance
-  // bld = block damage reduction flat
   // ctr = counter chance
 
 // ── RARITY SYSTEM ─────────────────────────────────────

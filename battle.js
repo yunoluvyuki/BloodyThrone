@@ -240,11 +240,11 @@ function restTick(dt){
 
 
 // Shared per-turn damage roller. Rolls 1–2 hits (multi-hit), each one
-// independently crit / blocked / armor-reduced, in the EXACT Math.random()
-// order the old inline loops used (base → crit → block → multi-hit continue).
+// independently crit / armor-reduced, in the EXACT Math.random()
+// order the old inline loops used (base → crit → multi-hit continue).
 //   atkValue : attacker's effective ATK (already mastery-boosted for the player)
 //   atkr     : attacker stat source (S.stats or creature) — reads mnd/mxd/crc/crd/mth
-//   defr     : defender stat source — reads blk/bld/arm
+//   defr     : defender stat source — reads arm
 // Returns { totalDmg, hits, isCrit }.
 function rollAttackDamage(atkValue, atkr, defr){
   const mnd = atkValue * (atkr.mnd ?? 0.7);
@@ -253,7 +253,6 @@ function rollAttackDamage(atkValue, atkr, defr){
   do {
     let rolled = mnd + Math.random() * (mxd - mnd);
     if(Math.random() < (atkr.crc ?? 0)){ rolled *= (atkr.crd ?? 1); isCrit = true; }
-    if(Math.random() < (defr.blk ?? 0)) rolled = Math.max(0, rolled - (defr.bld ?? 0));
     rolled = Math.max(0, rolled - (defr.arm ?? 0));
     totalDmg += rolled;
     hits++;

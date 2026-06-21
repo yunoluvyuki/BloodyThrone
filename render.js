@@ -92,7 +92,7 @@ function renderBattle(){
           ${spawnBadge}
           <div class="card-name" style="color:${spawnRarityColor||'#ffffff'};text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">${c.name}</div>
           <div class="stat-grid">${STAT_DEFS.map(d=>{
-            const base=d.key==='hp'?c.hp:d.key==='atk'?c.atk:d.key==='arm'?c.arm:{mnd:0.7,mxd:1.0,spd:0,rgn:0,ddc:0,crc:0,crd:1,mth:0,acc:1,blk:0,bld:0,ctr:0}[d.key];
+            const base=d.key==='hp'?c.hp:d.key==='atk'?c.atk:d.key==='arm'?c.arm:{mnd:0.7,mxd:1.0,spd:0,rgn:0,ddc:0,crc:0,crd:1,mth:0,acc:1,ctr:0}[d.key];
             const val=(c[d.key]??base)*(['atk','hp'].includes(d.key)?spawnRarityMultDisplay:1);
             return `<div class="stat-cell">
               <div class="stat-name"><span class="stat-icon ${d.icon}"></span>${d.label}</div>

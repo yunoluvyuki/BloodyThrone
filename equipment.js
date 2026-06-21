@@ -39,7 +39,6 @@ const SLOT_STAT_POOL = {
   armor: [
     { stat: 'arm', base: 1.5 },
     { stat: 'hp',  base: 5.0 },
-    { stat: 'blk', base: 0.02 },
   ],
   gloves: [
     { stat: 'atk', base: 1.0 },
