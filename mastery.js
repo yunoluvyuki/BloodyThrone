@@ -55,27 +55,27 @@ const MASTERY_UPGRADES = [
   { id:'cost_old',    cat:'ECONOMY', type:'cost', coin:'old',
      per:0.01, label:'OLD THRIFT',
      desc:'-1% Old Coin upgrade cost per level (min 1%).',
-     cost:{blood:100}, scale:1.6, maxLevel:99, color:'#aaaaaa' },
+     cost:{blood:100}, scale:3, maxLevel:99, color:'#aaaaaa' },
 
   { id:'cost_bronze', cat:'ECONOMY', type:'cost', coin:'bronze',
     per:0.01, label:'BRONZE THRIFT',
     desc:'-1% Bronze Coin upgrade cost per level (min 1%).',
-    cost:{blood:1000}, scale:1.6, maxLevel:99, color:'#cd7f32' },
+    cost:{blood:1000}, scale:3, maxLevel:99, color:'#cd7f32' },
 
   { id:'cost_silver', cat:'ECONOMY', type:'cost', coin:'silver',
     per:0.01, label:'SILVER THRIFT',
     desc:'-1% Silver Coin upgrade cost per level (min 1%).',
-    cost:{blood:10000}, scale:1.6, maxLevel:99, color:'#aaaacc' },
+    cost:{blood:10000}, scale:3, maxLevel:99, color:'#aaaacc' },
 
   { id:'cost_gold',   cat:'ECONOMY', type:'cost', coin:'gold',
     per:0.01, label:'GOLD THRIFT',
     desc:'-1% Gold Coin upgrade cost per level (min 1%).',
-    cost:{blood:100000}, scale:1.6, maxLevel:99, color:'#f0b429' },
+    cost:{blood:100000}, scale:3, maxLevel:99, color:'#f0b429' },
 
   { id:'cost_plat',   cat:'ECONOMY', type:'cost', coin:'plat',
     per:0.01, label:'PLATINUM THRIFT',
     desc:'-1% Platinum Coin upgrade cost per level (min 1%).',
-    cost:{blood:1000000}, scale:1.6, maxLevel:99, color:'#a8d8ea' },
+    cost:{blood:1000000}, scale:3, maxLevel:99, color:'#a8d8ea' },
 
   /// COMBAT
 
@@ -110,30 +110,61 @@ const MASTERY_UPGRADES = [
     maxLevel:3, costs:[{blood:100},{blood:100000000},{blood:100000000000}], color:'#f0b429' },
 
   // ── AUTOMATION: passive coin generation ────────────────
-  { id:'auto_old',        cat:'AUTOMATION', type:'auto',     coin:'old',    per:0.0001, label:'OLD WELLSPRING',     desc:'Generate 0.01% of Old earned this run per sec, per level.',      cost:{blood:10000},     scale:10, maxLevel:10, color:'#aaaaaa' },
-  { id:'automult_old',    cat:'AUTOMATION', type:'automult', coin:'old',    per:0.5,   label:'OLD SURGE',          desc:'×1.5 Old Coin auto-gen per level.',        cost:{blood:50000},     scale:10, maxLevel:10, color:'#aaaaaa' },
-  { id:'auto_bronze',     cat:'AUTOMATION', type:'auto',     coin:'bronze', per:0.0001, label:'BRONZE WELLSPRING',  desc:'Generate 0.01% of Bronze earned this run per sec, per level.', cost:{blood:100000},    scale:10, maxLevel:10, color:'#cd7f32' },
-  { id:'automult_bronze', cat:'AUTOMATION', type:'automult', coin:'bronze', per:0.5,   label:'BRONZE SURGE',       desc:'×1.5 Bronze Coin auto-gen per level.',     cost:{blood:500000},    scale:10, maxLevel:10, color:'#cd7f32' },
-  { id:'auto_silver',     cat:'AUTOMATION', type:'auto',     coin:'silver', per:0.0001, label:'SILVER WELLSPRING',  desc:'Generate 0.01% of Silver earned this run per sec, per level.', cost:{blood:1000000},   scale:10, maxLevel:10, color:'#aaaacc' },
-  { id:'automult_silver', cat:'AUTOMATION', type:'automult', coin:'silver', per:0.5,   label:'SILVER SURGE',       desc:'×1.5 Silver Coin auto-gen per level.',     cost:{blood:5000000},   scale:10, maxLevel:10, color:'#aaaacc' },
-  { id:'auto_gold',       cat:'AUTOMATION', type:'auto',     coin:'gold',   per:0.0001, label:'GOLD WELLSPRING',    desc:'Generate 0.01% of Gold earned this run per sec, per level.',    cost:{blood:10000000},  scale:10, maxLevel:10, color:'#f0b429' },
-  { id:'automult_gold',   cat:'AUTOMATION', type:'automult', coin:'gold',   per:0.5,   label:'GOLD SURGE',         desc:'×1.5 Gold Coin auto-gen per level.',       cost:{blood:50000000},  scale:10, maxLevel:10, color:'#f0b429' },
-  { id:'auto_plat',       cat:'AUTOMATION', type:'auto',     coin:'plat',   per:0.0001, label:'PLATINUM WELLSPRING',desc:'Generate 0.01% of Platinum earned this run per sec, per level.',cost:{blood:100000000},scale:10, maxLevel:10, color:'#a8d8ea' },
-  { id:'automult_plat',   cat:'AUTOMATION', type:'automult', coin:'plat',   per:0.5,   label:'PLATINUM SURGE',     desc:'×1.5 Platinum Coin auto-gen per level.',   cost:{blood:500000000}, scale:10, maxLevel:10, color:'#a8d8ea' },
+
+  { id:'auto_old',        cat:'AUTOMATION', type:'auto',     coin:'old',    per:0.00005,
+    label:'OLD WELLSPRING',     desc:'Generate 0.01% of Old earned this run per sec, per level.',      
+    cost:{blood:10000},     scale:10, maxLevel:10, color:'#aaaaaa' },
+
+  { id:'automult_old',    cat:'AUTOMATION', type:'automult', coin:'old',    per:0.5,   
+    label:'OLD SURGE',          desc:'×1.5 Old Coin auto-gen per level.',        
+    cost:{blood:50000},     scale:10, maxLevel:10, color:'#aaaaaa' },
+
+  { id:'auto_bronze',     cat:'AUTOMATION', type:'auto',     coin:'bronze', per:0.00005, 
+    label:'BRONZE WELLSPRING',  desc:'Generate 0.01% of Bronze earned this run per sec, per level.', 
+    cost:{blood:100000},    scale:10, maxLevel:10, color:'#cd7f32' },
+
+  { id:'automult_bronze', cat:'AUTOMATION', type:'automult', coin:'bronze', per:0.5,   
+    label:'BRONZE SURGE',       desc:'×1.5 Bronze Coin auto-gen per level.',     
+    cost:{blood:500000},    scale:10, maxLevel:10, color:'#cd7f32' },
+
+  { id:'auto_silver',     cat:'AUTOMATION', type:'auto',     coin:'silver', per:0.00005, 
+    label:'SILVER WELLSPRING',  desc:'Generate 0.01% of Silver earned this run per sec, per level.', 
+    cost:{blood:1000000},   scale:10, maxLevel:10, color:'#aaaacc' },
+
+  { id:'automult_silver', cat:'AUTOMATION', type:'automult', coin:'silver', per:0.5,   
+    label:'SILVER SURGE',       desc:'×1.5 Silver Coin auto-gen per level.',     
+    cost:{blood:5000000},   scale:10, maxLevel:10, color:'#aaaacc' },
+
+  { id:'auto_gold',       cat:'AUTOMATION', type:'auto',     coin:'gold',   per:0.00005, 
+    label:'GOLD WELLSPRING',    desc:'Generate 0.01% of Gold earned this run per sec, per level.',    
+    cost:{blood:10000000},  scale:10, maxLevel:10, color:'#f0b429' },
+
+  { id:'automult_gold',   cat:'AUTOMATION', type:'automult', coin:'gold',   per:0.5,   
+    label:'GOLD SURGE',         desc:'×1.5 Gold Coin auto-gen per level.',       
+    cost:{blood:50000000},  scale:10, maxLevel:10, color:'#f0b429' },
+
+  { id:'auto_plat',       cat:'AUTOMATION', type:'auto',     coin:'plat',   per:0.00005, 
+    label:'PLATINUM WELLSPRING',desc:'Generate 0.01% of Platinum earned this run per sec, per level.',
+    cost:{blood:100000000},scale:10, maxLevel:10, color:'#a8d8ea' },
+
+  { id:'automult_plat',   cat:'AUTOMATION', type:'automult', coin:'plat',   per:0.5,   
+    label:'PLATINUM SURGE',     desc:'×1.5 Platinum Coin auto-gen per level.',   
+    cost:{blood:500000000}, scale:10, maxLevel:10, color:'#a8d8ea' },
+  
 
   // ── RARITY: enemy rarity spawn chance (escalating omens) ───────
   // type:'rarity'. masteryRarityChance(r) = mLvl * per  (in %).
   { id:'rar_uncommon',  cat:'RARITY', type:'rarity', rarity:'uncommon',  per:0.7,
     label:'UNCOMMON OMEN',  desc:'+0.7% Uncommon enemy spawn chance per level.',
-    cost:{blood:1000},    scale:1.6, maxLevel:100, color:'#27ae60' },
+    cost:{blood:100},    scale:1.6, maxLevel:100, color:'#27ae60' },
 
   { id:'rar_rare',      cat:'RARITY', type:'rarity', rarity:'rare',      per:0.4,
     label:'RARE OMEN',      desc:'+0.4% Rare enemy spawn chance per level.',
-    cost:{blood:10000},   scale:1.6, maxLevel:100, color:'#2980b9' },
+    cost:{blood:1000},   scale:1.6, maxLevel:100, color:'#2980b9' },
 
   { id:'rar_epic',      cat:'RARITY', type:'rarity', rarity:'epic',      per:0.2,
     label:'EPIC OMEN',      desc:'+0.2% Epic enemy spawn chance per level.',
-    cost:{blood:100000},  scale:1.6, maxLevel:100, color:'#9b59b6' },
+    cost:{blood:10000},  scale:1.6, maxLevel:100, color:'#9b59b6' },
 
   { id:'rar_legendary', cat:'RARITY', type:'rarity', rarity:'legendary',
     per:0.1, label:'LEGENDARY OMEN', desc:'+0.1% Legendary enemy spawn chance per level.',
