@@ -187,6 +187,15 @@ function updateBloodUI(){
   const bloodPendVal=document.getElementById('blood-pend-val');
   if(bloodPendVal)bloodPendVal.textContent='+'+fmt(S.bloodPending);
   document.getElementById('blood-life-val').textContent=fmt(S.bloodBankedLifetime||0);
+  // CAPS: how many diminishing-gain caps the blood rate has passed (same formula as bloodGainMult)
+  const capsEl=document.getElementById('blood-caps-val');
+  if(capsEl){
+    const ref=S.bloodRef||0, pend=S.bloodPending||0;
+    const caps=(ref>0&&pend>=ref)?Math.floor(Math.log2(pend/ref))+1:0;
+    const mult=(typeof bloodGainMult==='function')?bloodGainMult():1;
+    const pct=mult*100;
+    capsEl.textContent=`${caps} (×${pct>=1?pct.toFixed(0):pct.toFixed(2)}%)`;
+  }
   const bloodCountEl=document.getElementById('blood-count');
   if(bloodCountEl)bloodCountEl.textContent=fmt(S.blood||0);
   const ready=S.bloodPending>=100;
