@@ -28,24 +28,47 @@ function shopScaledCost(item){
   return effCost(scaled);
 }
 
-function buyShopItem(id){
+function buyShopItem(id, silent){
   const item = SHOP_ITEMS.find(x => x.id === id);
-  if(!item) return;
+  if(!item) return false;
   const owned = S.shopOwned[item.id] || 0;
-  if(item.maxOwned && owned >= item.maxOwned){ toast('Already owned!'); return; }
+  if(item.maxOwned && owned >= item.maxOwned){ if(!silent) toast('Already owned!'); return false; }
   const cost = shopScaledCost(item);
   const canAfford = Object.entries(cost).every(([k,v]) => (S.resources[k] || 0) >= v);
-  if(!canAfford){ toast('Not enough resources!'); return; }
+  if(!canAfford){ if(!silent) toast('Not enough resources!'); return false; }
   Object.entries(cost).forEach(([k,v]) => { S.resources[k] -= v; });
   Object.entries(item.statBonus).forEach(([k,v]) => {
-    const val = item.isPct ? S.stats[k] * v : v; 
+    const val = item.isPct ? S.stats[k] * v : v;
     S.stats[k] = (S.stats[k] || 0) + val;
   });
   if(item.unlock) S[item.unlock] = true;
   S.shopOwned[item.id] = (S.shopOwned[item.id] || 0) + 1;
-  toast(`Purchased: ${item.name}!`);
-  renderShop();
-  renderStats();
+  if(!silent){ toast(`Purchased: ${item.name}!`); renderShop(); renderStats(); }
+  return true;
+}
+
+// AUTO-BUY: purchase every affordable, non-maxed shop upgrade. Keeps buying
+// until nothing is affordable (guarded against runaway). Silent — no toasts.
+function autoBuyShop(){
+  if(!S.protocols || !S.protocols.autoBuy) return;
+  let bought = false, guard = 0;
+  let again = true;
+  while(again && guard < 2000){
+    again = false;
+    for(const item of SHOP_ITEMS){
+      const owned = S.shopOwned[item.id] || 0;
+      if(item.maxOwned && owned >= item.maxOwned) continue;
+      const cost = shopScaledCost(item);
+      if(Object.entries(cost).every(([k,v]) => (S.resources[k] || 0) >= v)){
+        if(buyShopItem(item.id, true)){ bought = true; again = true; guard++; }
+      }
+    }
+  }
+  if(bought){
+    if(typeof renderStats === 'function') renderStats();
+    const shopTab = document.getElementById('tab-shop');
+    if(typeof renderShop === 'function' && shopTab && shopTab.classList.contains('active')) renderShop();
+  }
 }
 
 // Mastery cost = cost × scale^level  (no extra ramp).

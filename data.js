@@ -347,6 +347,9 @@ final_draft:`<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" fill=
 // ═══════════════════════════════════════════════════════
 const RESOURCE_LABELS={old:'OLD',bronze:'BRONZE',silver:'SILVER',gold:'GOLD',plat:'PLAT'};
 const CREATURES = [
+
+  /// 1-4
+
   {id:'hollow_wretch',name:'HOLLOW WRETCH',
     hp:5,atk:2,mnd:0.7,mxd:1.2,spd:3000,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{atk:3,old:2},
@@ -366,7 +369,9 @@ const CREATURES = [
     hp:25,atk:4,mnd:0.7,mxd:1.2,spd:2500,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{atk:3,hp:15,old:20},
     vicReq:2},
-    ///
+
+  /// 5-8
+
   {id:'grave_rat',name:'GRAVE RAT',
     hp:20,atk:5,mnd:0.7,mxd:1.2,spd:1500,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{spd:-20,atk:2,old:10},
@@ -383,7 +388,9 @@ const CREATURES = [
     hp:60,atk:10,mnd:0.7,mxd:1.2,spd:2000,rgn:1,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{rgn:0.8,old:15},
     vicReq:2},
-    ///
+
+  /// 9-12
+
   {id:'blighted_husk',name:'BLIGHTED HUSK',
     hp:100,atk:15,mnd:0.7,mxd:1.2,spd:1500,rgn:1,ddc:0,crc:0,crd:0,arm:2,mth:0,acc:0,ctr:0,
     rewards:{hp:7,atk:4,old:25},
@@ -400,7 +407,9 @@ const CREATURES = [
     hp:200,atk:30,mnd:1,mxd:1.4,spd:5000,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{hp:20,atk:5,old:100},
     vicReq:2},
-    ///
+
+  /// 13-16
+
   {id:'hollow_eye',name:'HOLLOW EYE',
     hp:280,atk:22,mnd:1,mxd:1.4,spd:3000,rgn:0,ddc:0,crc:0,crd:0,arm:5,mth:0,acc:0,ctr:0,
     rewards:{atk:8,hp:30,old:200,bronze:10},
@@ -417,7 +426,9 @@ const CREATURES = [
     hp:333,atk:33,mnd:1,mxd:1.4,spd:3333,rgn:0,ddc:0,crc:0,crd:0,arm:3.3,mth:0,acc:0,ctr:0,
     rewards:{atk:3,hp:33,arm:3,old:333,bronze:33},
     vicReq:2},
-    ///
+
+  /// 17-20
+
   {id:'mossrot',name:'MOSSROT',
     hp:500,atk:40,mnd:1,mxd:1.4,spd:2000,rgn:3,ddc:0.2,crc:0,crd:0,arm:10,mth:0,acc:0.2,ctr:0,
     rewards:{atk:10,old:1000,bronze:50},
@@ -434,7 +445,9 @@ const CREATURES = [
     hp:1500,atk:150,mnd:1,mxd:1,spd:9000,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0.2,acc:0,ctr:0,
     rewards:{atk:20,old:6000,bronze:200},
     vicReq:2},
-    ///
+
+  /// 21-24
+
   {id:'weeping_hollow',name:'WEEPING HOLLOW',
     hp:2200,atk:60,mnd:1,mxd:1.6,spd:2700,rgn:0,ddc:0,crc:0,crd:0,arm:50,mth:0,acc:0,ctr:0,
     rewards:{hp:30,atk:5,arm:2,old:8000,bronze:500},
@@ -451,7 +464,9 @@ const CREATURES = [
     hp:4000,atk:100,mnd:1,mxd:1.6,spd:4000,rgn:0,ddc:0.3,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{atk:50,old:20000,bronze:1000},
     vicReq:2},
-    ///
+
+  /// 25-28
+
   {id:'mud_ghoul',name:'MUD GHOUL',
     hp:8000,atk:80,mnd:1,mxd:1.6,spd:2000,rgn:20,ddc:0,crc:0,crd:0,arm:20,mth:0,acc:0,ctr:0,
     rewards:{hp:20,atk:20,old:30000,bronze:2000,silver:100},
@@ -468,7 +483,9 @@ const CREATURES = [
     hp:16000,atk:160,mnd:1,mxd:1.6,spd:3000,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0.3,
     rewards:{hp:200,old:100000,bronze:4000,silver:1000},
     vicReq:2},
-    ///
+
+  /// 29-32
+
   {id:'plague_bearer',name:'PLAGUE BEARER',
     hp:25000,atk:150,mnd:1,mxd:1.8,spd:3000,rgn:50,ddc:0,crc:0,crd:0,arm:0,mth:0,acc:0,ctr:0,
     rewards:{atk:100,old:200000,bronze:10000,silver:2000},
@@ -485,23 +502,28 @@ const CREATURES = [
     hp:40000,atk:40,mnd:1,mxd:1.8,spd:400,rgn:40,ddc:0,crc:0.4,crd:4,arm:40,mth:0.4,acc:0,ctr:0.4,
     rewards:{atk:200,old:500000,bronze:30000,silver:3000},
     vicReq:2},
-    ///
+
+  /// 33-36
+
   {id:'corpse_leech',name:'CORPSE LEECH',
-    hp:80000,atk:80,mnd:1,mxd:1.8,spd:800,rgn:0,ddc:0,crc:0,crd:0,arm:80,mth:0,acc:0,ctr:0,
-    rewards:{old:500000,bronze:30000,silver:3000},
+    hp:80000,atk:1500,mnd:1,mxd:1.8,spd:8000,rgn:0,ddc:0,crc:0,crd:0,arm:800,mth:0,acc:0,ctr:0,
+    rewards:{hp:1000,old:500000,bronze:30000,silver:3000,gold:100},
     vicReq:2},
   {id:'bleached_lurker',name:'BLEACHED LURKER',
-    hp:2150,atk:45,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.7,mth:0,acc:0,ctr:0,
-    rewards:{atk:0.27,old:0.8},
+    hp:100000,atk:500,mnd:1,mxd:1.8,spd:2000,rgn:50,ddc:0,crc:0,crd:0,arm:100,mth:0,acc:0,ctr:0.3,
+    rewards:{atk:100,arm:10,rgn:10,old:500000,bronze:50000,silver:5000,gold:300},
     vicReq:2},
   {id:'grave_digger',name:'GRAVE DIGGER',
-    hp:2200,atk:46,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.8,mth:0,acc:0,ctr:0,
-    rewards:{hp:1.15,old:0.82},
+    hp:100000,atk:4000,mnd:1,mxd:2,spd:10000,rgn:0,ddc:0,crc:0,crd:0,arm:0,mth:0.2,acc:0,ctr:0,
+    rewards:{hp:200,silver:8000,gold:500},
     vicReq:2},
   {id:'putrid_wisp',name:'PUTRID WISP',
-    hp:2250,atk:48,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.8,mth:0,acc:0,ctr:0,
-    rewards:{atk:0.28,old:0.84},
+    hp:150000,atk:400,mnd:1,mxd:2,spd:300,rgn:0,ddc:0.3,crc:0.3,crd:2,arm:100,mth:0.3,acc:0.3,ctr:0.3,
+    rewards:{atk:200,old:1000000,bronze:100000},
     vicReq:2},
+
+  /// 37-40
+
   {id:'wailing_husk',name:'WAILING HUSK',
     hp:2300,atk:49,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.9,mth:0,acc:0,ctr:0,
     rewards:{old:0.86,hp:1.2},
@@ -518,6 +540,9 @@ const CREATURES = [
     hp:2450,atk:54,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.0,mth:0,acc:0,ctr:0,
     rewards:{atk:0.3,old:0.92},
     vicReq:2},
+
+  /// 41-44
+
   {id:'cracked_skull',name:'CRACKED SKULL',
     hp:2500,atk:55,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.1,mth:0,acc:0,ctr:0,
     rewards:{old:0.94,hp:1.3},
@@ -534,6 +559,9 @@ const CREATURES = [
     hp:2650,atk:60,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.2,mth:0,acc:0,ctr:0,
     rewards:{atk:0.32,old:1.0},
     vicReq:2},
+
+  /// 45-48
+
   {id:'bonedust_wretch',name:'BONEDUST WRETCH',
     hp:2700,atk:61,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.3,mth:0,acc:0,ctr:0,
     rewards:{old:1.02,hp:1.4},
@@ -550,6 +578,9 @@ const CREATURES = [
     hp:2850,atk:66,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.4,mth:0,acc:0,ctr:0,
     rewards:{atk:0.34,old:1.08},
     vicReq:2},
+
+  /// 49-52
+
   {id:'charred_beggar',name:'CHARRED BEGGAR',
     hp:2900,atk:67,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.5,mth:0,acc:0,ctr:0,
     rewards:{old:1.1,hp:1.5},
@@ -566,6 +597,9 @@ const CREATURES = [
     hp:3050,atk:72,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.6,mth:0,acc:0,ctr:0,
     rewards:{atk:0.36,old:1.16},
     vicReq:2},
+
+  /// 53-56
+
   {id:'scorch_wretch',name:'SCORCH WRETCH',
     hp:3100,atk:73,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.7,mth:0,acc:0,ctr:0,
     rewards:{old:1.18,hp:1.6},
@@ -582,6 +616,9 @@ const CREATURES = [
     hp:3250,atk:78,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.8,mth:0,acc:0,ctr:0,
     rewards:{atk:0.38,old:1.24},
     vicReq:2},
+
+  /// 57-60
+
   {id:'cinder_rat',name:'CINDER RAT',
     hp:3300,atk:79,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:3.9,mth:0,acc:0,ctr:0,
     rewards:{old:1.26,hp:1.7},
@@ -598,6 +635,9 @@ const CREATURES = [
     hp:3450,atk:84,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.0,mth:0,acc:0,ctr:0,
     rewards:{atk:0.4,old:1.32},
     vicReq:2},
+
+  /// 61-64
+
   {id:'tallow_ghoul',name:'TALLOW GHOUL',
     hp:3500,atk:85,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.1,mth:0,acc:0,ctr:0,
     rewards:{old:1.34,hp:1.8},
@@ -614,6 +654,9 @@ const CREATURES = [
     hp:3650,atk:90,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.2,mth:0,acc:0,ctr:0,
     rewards:{atk:0.42,old:1.4},
     vicReq:2},
+
+  /// 65-68
+
   {id:'pale_crawler',name:'PALE CRAWLER',
     hp:3700,atk:91,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.3,mth:0,acc:0,ctr:0,
     rewards:{old:1.42,hp:1.9},
@@ -630,6 +673,9 @@ const CREATURES = [
     hp:3850,atk:96,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.4,mth:0,acc:0,ctr:0,
     rewards:{atk:0.44,old:1.48},
     vicReq:2},
+
+  /// 69-72
+
   {id:'charnel_rat',name:'CHARNEL RAT',
     hp:3900,atk:97,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.5,mth:0,acc:0,ctr:0,
     rewards:{old:1.5,hp:2.0},
@@ -646,6 +692,9 @@ const CREATURES = [
     hp:4100,atk:102,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.6,mth:0,acc:0,ctr:0,
     rewards:{atk:0.46,old:1.56},
     vicReq:2},
+
+  /// 73-76
+
   {id:'crypt_tick',name:'CRYPT TICK',
     hp:4200,atk:103,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.7,mth:0,acc:0,ctr:0,
     rewards:{old:1.58,hp:2.1},
@@ -662,6 +711,9 @@ const CREATURES = [
     hp:4500,atk:108,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.8,mth:0,acc:0,ctr:0,
     rewards:{atk:0.48,old:1.64},
     vicReq:2},
+
+  /// 77-80
+
   {id:'cobweb_wretch',name:'COBWEB WRETCH',
     hp:4600,atk:109,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:4.9,mth:0,acc:0,ctr:0,
     rewards:{old:1.66,hp:2.2},
@@ -678,6 +730,9 @@ const CREATURES = [
     hp:5200,atk:114,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:5.0,mth:0,acc:0,ctr:0,
     rewards:{atk:0.5,old:1.72},
     vicReq:2},
+
+  /// 81-84
+
   {id:'cursed_knight',name:'CURSED KNIGHT',
     hp:5500,atk:120,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:5.5,mth:0,acc:0,ctr:0,
     rewards:{atk:0.9,old:2.0,arm:0.05},
@@ -694,6 +749,9 @@ const CREATURES = [
     hp:6400,atk:150,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:6.4,mth:0,acc:0,ctr:0,
     rewards:{old:2.6,bronze:0.8},
     vicReq:2},
+
+  /// 85-88
+
   {id:'rot_shaman',name:'ROT SHAMAN',
     hp:6700,atk:160,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:6.7,mth:0,acc:0,ctr:0,
     rewards:{atk:1.1,old:2.8,arm:0.07},
@@ -710,6 +768,9 @@ const CREATURES = [
     hp:7600,atk:190,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:7.6,mth:0,acc:0,ctr:0,
     rewards:{old:3.4,bronze:1.2},
     vicReq:2},
+
+  /// 89-92
+
   {id:'fetid_executioner',name:'FETID EXECUTIONER',
     hp:7900,atk:200,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:7.9,mth:0,acc:0,ctr:0,
     rewards:{atk:1.3,old:3.6,arm:0.09},
@@ -726,6 +787,9 @@ const CREATURES = [
     hp:8800,atk:231,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:8.8,mth:0,acc:0,ctr:0,
     rewards:{old:4.2,bronze:1.6},
     vicReq:2},
+
+  /// 93-96
+
   {id:'void_hound',name:'VOID HOUND',
     hp:9100,atk:241,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:9.1,mth:0,acc:0,ctr:0,
     rewards:{atk:1.5,old:4.4,arm:0.11},
@@ -742,6 +806,9 @@ const CREATURES = [
     hp:10000,atk:271,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:10.0,mth:0,acc:0,ctr:0,
     rewards:{old:5.0,bronze:2.0},
     vicReq:2},
+
+  /// 97-100
+
   {id:'worm_priest',name:'WORM PRIEST',
     hp:10300,atk:282,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:10.4,mth:0,acc:0,ctr:0,
     rewards:{atk:1.7,old:5.2,arm:0.13},
@@ -758,6 +825,9 @@ const CREATURES = [
     hp:11200,atk:312,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:11.3,mth:0,acc:0,ctr:0,
     rewards:{old:5.8,bronze:2.4},
     vicReq:2},
+
+  /// 101-104
+
   {id:'duskblade_revenant',name:'DUSKBLADE REVENANT',
     hp:11500,atk:322,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:11.6,mth:0,acc:0,ctr:0,
     rewards:{atk:1.9,old:6.0,arm:0.15},
@@ -774,6 +844,9 @@ const CREATURES = [
     hp:12400,atk:353,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:12.6,mth:0,acc:0,ctr:0,
     rewards:{old:6.6,bronze:2.8},
     vicReq:2},
+
+  /// 105-108
+
   {id:'dead_eye_marksman',name:'DEAD EYE MARKSMAN',
     hp:12700,atk:363,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:12.9,mth:0,acc:0,ctr:0,
     rewards:{atk:2.1,old:6.8,arm:0.17},
@@ -790,6 +863,9 @@ const CREATURES = [
     hp:13600,atk:394,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:13.9,mth:0,acc:0,ctr:0,
     rewards:{old:7.4,bronze:3.2},
     vicReq:2},
+
+  /// 109-112
+
   {id:'plague_monk',name:'PLAGUE MONK',
     hp:13900,atk:404,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:14.2,mth:0,acc:0,ctr:0,
     rewards:{atk:2.3,old:7.6,arm:0.19},
@@ -806,6 +882,9 @@ const CREATURES = [
     hp:14700,atk:434,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:15.1,mth:0,acc:0,ctr:0,
     rewards:{old:8.2,bronze:3.6},
     vicReq:2},
+
+  /// 113-116
+
   {id:'withered_inquisitor',name:'WITHERED INQUISITOR',
     hp:15000,atk:445,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:15.5,mth:0,acc:0,ctr:0,
     rewards:{atk:2.5,old:8.4,arm:0.21},
@@ -822,6 +901,9 @@ const CREATURES = [
     hp:15700,atk:475,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:16.4,mth:0,acc:0,ctr:0,
     rewards:{old:9.0,bronze:4.0},
     vicReq:2},
+
+  /// 117-120
+
   {id:'saltblood_soldier',name:'SALTBLOOD SOLDIER',
     hp:16000,atk:485,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:16.7,mth:0,acc:0,ctr:0,
     rewards:{atk:2.7,old:9.2,arm:0.23},
@@ -838,6 +920,9 @@ const CREATURES = [
     hp:16900,atk:516,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:17.7,mth:0,acc:0,ctr:0,
     rewards:{old:9.8,bronze:4.4},
     vicReq:2},
+
+  /// 121-124
+
   {id:'bonegrinder',name:'BONEGRINDER',
     hp:22000,atk:800,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:35,mth:0,acc:0,ctr:0,
     rewards:{atk:5.0,arm:1.2,old:100},
@@ -854,6 +939,9 @@ const CREATURES = [
     hp:28000,atk:950,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:39.5,mth:0,acc:0,ctr:0,
     rewards:{old:160,bronze:30,silver:5},
     vicReq:2},
+
+  /// 125-128
+
   {id:'dread_colossus',name:'DREAD COLOSSUS',
     hp:30000,atk:1000,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:41,mth:0,acc:0,ctr:0,
     rewards:{atk:6.0,arm:2.0,old:180},
@@ -870,6 +958,9 @@ const CREATURES = [
     hp:36000,atk:1150,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:45.5,mth:0,acc:0,ctr:0,
     rewards:{old:240,bronze:50,crc:0.1},
     vicReq:2},
+
+  /// 129-132
+
   {id:'abyssal_hound',name:'ABYSSAL HOUND',
     hp:38000,atk:1200,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:47,mth:0,acc:0,ctr:0,
     rewards:{atk:7.0,arm:3.0,old:260},
@@ -886,6 +977,9 @@ const CREATURES = [
     hp:44000,atk:1355,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:51.5,mth:0,acc:0,ctr:0,
     rewards:{old:320,bronze:70,silver:12},
     vicReq:2},
+
+  /// 133-136
+
   {id:'crypt_behemoth',name:'CRYPT BEHEMOTH',
     hp:46000,atk:1410,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:53,mth:0,acc:0,ctr:0,
     rewards:{atk:8.0,arm:4.0,old:340},
@@ -902,6 +996,9 @@ const CREATURES = [
     hp:52000,atk:1575,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:57.5,mth:0,acc:0,ctr:0,
     rewards:{old:400,bronze:90,silver:16},
     vicReq:2},
+
+  /// 137-140
+
   {id:'bone_leviathan',name:'BONE LEVIATHAN',
     hp:54000,atk:1630,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:59,mth:0,acc:0,ctr:0,
     rewards:{atk:9.0,arm:5.0,old:420},
@@ -918,6 +1015,9 @@ const CREATURES = [
     hp:60000,atk:1795,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:63.5,mth:0,acc:0,ctr:0,
     rewards:{old:480,bronze:110,silver:20},
     vicReq:2},
+
+  /// 141-144
+
   {id:'ironblight_giant',name:'IRONBLIGHT GIANT',
     hp:62000,atk:1850,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:65,mth:0,acc:0,ctr:0,
     rewards:{atk:10.0,arm:6.0,old:500},
@@ -934,6 +1034,9 @@ const CREATURES = [
     hp:68000,atk:2015,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:69.5,mth:0,acc:0,ctr:0,
     rewards:{old:560,bronze:130,silver:24},
     vicReq:2},
+
+  /// 145-148
+
   {id:'soul_harvester',name:'SOUL HARVESTER',
     hp:70000,atk:2070,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:71,mth:0,acc:0,ctr:0,
     rewards:{atk:11.0,arm:7.0,old:580},
@@ -950,6 +1053,9 @@ const CREATURES = [
     hp:76000,atk:2235,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:75.5,mth:0,acc:0,ctr:0,
     rewards:{old:640,bronze:150,silver:28},
     vicReq:2},
+
+  /// 149-152
+
   {id:'gravesinger',name:'GRAVESINGER',
     hp:78000,atk:2290,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:77,mth:0,acc:0,ctr:0,
     rewards:{atk:12.0,arm:8.0,old:660},
@@ -966,6 +1072,9 @@ const CREATURES = [
     hp:88000,atk:3000,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:100,mth:0,acc:0,ctr:0,
     rewards:{old:1200,bronze:380,silver:40},
     vicReq:2},
+
+  /// 153-156
+
   {id:'dread_overlord',name:'DREAD OVERLORD',
     hp:96000,atk:3200,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:105,mth:0,acc:0,ctr:0,
     rewards:{atk:22,arm:10,old:1400,bronze:450},
@@ -982,6 +1091,9 @@ const CREATURES = [
     hp:120000,atk:3800,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:120,mth:0,acc:0,ctr:0,
     rewards:{old:2000,bronze:680,silver:70,mxd:0.7},
     vicReq:2},
+
+  /// 157-160
+
   {id:'soulweaver_ancient',name:'SOULWEAVER ANCIENT',
     hp:128000,atk:4000,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:128,mth:0,acc:0,ctr:0,
     rewards:{atk:28,arm:14,old:2200,bronze:760},
@@ -998,6 +1110,9 @@ const CREATURES = [
     hp:152000,atk:4600,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:149,mth:0,acc:0,ctr:0,
     rewards:{old:2800,bronze:1000,silver:100,mxd:0.9},
     vicReq:2},
+
+  /// 161-164
+
   {id:'abyssal_monarch',name:'ABYSSAL MONARCH',
     hp:160000,atk:4800,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:157,mth:0,acc:0,ctr:0,
     rewards:{atk:36,arm:18,old:3000,bronze:1100},
@@ -1014,6 +1129,9 @@ const CREATURES = [
     hp:184000,atk:5400,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:178,mth:0,acc:0,ctr:0,
     rewards:{old:3600,bronze:1400,silver:140,mxd:1.2},
     vicReq:2},
+
+  /// 165-168
+
   {id:'pale_dominion',name:'PALE DOMINION',
     hp:192000,atk:5600,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:185,mth:0,acc:0,ctr:0,
     rewards:{atk:44,arm:22,old:3800,bronze:1500},
@@ -1030,6 +1148,9 @@ const CREATURES = [
     hp:220000,atk:6200,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:207,mth:0,acc:0,ctr:0,
     rewards:{old:4400,bronze:1800,silver:180,mxd:1.5},
     vicReq:2},
+
+  /// 169-172
+
   {id:'shattered_deity',name:'SHATTERED DEITY',
     hp:230000,atk:6500,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:215,mth:0,acc:0,ctr:0,
     rewards:{atk:52,arm:26,old:4700,bronze:1900},
@@ -1046,6 +1167,9 @@ const CREATURES = [
     hp:300000,atk:9333,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:258,mth:0,acc:0,ctr:0,
     rewards:{old:12000,bronze:4500,silver:350,mxd:2.0,crc:0.6},
     vicReq:2},
+
+  /// 173-176
+
   {id:'he_who_unravels',name:'HE WHO UNRAVELS',
     hp:340000,atk:10667,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:285,mth:0,acc:0,ctr:0,
     rewards:{atk:110,arm:40,old:18000,bronze:6500},
@@ -1062,6 +1186,9 @@ const CREATURES = [
     hp:430000,atk:14667,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:368,mth:0,acc:0,ctr:0,
     rewards:{old:48000,bronze:16000,silver:750,mxd:3.0,crc:0.8},
     vicReq:2},
+
+  /// 177-180
+
   {id:'the_unfinished',name:'THE UNFINISHED',
     hp:460000,atk:16000,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:395,mth:0,acc:0,ctr:0,
     rewards:{atk:170,arm:60,old:65000,bronze:22000,silver:900},

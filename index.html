@@ -137,7 +137,6 @@
     </div>
 
     <div class="tab-pane" id="tab-shop">
-      <div class="section-header">SHOP</div>
       <div class="filter-tabs" id="shop-filters">
         <span class="filter-tab active" data-shop="all">ALL</span>
         <span class="filter-tab" data-shop="offensive">OFF</span>
@@ -181,6 +180,7 @@
               <div class="blood-row"><span class="softcap-label">LIFETIME</span><span class="softcap-val" id="blood-life-val">0</span></div>
               <div class="blood-row"><span class="softcap-label">RATE</span><span class="softcap-val" id="blood-rate-val">0/s</span></div>
               <div class="blood-row"><span class="softcap-label">CAPS</span><span class="softcap-val" id="blood-caps-val">0</span></div>
+              <div class="blood-row"><span class="softcap-label">NEXT CAP</span><span class="softcap-val" id="blood-nextcap-val">—</span></div>
               <button id="reincarnate-btn">REINCARNATE</button>
               <div class="reincarnate-req" id="reincarnate-req">REQUIRES 100 PENDING BLOOD COIN</div>
             </div>
@@ -404,6 +404,7 @@
   <!-- PROTOCOL panel (id=right-sidebar for JS compat) -->
   <div class="btm-panel" id="right-sidebar">
     <div id="protocols-header"><div class="title">protocol</div></div>
+    <div class="protocols-body">
     <div class="protocol-section">
       <div class="protocol-title">AUTO-CHALLENGE</div>
       <div class="protocol-sub" id="ac-details">DISABLED</div>
@@ -428,6 +429,15 @@
         <div class="toggle-switch" id="toggle-an"></div>
       </div>
     </div>
+    <div class="protocol-section">
+      <div class="protocol-title">AUTO-BUY</div>
+      <div class="protocol-sub" id="ab-details">DISABLED</div>
+      <div class="toggle-row">
+        <span class="toggle-label">ENABLED</span>
+        <div class="toggle-switch" id="toggle-ab"></div>
+      </div>
+    </div>
+    </div><!-- /protocols-body -->
   </div>
 
 </div><!-- /bottom-bar -->

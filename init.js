@@ -5,6 +5,7 @@
     const ac = document.getElementById('toggle-ac');
     const ar = document.getElementById('toggle-ar');
     const an = document.getElementById('toggle-an');
+    const ab = document.getElementById('toggle-ab');
 
   function updateAC(){
     ac.classList.toggle('on', S.protocols.autoChallenge);
@@ -22,6 +23,12 @@
     an.classList.toggle('on', S.protocols.autoNext);
     document.getElementById('an-details').textContent =
       S.protocols.autoNext ? 'AUTO NEXT ON' : 'DISABLED';
+  }
+
+  function updateAB(){
+    ab.classList.toggle('on', S.protocols.autoBuy);
+    document.getElementById('ab-details').textContent =
+      S.protocols.autoBuy ? 'AUTO BUY ON' : 'DISABLED';
   }
 
   // Auto Challenge — auto refight same monster, stop when maxed
@@ -51,9 +58,17 @@
     }
   });
 
+  // Auto Buy — auto-purchase every affordable shop upgrade
+    ab.addEventListener('click', () => {
+      S.protocols.autoBuy = !S.protocols.autoBuy;
+    updateAB();
+    if(S.protocols.autoBuy && typeof autoBuyShop === 'function') autoBuyShop();
+  });
+
   updateAC();
   updateAR();
   updateAN();
+  updateAB();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -375,6 +390,7 @@ function gameLoop(){
   checkBloodMilestone();
   S.activeTime = (S.activeTime || 0) + dt;
   if(frameCount % 3 === 0){
+    if(typeof autoBuyShop === 'function') autoBuyShop();
     updateBattleUI();
     updateResources();
     updateArchiveDot();

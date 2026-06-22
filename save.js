@@ -21,7 +21,7 @@ function loadGame(){
     S.stats = Object.assign(DEFAULT_STATE().stats, loaded.stats || {});
     S.resources = Object.assign({old:0,bronze:0,silver:0,gold:0,plat:0}, loaded.resources || {});
     S.settings = Object.assign(def.settings, loaded.settings || {});
-    S.protocols = Object.assign({autoChallenge:false,autoRetry:false,autoNext:false}, loaded.protocols || {});
+    S.protocols = Object.assign({autoChallenge:false,autoRetry:false,autoNext:false,autoBuy:false}, loaded.protocols || {});
     S.victories = Object.assign({}, loaded.victories || {});
     S.shopOwned = Object.assign({}, loaded.shopOwned || {});
     // Spawn rarities persist across page loads; they only re-roll on reincarnate.

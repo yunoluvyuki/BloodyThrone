@@ -188,13 +188,23 @@ function updateBloodUI(){
   if(bloodPendVal)bloodPendVal.textContent='+'+fmt(S.bloodPending);
   document.getElementById('blood-life-val').textContent=fmt(S.bloodBankedLifetime||0);
   // CAPS: how many diminishing-gain caps the blood rate has passed (same formula as bloodGainMult)
+  const _ref=S.bloodRef||0, _pend=S.bloodPending||0;
+  const _caps=(_ref>0&&_pend>=_ref)?Math.floor(Math.log2(_pend/_ref))+1:0;
   const capsEl=document.getElementById('blood-caps-val');
   if(capsEl){
-    const ref=S.bloodRef||0, pend=S.bloodPending||0;
-    const caps=(ref>0&&pend>=ref)?Math.floor(Math.log2(pend/ref))+1:0;
     const mult=(typeof bloodGainMult==='function')?bloodGainMult():1;
     const pct=mult*100;
-    capsEl.textContent=`${caps} (×${pct>=1?pct.toFixed(0):pct.toFixed(2)}%)`;
+    capsEl.textContent=`${_caps} (×${pct>=1?pct.toFixed(0):pct.toFixed(2)}%)`;
+  }
+  // NEXT CAP: blood still needed before the next halving kicks in
+  const nextCapEl=document.getElementById('blood-nextcap-val');
+  if(nextCapEl){
+    if(_ref>0){
+      const nextThreshold=_ref*Math.pow(2,_caps);
+      nextCapEl.textContent=fmt(Math.max(0,nextThreshold-_pend));
+    } else {
+      nextCapEl.textContent='—';
+    }
   }
   const bloodCountEl=document.getElementById('blood-count');
   if(bloodCountEl)bloodCountEl.textContent=fmt(S.blood||0);

@@ -65,6 +65,9 @@ function rollRarity(){
 }
 function getSpawnRarity(id){
   if(!S.spawnRarity)S.spawnRarity={};
+  // The four most-recently-unlocked (frontier) enemies never spawn with rarity —
+  // they stay common until you progress past them.
+  if((S.battleUnlocked||[]).slice(-4).includes(id)) return 'common';
   if(!S.spawnRarity[id])S.spawnRarity[id]=rollRarity();
   return S.spawnRarity[id];
 }

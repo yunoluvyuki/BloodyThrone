@@ -108,10 +108,13 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 /* ── PROTOCOLS (bottom bar panel) ───────────────────── */
 #right-sidebar{flex-direction:column;background:#000;border:1px solid var(--border);}
 #protocols-header{padding:4px 8px 3px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.protocols-body{flex:1;overflow-y:auto;overflow-x:hidden;min-height:0;}
+.protocols-body::-webkit-scrollbar{width:3px;}
+.protocols-body::-webkit-scrollbar-thumb{background:var(--bg4);}
 #protocols-header .title{font-size:14px;letter-spacing:2px;color:#fff;font-weight:bold;}
 .protocol-section{border-bottom:1px solid var(--border);padding:8px 10px;}
 .protocol-title{font-size:10px;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
-.protocol-sub{font-size:10px;color:#fff;margin-bottom:4px;}
+.protocol-sub{display:none;}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
 .toggle-label{font-size:10px;color:#fff;}
 .toggle-switch{width:28px;height:14px;background:var(--bg4);border:1px solid var(--border);cursor:pointer;position:relative;display:flex;align-items:center;}
