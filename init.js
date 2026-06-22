@@ -4,17 +4,24 @@
   function setupToggles(){
     const ac = document.getElementById('toggle-ac');
     const ar = document.getElementById('toggle-ar');
+    const an = document.getElementById('toggle-an');
 
   function updateAC(){
     ac.classList.toggle('on', S.protocols.autoChallenge);
-    document.getElementById('ac-details').textContent = 
+    document.getElementById('ac-details').textContent =
       S.protocols.autoChallenge ? 'AUTO FIGHT ON' : 'DISABLED';
   }
 
   function updateAR(){
     ar.classList.toggle('on', S.protocols.autoRetry);
-    document.getElementById('ar-details').textContent = 
+    document.getElementById('ar-details').textContent =
       S.protocols.autoRetry ? 'AUTO RETRY ON' : 'DISABLED';
+  }
+
+  function updateAN(){
+    an.classList.toggle('on', S.protocols.autoNext);
+    document.getElementById('an-details').textContent =
+      S.protocols.autoNext ? 'AUTO NEXT ON' : 'DISABLED';
   }
 
   // Auto Challenge — auto refight same monster, stop when maxed
@@ -33,8 +40,20 @@
     updateAR();
   });
 
+  // Auto Next — after a monster is maxed, auto-challenge the next available one
+    an.addEventListener('click', () => {
+      S.protocols.autoNext = !S.protocols.autoNext;
+    updateAN();
+  // Kick off immediately if idle and there's a fightable creature
+    if(S.protocols.autoNext && !B.active && !B.dying){
+      const next = CREATURES.find(x => isUnlocked(x.id) && !isMaxed(x));
+      if(next) startBattle(next.id);
+    }
+  });
+
   updateAC();
   updateAR();
+  updateAN();
 }
 
 // ═══════════════════════════════════════════════════════

@@ -445,10 +445,17 @@ function onWin(){
   renderFundamentals();
   renderBattle();
 
-  // Maxed check — always stop
+  // Maxed check — stop, then optionally auto-advance to the next creature
   if(isMaxed(c)){
     addLog(`<span class="log-win">★ ${c.name} fully defeated!</span>`);
     stopBattle();
+    if(S.protocols.autoNext){
+      const next = CREATURES.find(x => isUnlocked(x.id) && !isMaxed(x));
+      if(next){
+        addLog(`<span class="log-win">↪ Auto-next: ${next.name}</span>`);
+        startBattle(next.id);
+      }
+    }
     return;
   }
 
