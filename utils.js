@@ -35,5 +35,6 @@ function formatStat(key,val){
   if(!d)return fmtStat(val);
   if(d.fmt==='pct')return(val*100).toFixed(1)+'%';
   if(d.fmt==='x')return 'x'+val.toFixed(2);
+  if(key==='spd')return fmtStat(val); // SPD stays a plain number (no K/M prefix)
   return (val==null||isNaN(val))?'0':fmt(val);
 }
