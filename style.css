@@ -375,7 +375,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #treasury-layout{align-items:flex-start;}
 #mcoin-synthesizer{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--border);}
 #mcoin-header{display:grid;grid-template-columns:175px 80px 1fr 64px 110px;column-gap:12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:14px;letter-spacing:1px;color:var(--text3);}
-.mcoin-row{display:grid;grid-template-columns:175px 80px 1fr 64px 110px;column-gap:12px;padding:10px 12px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+.mcoin-row{display:grid;grid-template-columns:175px 80px 1fr 64px 110px;column-gap:12px;padding:10px 12px;border-bottom:1px solid var(--border);align-items:center;}
 .mcoin-col-count,.mcoin-col-producing{text-align:right;}
 .mcoin-row:last-child{border-bottom:none;}
 .mcoin-row:hover{background:var(--bg3);}
