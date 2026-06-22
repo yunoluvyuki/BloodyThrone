@@ -60,11 +60,7 @@ function renderBattle(){
   const g=document.getElementById('battle-grid');
   const visible=CREATURES.filter(c=>isUnlocked(c.id)&&!isMaxed(c));
   const defeated=CREATURES.filter(c=>isMaxed(c)).length;
-  const hidden=CREATURES.length-visible.length-defeated;
-  let html=`<div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-    ${defeated>0?`<div style="font-size:8px;color:var(--text3);">${defeated} defeated</div>`:''}
-    ${hidden>0?`<div style="font-size:14px;color:#ffffff;font-weight:bold;">${hidden} in the dark…</div>`:''}
-  </div>`;
+  let html='';
   html+=visible.map(c=>{
     const color='#888';
     const vic=getVictories(c.id);
