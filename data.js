@@ -487,8 +487,8 @@ const CREATURES = [
     vicReq:2},
     ///
   {id:'corpse_leech',name:'CORPSE LEECH',
-    hp:2100,atk:43,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.7,mth:0,acc:0,ctr:0,
-    rewards:{old:0.78,hp:1.1},
+    hp:80000,atk:80,mnd:1,mxd:1.8,spd:800,rgn:0,ddc:0,crc:0,crd:0,arm:80,mth:0,acc:0,ctr:0,
+    rewards:{old:500000,bronze:30000,silver:3000},
     vicReq:2},
   {id:'bleached_lurker',name:'BLEACHED LURKER',
     hp:2150,atk:45,mnd:0,mxd:0,spd:0,rgn:0,ddc:0,crc:0,crd:0,arm:2.7,mth:0,acc:0,ctr:0,
