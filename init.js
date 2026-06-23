@@ -324,8 +324,8 @@ function setupSettings(){
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.baseStats={...base.stats};
-    S.equipment={equipped:EMPTY_EQUIPMENT(),inventory:[]};
-    S.equipNextId=0;
+    // Equipment & inventory PERSIST through reincarnation; reapply gear bonuses to the fresh stats.
+    if(typeof recalcEquipStats==='function') recalcEquipStats();
     S.victories={};
     S.shopOwned={};
     S.spawnRarity={};
