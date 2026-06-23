@@ -1,14 +1,20 @@
 // ═══════════════════════════════════════════════════════
 // UTILITIES
 // ═══════════════════════════════════════════════════════
+const FMT_SUFFIXES = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc',
+  'UDc','DDc','TDc','QaDc','QiDc','SxDc','SpDc','OcDc','NoDc','Vg'];
 function fmt(n){
-  if(n===undefined||n===null)return'0';
-  if(n>=1e12)return(n/1e12).toFixed(2)+'T';
-  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
-  if(n>=1e6)return(n/1e6).toFixed(2)+'M';
-  if(n>=1e3)return(n/1e3).toFixed(2)+'K';
-  if(n%1===0)return n.toFixed(0);
-  return n.toFixed(2);
+  if(n===undefined||n===null||isNaN(n))return'0';
+  if(!isFinite(n))return n>0?'∞':'-∞';
+  const neg=n<0; n=Math.abs(n);
+  if(n<1000) return (neg?'-':'')+(n%1===0?n.toFixed(0):n.toFixed(2));
+  let tier=Math.floor(Math.log10(n)/3);
+  if(tier<FMT_SUFFIXES.length){
+    const scaled=n/Math.pow(10,tier*3);
+    return (neg?'-':'')+scaled.toFixed(2)+FMT_SUFFIXES[tier];
+  }
+  // Beyond the named suffixes → scientific notation, e.g. 1.23e66
+  return (neg?'-':'')+n.toExponential(2).replace('e+','e');
 }
 function fmtStat(n){if(n==null||isNaN(n))return'0';return n%1===0?n.toFixed(0):n.toFixed(2);}
 function fmtTime(s){
