@@ -110,9 +110,9 @@ const MASTERY_UPGRADES = [
     maxLevel:3, costs:[{blood:100},{blood:100000000},{blood:100000000000}], color:'#f0b429' },
 
   { id:'equip_drop', cat:'UTILITY', type:'equipdrop',
-    per:0.01, label:'SCAVENGER',
-    desc:'+1% chance to drop equipment per kill, per level. Tier scales with enemy rank.',
-    cost:{blood:500}, scale:1.4, maxLevel:100, color:'#16a085' },
+    per:0.005, label:'SCAVENGER',
+    desc:'+0.5% chance to drop equipment per kill, per level. Tier scales with enemy rank.',
+    cost:{blood:1000000}, scale:2, maxLevel:60, color:'#16a085' },
 
   // ── AUTOMATION: passive coin generation ────────────────
 
