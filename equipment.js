@@ -145,18 +145,22 @@ function salvageItem(itemId) {
 }
 
 // ── RECALC EQUIP STATS ────────────────────────────────
+// S.stats is ALWAYS derived: S.stats = baseStats (all permanent upgrades) + equipment bonuses.
+// baseStats is the source of truth for shop upgrades, creature stat rewards and codex bonuses.
 function recalcEquipStats() {
-  if (!S.equipment) return;
-  const base = S.baseStats || DEFAULT_STATE().stats;
+  if (!S.baseStats) S.baseStats = { ...S.stats };
+  const base = S.baseStats;
   const bonuses = {};
-  Object.values(S.equipment.equipped).forEach(item => {
-    if (!item || !item.stats) return;
-    Object.entries(item.stats).forEach(([k, v]) => {
-      bonuses[k] = (bonuses[k] || 0) + v;
+  if (S.equipment && S.equipment.equipped) {
+    Object.values(S.equipment.equipped).forEach(item => {
+      if (!item || !item.stats) return;
+      Object.entries(item.stats).forEach(([k, v]) => {
+        bonuses[k] = (bonuses[k] || 0) + v;
+      });
     });
-  });
+  }
   Object.keys(base).forEach(k => {
-    S.stats[k] = (S.baseStats ? S.baseStats[k] : base[k]) + (bonuses[k] || 0);
+    S.stats[k] = (base[k] || 0) + (bonuses[k] || 0);
   });
 }
 

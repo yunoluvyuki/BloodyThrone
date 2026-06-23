@@ -37,10 +37,14 @@ function buyShopItem(id, silent){
   const canAfford = Object.entries(cost).every(([k,v]) => (S.resources[k] || 0) >= v);
   if(!canAfford){ if(!silent) toast('Not enough resources!'); return false; }
   Object.entries(cost).forEach(([k,v]) => { S.resources[k] -= v; });
+  // Upgrades are permanent: apply to baseStats, then derive S.stats (= base + equipment).
+  if(!S.baseStats) S.baseStats = { ...S.stats };
   Object.entries(item.statBonus).forEach(([k,v]) => {
-    const val = item.isPct ? S.stats[k] * v : v;
-    S.stats[k] = (S.stats[k] || 0) + val;
+    const baseVal = S.baseStats[k] || 0;
+    const val = item.isPct ? baseVal * v : v;
+    S.baseStats[k] = baseVal + val;
   });
+  if(typeof recalcEquipStats === 'function') recalcEquipStats();
   if(item.unlock) S[item.unlock] = true;
   S.shopOwned[item.id] = (S.shopOwned[item.id] || 0) + 1;
   if(!silent){ toast(`Purchased: ${item.name}!`); renderShop(); renderStats(); }

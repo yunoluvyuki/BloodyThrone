@@ -60,6 +60,14 @@ function loadGame(){
       equipped: { weapon: _validSlot(_eq.weapon) ? _eq.weapon : null, armor: _validSlot(_eq.armor) ? _eq.armor : null },
       inventory: (loaded.equipment && Array.isArray(loaded.equipment.inventory)) ? loaded.equipment.inventory.filter(_validSlot) : [],
     };
+    // Reconcile baseStats = effective stats − equipped-gear bonuses, so the
+    // invariant S.stats = baseStats + equipment holds (heals stale/old saves).
+    const _gear = {};
+    Object.values(S.equipment.equipped).forEach(it => {
+      if(it && it.stats) Object.entries(it.stats).forEach(([k,v]) => { _gear[k] = (_gear[k]||0) + v; });
+    });
+    S.baseStats = {};
+    Object.keys(S.stats).forEach(k => { S.baseStats[k] = (S.stats[k]||0) - (_gear[k]||0); });
   }catch(e){console.error('Load failed', e);}
   initBattleQueue();
 }

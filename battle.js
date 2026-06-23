@@ -428,19 +428,23 @@ function onWin(){
       if(!S.codexUnlocked) S.codexUnlocked = {};
       if(!S.codexUnlocked[c.id]){
       S.codexUnlocked[c.id] = true;
-      const atkBonus = S.stats.atk * 0.01;
-      const hpBonus  = S.stats.hp  * 0.01;
-      S.stats.atk += atkBonus;
-      S.stats.hp  += hpBonus;
+      if(!S.baseStats) S.baseStats = { ...S.stats };
+      const atkBonus = (S.baseStats.atk || 0) * 0.01;
+      const hpBonus  = (S.baseStats.hp  || 0) * 0.01;
+      S.baseStats.atk = (S.baseStats.atk || 0) + atkBonus;
+      S.baseStats.hp  = (S.baseStats.hp  || 0) + hpBonus;
       S.codexBonusApplied = (S.codexBonusApplied || 0) + 1;
       addLog(`<span style="color:var(--green)">📖 CODEX UNLOCK — ATK +1% / HP +1% (${S.codexBonusApplied} total)</span>`);
       toast(`Codex unlock! ATK & HP +1%`, 3000);
       }
     } else if(S.stats[k] !== undefined){
-      S.stats[k] += amount;
+      if(!S.baseStats) S.baseStats = { ...S.stats };
+      S.baseStats[k] = (S.baseStats[k] || 0) + amount;
     }
     gainStrs.push(`${RESOURCE_LABELS[k] || k.toUpperCase()} ${amount >= 0 ? '+' : ''}${amount.toFixed(2)}`);
   });
+  // Re-derive S.stats (= baseStats + equipment) after permanent stat rewards.
+  if(typeof recalcEquipStats === 'function') recalcEquipStats();
   addLog(`<span class="log-reward">↳ Rewards: ${gainStrs.join(', ')}</span>`);
 
   // Equipment drop (tier by enemy rank, chance from SCAVENGER mastery)
