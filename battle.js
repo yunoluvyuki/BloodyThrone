@@ -65,9 +65,10 @@ function rollRarity(){
 }
 function getSpawnRarity(id){
   if(!S.spawnRarity)S.spawnRarity={};
-  // The four most-recently-unlocked (frontier) enemies never spawn with rarity —
-  // they stay common until you progress past them.
-  if((S.battleUnlocked||[]).slice(-4).includes(id)) return 'common';
+  // Un-codexed (never-discovered) enemies always spawn common. Only creatures
+  // already in your codex (beaten at least once) can roll a rarity.
+  const discovered = (S.codexUnlocked && S.codexUnlocked[id]) || getVictories(id) > 0;
+  if(!discovered) return 'common';
   if(!S.spawnRarity[id])S.spawnRarity[id]=rollRarity();
   return S.spawnRarity[id];
 }
