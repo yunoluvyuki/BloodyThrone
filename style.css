@@ -129,9 +129,16 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .creature-card{background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:border-color .15s;}
 .creature-card:hover{border-color:var(--border2);}
 .creature-card .card-top{display:flex;gap:0;border-bottom:1px solid var(--border);}
-.card-art{width:120px;height:auto;align-self:stretch;background:var(--card-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.card-art{width:120px;aspect-ratio:1;height:auto;align-self:center;background:var(--card-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .card-art svg{width:100px;height:100px;}
-.card-art img{width:100%;height:100%;object-fit:cover;}
+.card-art img{width:100%;height:100%;object-fit:contain;}
+/* Full-size creature image lightbox */
+#img-lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:1000;cursor:zoom-out;}
+#img-lightbox.show{display:flex;}
+.lightbox-inner{display:flex;flex-direction:column;align-items:center;gap:12px;max-width:90vw;max-height:90vh;animation:lightbox-pop .15s ease-out;}
+@keyframes lightbox-pop{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+#img-lightbox img,#img-lightbox svg{max-width:80vw;max-height:80vh;object-fit:contain;border:1px solid var(--border2);box-shadow:0 0 40px rgba(0,0,0,0.8);}
+.lightbox-name{color:#fff;font-size:18px;letter-spacing:2px;font-weight:bold;font-family:var(--dt-head-font,inherit);}
 .card-art .placeholder-icon{color:var(--c-color);font-size:22px;opacity:0.4;}
 .card-info{flex:1;padding:6px 8px;}
 .card-name{font-size:16px;color:#ff0000;font-weight:bold;letter-spacing:1px;text-transform:uppercase;}
@@ -164,9 +171,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .battle-side-box{flex:1 1 0;display:flex;flex-direction:column;gap:8px;background:var(--bg2);border:1px solid var(--border);padding:16px;}
 .top-row{display:flex;flex-direction:row;gap:0;}
 .player-info,.enemy-info{display:flex;flex-direction:column;justify-content:flex-start;padding:8px 16px;gap:6px;flex:1;}
-#battle-art,#player-art{width:180px;height:150px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#battle-art,#player-art{width:180px;height:180px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #battle-art svg,#player-art svg{width:150px;height:150px;}
-#battle-art img{width:100%;height:100%;object-fit:cover;}
+#battle-art img{width:100%;height:100%;object-fit:contain;}
 #battle-creature-name,#player-name{font-size:18px;color:var(--white);font-weight:bold;letter-spacing:2px;}
 #battle-creature-tag{font-size:10px;color:var(--text2);font-style:italic;}
 .hp-bar-wrap{margin-bottom:2px;background:transparent;border:none;overflow:visible;}

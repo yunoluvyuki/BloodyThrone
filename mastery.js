@@ -110,9 +110,9 @@ const MASTERY_UPGRADES = [
     maxLevel:3, costs:[{blood:100},{blood:100000000},{blood:100000000000}], color:'#f0b429' },
 
   { id:'equip_drop', cat:'UTILITY', type:'equipdrop',
-    per:0.01, label:'SCAVENGER',
-    desc:'+1% chance to drop equipment per kill, per level. Tier scales with enemy rank.',
-    cost:{blood:500}, scale:1.4, maxLevel:100, color:'#16a085' },
+    per:0.001, label:'SCAVENGER',
+    desc:'+0.1% chance to drop equipment per kill, per level. Tier scales with enemy rank.',
+    cost:{blood:1000000}, scale:1.6, maxLevel:100, color:'#16a085' },
 
   // ── AUTOMATION: passive coin generation ────────────────
 
@@ -278,7 +278,7 @@ function masteryEffectStr(up, level){
     case 'decay':   return `decay ${Math.max(up.floor ?? 0.05, 0.7 - level*up.per).toFixed(2)}`;
     case 'victory': return `+${level*up.per}/win`;
     case 'viccap':  return `+${level*up.per} max wins/enemy`;
-    case 'equipdrop': return `+${(level*up.per*100).toFixed(0)}% drop`;
+    case 'equipdrop': return `+${(level*up.per*100).toFixed(2)}% drop`;
     case 'auto':    return `${(level*up.per*100).toFixed(2)}% of run ${COIN_LABELS[up.coin]}/s`;
     case 'automult':return `×${(1 + level*up.per).toFixed(2)}`;
     case 'rarity':  return `+${(level*up.per).toFixed(1)}% spawn`;

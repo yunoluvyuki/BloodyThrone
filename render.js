@@ -58,7 +58,14 @@ function renderShop(){
 
 function renderBattle(){
   const g=document.getElementById('battle-grid');
-  const visible=CREATURES.filter(c=>isUnlocked(c.id)&&!isMaxed(c));
+  // Battle grid is a fixed window of 4 cards. Show the 4 lowest-rank fightable
+  // creatures, but always keep the one you're currently fighting on screen.
+  const fightable=CREATURES.filter(c=>isUnlocked(c.id)&&!isMaxed(c));
+  let visible=fightable.slice(0,4);
+  if(S.currentCreature && !visible.some(c=>c.id===S.currentCreature)){
+    const cur=fightable.find(c=>c.id===S.currentCreature);
+    if(cur) visible=[cur, ...visible].slice(0,4);
+  }
   const defeated=CREATURES.filter(c=>isMaxed(c)).length;
   let html='';
   html+=visible.map(c=>{
@@ -83,7 +90,7 @@ function renderBattle(){
     const spawnBadge=spawnRarity?`<span style="display:inline-block;font-size:9px;font-weight:bold;letter-spacing:1px;padding:2px 6px;background:${spawnRarityColor};color:#fff;margin-bottom:4px;">${RARITY_LABELS[spawnRarity]}</span>`:'';
     return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
       <div class="card-top">
-        <div class="card-art" style="position:relative;">${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
+        <div class="card-art" style="position:relative;">${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
         <div class="card-info">
           ${spawnBadge}
           <div class="card-name" style="color:${spawnRarityColor||'#ffffff'};text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;">${c.name}</div>
@@ -152,7 +159,7 @@ function renderCodex(){
       const art = c.img
         ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`
         : (SVGs[c.id] || `<div style="font-size:9px;color:var(--text3);text-align:center;padding:4px;">${c.name}</div>`);
-      return `<div class="codex-card unlocked" title="${c.name}" style="border-color:${rc}44;">
+      return `<div class="codex-card unlocked" title="${c.name}" style="border-color:${rc}44;cursor:pointer;" onclick="showCreatureImage('${c.id}')">
         ${art}
       </div>`;
     }),
@@ -162,6 +169,28 @@ function renderCodex(){
         <div class="codex-locked-name">UNKNOWN</div>
       </div>`)
   ].join('');
+}
+
+// Full-size creature image lightbox (click a codex card to open; click anywhere to close).
+function showCreatureImage(id){
+  const c = getCreature(id);
+  if(!c) return;
+  let m = document.getElementById('img-lightbox');
+  if(!m){
+    m = document.createElement('div');
+    m.id = 'img-lightbox';
+    // Click outside the picture → close and return to the codex.
+    m.addEventListener('click', (e) => { if(e.target.tagName !== 'IMG') m.classList.remove('show'); });
+  }
+  // #zoom-wrap is transform-scaled, which makes it the containing block for
+  // position:fixed. Mount the lightbox INSIDE it so the overlay covers the game.
+  const host = document.getElementById('zoom-wrap') || document.body;
+  host.appendChild(m);
+  const inner = c.img
+    ? `<img src="${c.img}" alt="${c.name}">`
+    : (SVGs[c.id] || `<div style="color:var(--text2);font-size:14px;">${c.name}</div>`);
+  m.innerHTML = `<div class="lightbox-inner">${inner}<div class="lightbox-name">${c.name}</div></div>`;
+  m.classList.add('show');
 }
 
 // ═══════════════════════════════════════════════════════

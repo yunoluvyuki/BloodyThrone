@@ -135,7 +135,7 @@ function updateBattleUI(){
   document.getElementById('battle-creature-name').textContent = c.name;
   document.getElementById('battle-creature-name').style.color = rc || 'var(--white)';
   document.getElementById('battle-creature-tag').textContent = '';
-  document.getElementById('battle-art').innerHTML = c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">` : (SVGs[c.id] || '');
+  document.getElementById('battle-art').innerHTML = c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:contain;">` : (SVGs[c.id] || '');
   document.getElementById('player-art').innerHTML = '<div style="font-size:22px;opacity:0.4;">★</div>';
 
   const epct = Math.max(0, B.enemyHP / c.hp * 100);
