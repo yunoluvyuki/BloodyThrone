@@ -22,6 +22,7 @@ const DEFAULT_STATE = ()=>({
   battleUnlocked:[],
   battleQueue:[],
   spawnRarity:{},
+  everMaxed:{},
   // Milestone system
   lifetimeEarned:{old:0},           // persists across reincarnations (only old)
   sessionEarned:{old:0,bronze:0,silver:0,gold:0,plat:0}, // resets on reincarnate (old here is SESSION old, for WELLSPRING; lifetimeEarned.old still drives milestones)

@@ -87,14 +87,18 @@ const MASTERY_UPGRADES = [
     desc:'+5% Max HP per level.',
     cost:{blood:20}, scale:1.5, maxLevel:100, color:'#27ae60' },
 
+  { id:'stat_spd', cat:'COMBAT', type:'spdmult', per:0.01, floor:0.1, label:'HASTE',
+    desc:'-1% turn time (faster attacks) per level.',
+    cost:{blood:1000000}, scale:10, maxLevel:90, color:'#3498db' },
+
   /// UTILITY
 
-  { id:'time_death', cat:'UTILITY', type:'timeflat',
+  { id:'time_death', cat:'UTILITY', type:'timeflat', base10:10, floorSec:1, unit:'revive',
     per:0.1, label:'SWIFT REVIVAL',
     desc:'-0.1s defeat recovery time per level (min 1s).',
     cost:{blood:10000}, scale:1.8, maxLevel:90, color:'#9b59b6' },
 
-  { id:'time_flee',  cat:'UTILITY', type:'timeflat',
+  { id:'time_flee',  cat:'UTILITY', type:'timeflat', base10:5, floorSec:1, unit:'flee',
     per:0.04, label:'LIGHT FEET',
     desc:'-0.04s flee recovery time per level (min 1s).',
     cost:{blood:10000}, scale:1.8, maxLevel:100, color:'#9b59b6' },
@@ -208,6 +212,11 @@ function masteryEquipDropChance(){
   const d = masteryDef('equip_drop');
   return d ? mLvl('equip_drop') * d.per : 0;
 }
+// Turn-time multiplier (<1 = faster) from the HASTE upgrade.
+function masterySpeedMult(){
+  const d = masteryDef('stat_spd');
+  return d ? Math.max(d.floor ?? 0.1, 1 - mLvl('stat_spd') * d.per) : 1;
+}
 function effCost(costObj){
   const out = {};
   Object.entries(costObj).forEach(([res, amt]) => {
@@ -274,11 +283,12 @@ function masteryEffectStr(up, level){
     case 'statpct': return `+${(level*up.per*100).toFixed(0)}%`;
     case 'cost':    return `-${((1 - Math.max(up.floor ?? 0.01, 1 - level*up.per))*100).toFixed(0)}%`;
     case 'timecut': return `-${((1 - Math.max(up.floor ?? 0.01, 1 - level*up.per))*100).toFixed(0)}%`;
-    case 'timeflat':return `${Math.max(up.floorSec||1, (up.base10||10) - level*up.per).toFixed(1)}s revive`;
+    case 'timeflat':return `${Math.max(up.floorSec||1, (up.base10||10) - level*up.per).toFixed(2)}s ${up.unit||'recovery'}`;
     case 'decay':   return `decay ${Math.max(up.floor ?? 0.05, 0.7 - level*up.per).toFixed(2)}`;
     case 'victory': return `+${level*up.per}/win`;
     case 'viccap':  return `+${level*up.per} max wins/enemy`;
     case 'equipdrop': return `+${(level*up.per*100).toFixed(2)}% drop`;
+    case 'spdmult':   return `-${((1 - Math.max(up.floor ?? 0.1, 1 - level*up.per))*100).toFixed(0)}% turn time`;
     case 'auto':    return `${(level*up.per*100).toFixed(2)}% of run ${COIN_LABELS[up.coin]}/s`;
     case 'automult':return `×${(1 + level*up.per).toFixed(2)}`;
     case 'rarity':  return `+${(level*up.per).toFixed(1)}% spawn`;
@@ -387,6 +397,7 @@ const MASTERY_TREE_LAYOUT = {
     nodes: [
       { id: 'stat_atk', icon: 'broadsword',    x: 34, y: 66, parent: 'root' },
       { id: 'stat_hp',  icon: 'health-normal', x: 66, y: 66, parent: 'root' },
+      { id: 'stat_spd', icon: 'wingfoot',      x: 50, y: 92, parent: 'root' },
     ],
   },
   ECONOMY: {

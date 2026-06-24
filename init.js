@@ -329,6 +329,7 @@ function setupSettings(){
     S.victories={};
     S.shopOwned={};
     S.spawnRarity={};
+    S.everMaxed={};
     S.resources={old:0,bronze:0,silver:0,gold:0,plat:0};
     S.currentCreature=null;
     S.bloodPending=0;

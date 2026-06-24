@@ -65,10 +65,10 @@ function rollRarity(){
 }
 function getSpawnRarity(id){
   if(!S.spawnRarity)S.spawnRarity={};
-  // Un-codexed (never-discovered) enemies always spawn common. Only creatures
-  // already in your codex (beaten at least once) can roll a rarity.
-  const discovered = (S.codexUnlocked && S.codexUnlocked[id]) || getVictories(id) > 0;
-  if(!discovered) return 'common';
+  // A creature stays common the entire time you're clearing it. Only once it has
+  // been fully maxed (this run) can a later re-encounter roll a rarity.
+  const cleared = S.everMaxed && S.everMaxed[id];
+  if(!cleared) return 'common';
   if(!S.spawnRarity[id])S.spawnRarity[id]=rollRarity();
   return S.spawnRarity[id];
 }
@@ -80,7 +80,8 @@ function getSpawnRarity(id){
 // Turn time = SPD directly (in ms). Lower SPD = faster turns.
 // 1ms safety floor so a turn can never be 0ms (which would freeze the game).
 function playerTurnTime(){
-  return Math.max(1, S.stats.spd);
+  const mult = (typeof masterySpeedMult === 'function') ? masterySpeedMult() : 1;
+  return Math.max(1, S.stats.spd * mult);
 }
 function enemyTurnTime(c){
   // Enemies with no spd set default to 3000ms (3s), not 0.
@@ -398,7 +399,11 @@ function onWin(){
   const cap = effVicReq(c);
   const justCompleted = prevVic < cap && S.victories[c.id] >= cap;
   addLog(`<span class="log-win">✓ Defeated ${c.name}! (${Math.min(S.victories[c.id], cap)}/${cap})</span>`);
-  if(justCompleted){ unlockNextCreature(); ensureFightable(); }
+  if(justCompleted){
+    if(!S.everMaxed) S.everMaxed = {};
+    S.everMaxed[c.id] = true;   // future re-encounters of this creature can roll rarity
+    unlockNextCreature(); ensureFightable();
+  }
 
   // Reward Multipliers
   const rewardMult = 1; // reincarnation no longer grants a reward bonus
