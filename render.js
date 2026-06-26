@@ -84,11 +84,14 @@ function renderBattle(){
     else btnHtml=B.dying?`<button class="btn-challenge" disabled style="opacity:0.4;cursor:not-allowed;">RECOVERING</button>`:`<button class="btn-challenge" onclick="startBattle('${c.id}')">CHALLENGE</button>`;
     const spawnRarity=maxed?null:getSpawnRarity(c.id);
     const spawnRarityColor=spawnRarity?(RARITY_COLORS[spawnRarity]||'#888'):null;
-    const borderColor=spawnRarity?spawnRarityColor:maxed?'#333':`${color}44`;
-    const rarityGlow=spawnRarity&&spawnRarity!=='common'?`box-shadow:0 0 8px ${spawnRarityColor}55;`:'';
-    const spawnBg=spawnRarity?(RARITY_BG[spawnRarity]||'transparent'):'transparent';
+    const isRare=spawnRarity&&spawnRarity!=='common';
+    const rarityGlow=isRare?`box-shadow:0 0 8px ${spawnRarityColor}55;`:'';
+    // Common & maxed cards inherit the shared box skin (panel gradient + #4a4a54
+    // border + rounded corners). Only the distinct rarities override border/background
+    // as a gameplay signal.
+    const cardStyle=isRare?`border-color:${spawnRarityColor};${rarityGlow}background:${RARITY_BG[spawnRarity]||'transparent'};`:'';
     const spawnBadge=spawnRarity?`<span style="display:inline-block;font-size:9px;font-weight:bold;letter-spacing:1px;padding:2px 6px;background:${spawnRarityColor};color:#fff;margin-bottom:4px;">${RARITY_LABELS[spawnRarity]}</span>`:'';
-    return `<div class="creature-card" id="card-${c.id}" style="border-color:${borderColor};${rarityGlow}background:${spawnBg}">
+    return `<div class="creature-card" id="card-${c.id}" style="${cardStyle}">
       <div class="card-top">
         <div class="card-art" style="position:relative;">${c.new?'<span class="new-badge">NEW</span>':''}${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:contain;position:absolute;top:0;left:0;">`:SVGs[c.id]||`<div class="placeholder-icon" style="--c-color:${color}">✦</div>`}</div>
         <div class="card-info">

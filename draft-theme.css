@@ -45,13 +45,15 @@
   --dt-accent:#e0392b;
   --dt-accent-soft:rgba(224,57,43,.14);
   --dt-panel-grad:linear-gradient(180deg, rgba(20,20,24,.92), rgba(10,10,12,.92));
+  --dt-panel-border:#4a4a54;   /* the visible gray-blue box border from the Mastery panels */
+  --dt-panel-radius:3px;
   --dt-head-font:'Cinzel', Georgia, serif;
 }
 
 body{ background:var(--bg); color:var(--text); }
 
 /* ── 2. GLOBAL TOP NAVIGATION — one continuous dark command bar ─────────── */
-#topbar{ background:linear-gradient(180deg,#0d0d10,#09090b); border-bottom:1px solid var(--border2); }
+#topbar{ background:var(--dt-panel-grad); border-bottom:1px solid var(--dt-panel-border); }
 #topbar .title{ color:var(--white); font-family:var(--dt-head-font); font-weight:700; letter-spacing:.18em; }
 .nav-tab{ color:var(--text2); border-right:1px solid var(--border); font-family:var(--dt-head-font);
   font-weight:600; letter-spacing:.14em; transition:color .15s, background .15s, box-shadow .2s; }
@@ -76,11 +78,15 @@ body{ background:var(--bg); color:var(--text); }
 #add-btn:hover .blood-icon{ color:var(--red2); }
 
 /* ── 3. SHARED PANEL LANGUAGE ──────────────────────────────────────────── */
-.btm-panel, .shop-card, .settings-section, .creature-card, .codex-card,
+/* Every box wears the Mastery-panel skin: charcoal vertical gradient, a visible
+   gray-blue border (#4a4a54) and softly rounded corners. #right-sidebar is an ID
+   so it needs its own line to beat the #right-sidebar rule in style.css. */
+.btm-panel, #right-sidebar, .shop-card, .settings-section, .creature-card, .codex-card,
 .treasury-panel-box, .equip-slot, .equip-bag-item, #mcoin-synthesizer,
 #battle-creature-display, .battle-side-box, #victory-panel, #battle-status{
-  background:var(--bg2);
-  border:1px solid var(--border);
+  background:var(--dt-panel-grad);
+  border:1px solid var(--dt-panel-border);
+  border-radius:var(--dt-panel-radius);
 }
 /* uppercase, spaced, slightly brighter titles with a small accent tick */
 .btm-panel-hdr, .section-header, .settings-title, .treasury-panel-title,
@@ -90,7 +96,7 @@ body{ background:var(--bg); color:var(--text); }
 }
 .btm-panel-hdr{ border-bottom:1px solid var(--border); position:relative; }
 .btm-panel-hdr::after{ content:''; position:absolute; left:0; bottom:-1px; width:34px; height:2px; background:var(--dt-accent); opacity:.7; }
-#bottom-bar{ background:linear-gradient(180deg,#0d0d10,#09090b); border-top:1px solid var(--border2); }
+#bottom-bar{ background:var(--dt-panel-grad); border-top:1px solid var(--dt-panel-border); }
 
 /* ── 4. BUTTON SYSTEM ──────────────────────────────────────────────────── */
 /* PRIMARY — dark surface, accent border, light text, subtle hover glow.
@@ -142,7 +148,7 @@ body{ background:var(--bg); color:var(--text); }
 .reward-item{ color:var(--green); }
 .reward-item.res{ color:var(--yellow); }
 /* battle panels — balanced padding + subtle separators */
-#battle-creature-display, .battle-side-box{ background:linear-gradient(180deg,#111114,#0c0c0f); }
+#battle-creature-display, .battle-side-box{ background:var(--dt-panel-grad); }
 #battle-creature-name, #player-name{ color:var(--white); font-family:var(--dt-head-font); letter-spacing:.12em; }
 .hp-bar, .timer-bar-wrap{ border:1px solid var(--border2); background:#0c0c0f; }
 .hp-fill.player{ background:linear-gradient(90deg,#2f9e63,#46c987); }
@@ -191,6 +197,9 @@ body{ background:var(--bg); color:var(--text); }
 .toggle-switch.on::after{ background:var(--red2); }
 .protocol-title, .protocol-sub, .toggle-label, .protocol-val{ color:var(--text); }
 #protocols-header .title{ font-family:var(--dt-head-font); letter-spacing:.14em; }
+/* Hide the CURRENT STAT and FUNDAMENTALS filter rows — both panels default to
+   "ALL" so everything still shows. Delete these two selectors to bring them back. */
+#spec-filters, #fund-filters{ display:none; }
 
 /* ── 9. PRESTIGE — TREASURY & CODEX ────────────────────────────────────── */
 .prestige-tab{ color:var(--text2); text-transform:uppercase; letter-spacing:.12em; font-family:var(--dt-head-font); }

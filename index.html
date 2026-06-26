@@ -32,33 +32,33 @@
   </div>
   <div id="resources">
     <div class="res-block">
-      <div class="res-icon">▲ OLD COIN</div>
+      <div class="res-icon"><img class="currency-icon" src="assets/ui/currency/coin_old.svg" alt=""> OLD COIN</div>
       <div class="res-val" id="res-old">0</div>
       <div class="res-rate" id="rate-old"></div>
     </div>
     <div class="res-block">
-      <div class="res-icon">◆ BRONZE COIN</div>
+      <div class="res-icon"><img class="currency-icon" src="assets/ui/currency/coin_bronze.svg" alt=""> BRONZE COIN</div>
       <div class="res-val" id="res-bronze">0</div>
       <div class="res-rate" id="rate-bronze"></div>
     </div>
     <div class="res-block">
-      <div class="res-icon">● SILVER COIN</div>
+      <div class="res-icon"><img class="currency-icon" src="assets/ui/currency/coin_silver.svg" alt=""> SILVER COIN</div>
       <div class="res-val" id="res-silver">0</div>
       <div class="res-rate" id="rate-silver"></div>
     </div>
     <div class="res-block">
-      <div class="res-icon">★ GOLD COIN</div>
+      <div class="res-icon"><img class="currency-icon" src="assets/ui/currency/coin_gold.svg" alt=""> GOLD COIN</div>
       <div class="res-val" id="res-gold">0</div>
       <div class="res-rate" id="rate-gold"></div>
     </div>
     <div class="res-block">
-      <div class="res-icon">✦ PLATINUM COIN</div>
+      <div class="res-icon"><img class="currency-icon" src="assets/ui/currency/coin_platinum.svg" alt=""> PLATINUM COIN</div>
       <div class="res-val" id="res-plat">0</div>
       <div class="res-rate" id="rate-plat"></div>
     </div>
   </div>
   <div class="res-block" id="add-btn" title="Open Prestige (Blood Coin)">
-    <div class="res-icon blood-icon">♦ BLOOD COIN</div>
+    <div class="res-icon blood-icon"><img class="currency-icon currency-icon-blood" src="assets/ui/currency/coin_blood.svg" alt=""> BLOOD COIN</div>
     <div class="res-val" id="blood-count">0</div>
   </div>
 </div>
@@ -81,38 +81,36 @@
           <div id="battle-creature-display">
             <div id="battle-top">
               <div id="battle-player-box" class="battle-side-box">
-                <div class="top-row">
-                  <div id="player-art"><div style="font-size:20px;opacity:0.4;">★</div></div>
-                  <div class="player-info">
+                <div id="player-art"><div style="font-size:22px;opacity:0.4;">★</div></div>
+                <div class="bsb-main">
+                  <div class="bsb-head">
                     <div id="player-name">YOU</div>
                   </div>
-                </div>
-                <div class="hp-bar-wrap">
-                  <div class="hp-label"><span>YOUR HP</span><span id="player-hp-text">—</span></div>
-                  <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
-                </div>
-                <div class="timer-block">
-                  <span class="timer-label">YOUR TURN</span>
-                  <div class="timer-bar-wrap"><div class="timer-fill tfill-player" id="ptimer-bar" style="width:0%"></div></div>
-                  <span class="timer-text" id="ptimer-text">—</span>
+                  <div class="hp-bar-wrap">
+                    <div class="hp-label"><span>YOUR HP</span><span id="player-hp-text">—</span></div>
+                    <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
+                  </div>
+                  <div class="timer-block">
+                    <div class="timer-label-row"><span class="timer-label">YOUR TURN</span><span class="timer-text" id="ptimer-text">—</span></div>
+                    <div class="timer-bar-wrap"><div class="timer-fill tfill-player" id="ptimer-bar" style="width:0%"></div></div>
+                  </div>
                 </div>
               </div>
               <div id="battle-enemy-box" class="battle-side-box">
-                <div class="top-row">
-                  <div id="battle-art"></div>
-                  <div class="enemy-info">
+                <div id="battle-art"></div>
+                <div class="bsb-main">
+                  <div class="bsb-head">
                     <div id="battle-creature-name">SELECT A CREATURE</div>
                     <div id="battle-creature-tag">Challenge a creature above to begin.</div>
                   </div>
-                </div>
-                <div class="hp-bar-wrap">
-                  <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
-                  <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
-                </div>
-                <div class="timer-block">
-                  <span class="timer-label">ENEMY TURN</span>
-                  <div class="timer-bar-wrap"><div class="timer-fill tfill-enemy" id="etimer-bar" style="width:0%"></div></div>
-                  <span class="timer-text" id="etimer-text">—</span>
+                  <div class="hp-bar-wrap">
+                    <div class="hp-label"><span>ENEMY HP</span><span id="enemy-hp-text">—</span></div>
+                    <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-bar" style="width:0%"></div></div>
+                  </div>
+                  <div class="timer-block">
+                    <div class="timer-label-row"><span class="timer-label">ENEMY TURN</span><span class="timer-text" id="etimer-text">—</span></div>
+                    <div class="timer-bar-wrap"><div class="timer-fill tfill-enemy" id="etimer-bar" style="width:0%"></div></div>
+                  </div>
                 </div>
               </div>
             </div>

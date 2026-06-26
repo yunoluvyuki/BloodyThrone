@@ -155,18 +155,34 @@ function setupSettings(){
     setTimeout(()=>{document.getElementById('btn-fullscreen').textContent=document.fullscreenElement?'↙ EXIT FULLSCREEN':'↗ ENTER FULLSCREEN';},200);
   });
 
-  // Zoom
-  let zoom=S.settings.uiZoom||120;
+  // ── Auto-fit + Zoom ───────────────────────────────────────────────────────
+  // The UI is authored on a fixed 1920x1080 design canvas (#zoom-wrap). We scale
+  // that canvas to fit the current viewport, preserving aspect ratio (letterboxed),
+  // so the layout looks identical at every resolution. The manual UI-zoom acts as a
+  // multiplier on top of the auto-fit.
+  const DESIGN_W=1920, DESIGN_H=1080;
+  let zoom=S.settings.uiZoom||100;
+  // Migrate the legacy 120% default (old zoom model) — it over-scales past the
+  // screen edges under the new auto-fit model. Snap it back to a clean 100% fit.
+  if(zoom===120) zoom=100;
+  function fitUI(){
+    const wrap=document.getElementById('zoom-wrap');
+    if(!wrap)return;
+    const fit=Math.min(window.innerWidth/DESIGN_W, window.innerHeight/DESIGN_H);
+    const scale=fit*(zoom/100);
+    const x=(window.innerWidth - DESIGN_W*scale)/2;
+    const y=(window.innerHeight - DESIGN_H*scale)/2;
+    wrap.style.transform='translate('+x+'px,'+y+'px) scale('+scale+')';
+  }
   function applyZoom(z){
     S.settings.uiZoom=z;
-    const scale=z/100;
-    const wrap=document.getElementById('zoom-wrap');
-    wrap.style.width=(100/scale)+'vw';
-    wrap.style.height=(100/scale)+'vh';
-    wrap.style.transform='scale('+scale+')';
-    document.getElementById('zoom-val').textContent=z+'%';
+    fitUI();
+    const zv=document.getElementById('zoom-val');
+    if(zv)zv.textContent=z+'%';
   }
   applyZoom(zoom);
+  window.addEventListener('resize',fitUI);
+  document.addEventListener('fullscreenchange',()=>setTimeout(fitUI,60));
   document.getElementById('zoom-minus').addEventListener('click',()=>{zoom=Math.max(50,zoom-10);applyZoom(zoom);});
   document.getElementById('zoom-plus').addEventListener('click',()=>{zoom=Math.min(200,zoom+10);applyZoom(zoom);});
   document.getElementById('zoom-reset').addEventListener('click',()=>{zoom=100;applyZoom(zoom);});

@@ -9,8 +9,11 @@
   --card-bg:#f5f5f0;--card-border:#ddd;
   --g-common:#888;--g-uncommon:#27ae60;--g-rare:#2980b9;--g-epic:#9b59b6;--g-legendary:#f0b429;
 }
+html{background:#000;}
 body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;font-size:16px;user-select:none;overflow:hidden;font-weight:bold;}
-#zoom-wrap{display:flex;flex-direction:column;height:100vh;overflow:hidden;transform-origin:top left;}
+/* Fixed design canvas: the whole UI is authored at 1920x1080 and scaled to fit any
+   screen by JS (auto-fit, letterboxed), so proportions stay identical everywhere. */
+#zoom-wrap{display:flex;flex-direction:column;width:1920px;height:1080px;overflow:hidden;transform-origin:top left;position:fixed;top:0;left:0;}
 
 /* ── TOPBAR ─────────────────────────────────────────── */
 #topbar{height:54px;background:#0e0e0e;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 10px;flex-shrink:0;gap:0;}
@@ -126,7 +129,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 /* ── BATTLE ─────────────────────────────────────────── */
 #battle-intro{font-size:11px;color:var(--text2);padding-bottom:12px;font-style:italic;}
 #battle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.creature-card{background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:border-color .15s;}
+.creature-card{background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:border-color .15s;overflow:hidden;}
 .creature-card:hover{border-color:var(--border2);}
 .creature-card .card-top{display:flex;gap:0;border-bottom:1px solid var(--border);}
 .card-art{width:120px;aspect-ratio:1;height:auto;align-self:center;background:var(--card-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
@@ -167,18 +170,20 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-area{display:flex;gap:16px;}
 #battle-main{flex:1;}
 #battle-creature-display{background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:0;}
-#battle-top{display:flex;gap:20px;align-items:stretch;}
-.battle-side-box{flex:1 1 0;display:flex;flex-direction:column;gap:8px;background:var(--bg2);border:1px solid var(--border);padding:16px;}
-.top-row{display:flex;flex-direction:row;gap:0;}
-.player-info,.enemy-info{display:flex;flex-direction:column;justify-content:flex-start;padding:8px 16px;gap:6px;flex:1;}
-#battle-art,#player-art{width:180px;height:180px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-#battle-art svg,#player-art svg{width:150px;height:150px;}
+#battle-top{display:flex;gap:16px;align-items:stretch;}
+/* Two-column box: art on the left, info column (name + HP + turn) beside it,
+   vertically centered so there's no dead space. */
+.battle-side-box{flex:1 1 0;display:flex;flex-direction:row;align-items:center;gap:20px;background:var(--bg2);border:1px solid var(--border);padding:18px 22px;min-width:0;}
+#battle-art,#player-art{width:148px;height:148px;border-radius:5px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden;}
+#battle-art svg,#player-art svg{width:118px;height:118px;}
 #battle-art img{width:100%;height:100%;object-fit:contain;}
-#battle-creature-name,#player-name{font-size:18px;color:var(--white);font-weight:bold;letter-spacing:2px;}
+.bsb-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:13px;}
+.bsb-head{display:flex;flex-direction:column;gap:3px;}
+#battle-creature-name,#player-name{font-size:21px;color:var(--white);font-weight:bold;letter-spacing:2px;line-height:1.1;}
 #battle-creature-tag{font-size:10px;color:var(--text2);font-style:italic;}
-.hp-bar-wrap{margin-bottom:2px;background:transparent;border:none;overflow:visible;}
-.hp-label{font-size:9px;color:#fff;display:flex;justify-content:space-between;margin-bottom:2px;}
-.hp-bar{height:16px;background:var(--bg4);border:1px solid var(--border);overflow:hidden;}
+.hp-bar-wrap{margin-bottom:0;background:transparent;border:none;overflow:visible;}
+.hp-label{font-size:10px;color:#fff;display:flex;justify-content:space-between;margin-bottom:3px;letter-spacing:1px;}
+.hp-bar{height:18px;background:var(--bg4);border:1px solid var(--border);border-radius:3px;overflow:hidden;}
 .hp-fill{height:100%;transition:width .1s;position:relative;}
 .hp-fill.player{background:linear-gradient(90deg,var(--green),#52d68a);}
 .hp-fill.enemy{background:linear-gradient(90deg,var(--red),var(--red2));}
@@ -207,15 +212,15 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #battle-status{font-size:10px;color:var(--text2);margin-top:8px;padding:6px;background:var(--bg3);border:1px solid var(--border);}
 #battle-timers{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
 .timer-row{display:flex;align-items:center;gap:6px;}
-.timer-label{font-size:8px;color:#fff;letter-spacing:1px;width:90px;flex-shrink:0;white-space:nowrap;}
-.timer-bar-wrap{flex:1;height:16px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.timer-label{font-size:10px;color:#fff;letter-spacing:1px;white-space:nowrap;}
+.timer-bar-wrap{flex:1;height:14px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;overflow:hidden;}
 .timer-fill{height:100%;transition:width 0.1s linear;}
 .tfill-player{background:#e74c3c;}
 .tfill-enemy{background:#9b59b6;}
-.timer-text{font-size:8px;color:#fff;width:28px;text-align:right;flex-shrink:0;}
+.timer-text{font-size:10px;color:#fff;text-align:right;flex-shrink:0;}
 .timer-block{display:flex;flex-direction:column;gap:3px;}
-.timer-block .timer-bar-wrap{flex:none;width:100%;height:16px;}
-.timer-block .timer-text{align-self:flex-end;}
+.timer-label-row{display:flex;justify-content:space-between;align-items:center;}
+.timer-block .timer-bar-wrap{flex:none;width:100%;height:14px;}
 #victory-panel{background:var(--bg2);border:1px solid var(--border);padding:12px;}
 #victory-panel h3{font-size:10px;color:var(--text2);letter-spacing:1px;margin-bottom:8px;}
 .victory-stat{display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px;}
