@@ -348,8 +348,8 @@ function setupSettings(){
     S.bloodRef=S.bloodLifetime;   // snapshot lifetime blood; reference for next run's diminishing-gain caps
     S.reincarnations++;
     if(S.reincarnations === 1){
-      // First-ever reincarnation: point new players to where Blood Coin is spent.
-      toast('Reincarnated! Blood Coin banked — head to the MASTERY tab to spend it on permanent upgrades.',8000);
+      // First-ever reincarnation: take new players straight to CONQUEST.
+      toast('First reincarnation! Opening the MASTERY tree — unlock CONQUEST (highlighted) to raise your victory cap.',9000);
     } else {
       toast('Reincarnated! Pending Blood Coin banked.',5000);
     }
@@ -373,6 +373,22 @@ function setupSettings(){
     B=freshBattleState();
     initBattleQueue();
     renderAll();
+    if(S.reincarnations === 1){
+      // First reincarnation: force-open the MASTERY tree, switch to UTILITY, and
+      // pulse-highlight CONQUEST so new players know where to spend Blood Coin.
+      switchTab('mastery');
+      if(typeof setMasteryCat === 'function') setMasteryCat('UTILITY');
+      if(typeof selectMasteryNode === 'function') selectMasteryNode('victory');
+      const mc = document.getElementById('mastery-content');
+      if(mc){
+        mc.querySelectorAll('.mnode[onclick]').forEach(btn=>{
+          if(/selectMasteryNode\('victory'\)/.test(btn.getAttribute('onclick')||'')) btn.classList.add('tutorial-highlight');
+        });
+        // clear the highlight after a while (also clears if they switch category)
+        setTimeout(()=>{ mc.querySelectorAll('.tutorial-highlight').forEach(n=>n.classList.remove('tutorial-highlight')); }, 12000);
+      }
+      if(typeof syncMasteryBottomBar === 'function') syncMasteryBottomBar();
+    }
   });
 }
 
