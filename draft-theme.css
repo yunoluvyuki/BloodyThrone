@@ -204,6 +204,17 @@ body{ background:var(--bg); color:var(--text); }
 .prestige-tab{ color:var(--text2); text-transform:uppercase; letter-spacing:.12em; font-family:var(--dt-head-font); }
 .prestige-tab.active{ color:var(--red2); border-bottom-color:var(--dt-accent); }
 .treasury-panel-box{ background:var(--dt-panel-grad); }
+/* ── BLOOD COIN GUIDE — explains the prestige pipeline on the Treasury screen ── */
+#blood-guide{ background:var(--dt-panel-grad); border:1px solid var(--dt-panel-border); border-radius:var(--dt-panel-radius); padding:14px 18px; margin-top:12px; }
+.blood-guide-title{ font-family:var(--dt-head-font); color:var(--white); text-transform:uppercase; letter-spacing:.16em; font-size:14px; margin-bottom:10px; }
+.blood-guide-flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 7px; margin-bottom:12px; font-size:12px; color:var(--text2); }
+.blood-guide-flow span{ background:var(--bg3); border:1px solid var(--border2); border-radius:3px; padding:3px 8px; white-space:nowrap; }
+.blood-guide-flow i{ color:var(--text3); font-style:normal; }
+.blood-guide-flow .bg-blood{ color:var(--red2); border-color:rgba(224,57,43,.5); }
+.blood-guide-steps{ margin:0 0 10px 18px; padding:0; display:flex; flex-direction:column; gap:5px; font-size:13px; color:var(--text); line-height:1.5; }
+.blood-guide-steps b{ color:var(--white); }
+.blood-guide-steps .bg-blood{ color:var(--red2); }
+.blood-guide-tip{ font-size:12px; color:var(--text2); font-style:italic; border-top:1px solid var(--border); padding-top:8px; line-height:1.5; }
 .treasury-panel-title{ color:var(--text2); }
 .blood-pending{ color:var(--purple2); }
 #reincarnate-btn{ background:rgba(0,0,0,.4); border:1px solid var(--border2); color:var(--text3); font-family:var(--dt-head-font); letter-spacing:.1em; }
