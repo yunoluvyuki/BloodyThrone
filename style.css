@@ -104,7 +104,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 #fund-header{padding:2px 6px;display:flex;align-items:center;}
 #fund-header .label{font-size:11px;color:var(--text2);letter-spacing:1px;}
 #fund-values{padding:0 8px 6px;display:flex;flex-direction:column;gap:2px;}
-.fund-row{display:flex;justify-content:space-between;font-size:10px;}
+.fund-row{display:flex;justify-content:space-between;font-size:14px;}
 .fund-key{color:#fff;}
 .fund-val{color:#fff;}
 
@@ -116,15 +116,15 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .protocols-body::-webkit-scrollbar-thumb{background:var(--bg4);}
 #protocols-header .title{font-size:14px;letter-spacing:2px;color:#fff;font-weight:bold;}
 .protocol-section{border-bottom:1px solid var(--border);padding:8px 10px;}
-.protocol-title{font-size:10px;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.protocol-title{font-size:14px;color:#fff;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
 .protocol-sub{display:none;}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.toggle-label{font-size:10px;color:#fff;}
+.toggle-label{font-size:13px;color:#fff;}
 .toggle-switch{width:28px;height:14px;background:var(--bg4);border:1px solid var(--border);cursor:pointer;position:relative;display:flex;align-items:center;}
 .toggle-switch.on{background:#1a5c2e;border-color:var(--green);}
 .toggle-switch::after{content:'';width:10px;height:10px;background:var(--text3);position:absolute;left:1px;transition:left .15s;}
 .toggle-switch.on::after{left:15px;background:var(--green);}
-.protocol-val{font-size:8px;color:#fff;margin-top:2px;}
+.protocol-val{font-size:11px;color:#fff;margin-top:2px;}
 
 /* ── BATTLE ─────────────────────────────────────────── */
 #battle-intro{font-size:11px;color:var(--text2);padding-bottom:12px;font-style:italic;}
@@ -187,7 +187,7 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .hp-fill{height:100%;transition:width .1s;position:relative;}
 .hp-fill.player{background:linear-gradient(90deg,var(--green),#52d68a);}
 .hp-fill.enemy{background:linear-gradient(90deg,var(--red),var(--red2));}
-#battle-log{height:100%;overflow-y:auto;padding:6px;font-size:9px;color:var(--text2);}
+#battle-log{height:100%;overflow-y:auto;padding:6px;font-size:13px;color:var(--text2);}
 #battle-log::-webkit-scrollbar{width:3px;}
 #battle-log::-webkit-scrollbar-thumb{background:#3a0000;}
 .log-entry{margin-bottom:2px;line-height:1.4;}

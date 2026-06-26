@@ -95,7 +95,6 @@ body{ background:var(--bg); color:var(--text); }
   text-transform:uppercase; letter-spacing:.16em;
 }
 .btm-panel-hdr{ border-bottom:1px solid var(--border); position:relative; }
-.btm-panel-hdr::after{ content:''; position:absolute; left:0; bottom:-1px; width:34px; height:2px; background:var(--dt-accent); opacity:.7; }
 #bottom-bar{ background:var(--dt-panel-grad); border-top:1px solid var(--dt-panel-border); }
 
 /* ── 4. BUTTON SYSTEM ──────────────────────────────────────────────────── */
