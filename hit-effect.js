@@ -21,7 +21,9 @@
       '@keyframes dtfx-float{0%{opacity:0;transform:translate(-50%,6px) scale(.8)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-38px) scale(1)}}' +
       '.dtfx-overlay{position:fixed;pointer-events:none;z-index:9000;animation:dtfx-flash .4s ease forwards;}' +
       '.dtfx-num{position:fixed;pointer-events:none;z-index:9001;font-family:"Courier New",monospace;font-weight:bold;' +
-      'letter-spacing:1px;text-shadow:0 1px 3px #000,0 0 8px rgba(0,0,0,.9);animation:dtfx-float .9s ease forwards;white-space:nowrap;}';
+      'letter-spacing:1px;-webkit-text-stroke:3px #000;paint-order:stroke fill;' +
+      'text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 0 8px rgba(0,0,0,.9);' +
+      'animation:dtfx-float .9s ease forwards;white-space:nowrap;}';
     document.head.appendChild(css);
   }
 
@@ -58,7 +60,7 @@
     num.style.left = (r.left + r.width / 2) + 'px';
     num.style.top = (r.top + r.height * 0.42) + 'px';
     num.style.color = crit ? '#e74c3c' : '#f0f0f0';
-    num.style.fontSize = (crit ? 44 : 30) + 'px';
+    num.style.fontSize = (crit ? 60 : 42) + 'px';
     var n = (typeof dmg === 'number') ? dmg.toFixed(0) : dmg;
     num.textContent = (crit ? '✦' : '') + n;
     document.body.appendChild(num);
