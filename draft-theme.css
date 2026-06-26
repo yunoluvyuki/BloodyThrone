@@ -267,9 +267,11 @@ body{ background:var(--bg); color:var(--text); }
 .tab-pane.active{ flex:1 1 auto; min-height:0; }
 #tab-battle.active{ display:flex; flex-direction:column; }
 #battle-grid{ flex:0 0 auto; }
-#battle-area{ flex:1 1 auto; min-height:0; margin-top:8px; display:flex; }
-#battle-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
-#battle-creature-display{ flex:1 1 auto; min-height:0; }
+#battle-area{ flex:1 1 auto; min-height:0; margin-top:8px; display:flex; align-items:center; }
+#battle-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; justify-content:center; }
+/* size to content (no forced stretch) so the box hugs the combatant panels +
+   controls; #battle-main centers it vertically, splitting any slack evenly. */
+#battle-creature-display{ flex:0 0 auto; }
 /* keep the vs-area readable when the window shrinks — let it scroll internally
    as a last resort instead of clipping portraits / bars / speed controls */
 #battle-top{ flex-wrap:wrap; }
