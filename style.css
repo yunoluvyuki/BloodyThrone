@@ -199,9 +199,9 @@ body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;
 .log-info{color:var(--text3);}
 .log-pdmg{color:var(--white);}
 .log-reward{color:#f0b429;}
-#battle-controls{display:flex;gap:8px;margin-top:10px;justify-content:center;}
-#btn-flee{padding:12px 40px;font-size:14px;}
-.battle-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+#battle-controls{display:flex;gap:10px;margin-top:10px;justify-content:center;}
+#btn-flee{padding:13px 46px;font-size:15px;}
+.battle-btn{padding:11px 26px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px;letter-spacing:1px;text-transform:uppercase;}
 .battle-btn:hover:not(:disabled){background:var(--bg4);}
 .battle-btn.danger:hover:not(:disabled){background:var(--red);}
 .battle-btn:disabled{opacity:0.35;cursor:not-allowed;}
