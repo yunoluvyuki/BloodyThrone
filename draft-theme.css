@@ -202,7 +202,7 @@ body{ background:var(--bg); color:var(--text); }
 #spec-filters, #fund-filters, #shop-filters{ display:none; }
 
 /* ── 9. PRESTIGE — TREASURY & CODEX ────────────────────────────────────── */
-.prestige-tab{ color:var(--text2); text-transform:uppercase; letter-spacing:.12em; font-family:var(--dt-head-font); }
+.prestige-tab{ color:var(--text2); text-transform:uppercase; letter-spacing:.12em; font-family:var(--dt-head-font); font-size:14px; padding:9px 22px; }
 .prestige-tab.active{ color:var(--red2); border-bottom-color:var(--dt-accent); }
 .treasury-panel-box{ background:var(--dt-panel-grad); }
 /* ── BLOOD COIN GUIDE — explains the prestige pipeline on the Treasury screen ── */
