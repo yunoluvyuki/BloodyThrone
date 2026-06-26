@@ -347,7 +347,12 @@ function setupSettings(){
     S.bloodBankedLifetime=(S.bloodBankedLifetime||0)+S.bloodPending;   // running total of banked blood
     S.bloodRef=S.bloodLifetime;   // snapshot lifetime blood; reference for next run's diminishing-gain caps
     S.reincarnations++;
-    toast(`Reincarnated! Pending Blood Coin banked.`,5000);
+    if(S.reincarnations === 1){
+      // First-ever reincarnation: point new players to where Blood Coin is spent.
+      toast('Reincarnated! Blood Coin banked — head to the MASTERY tab to spend it on permanent upgrades.',8000);
+    } else {
+      toast('Reincarnated! Pending Blood Coin banked.',5000);
+    }
     const base=DEFAULT_STATE();
     S.stats=base.stats;
     S.baseStats={...base.stats};
