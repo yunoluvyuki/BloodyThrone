@@ -389,7 +389,7 @@ const CREATURES = [
     vicReq:2,
     img:'attached_assets/img/creature/7corpse_crawler.png'},
   {id:'rotting_serf',name:'ROTTING SERF',
-    hp:100,atk:20,mnd:0.7,mxd:1.2,spd:2000,rgn:1,ddc:0,crc:0,crd:1.5,arm:0,mth:0,acc:0,ctr:0,
+    hp:80,atk:20,mnd:0.7,mxd:1.2,spd:2000,rgn:1,ddc:0,crc:0,crd:1.5,arm:5,mth:0,acc:0,ctr:0,
     rewards:{rgn:0.8,old:120},
     vicReq:2,
     img:'attached_assets/img/creature/8rotting_serf.png'},
@@ -397,7 +397,7 @@ const CREATURES = [
   /// 9-12
 
   {id:'blighted_husk',name:'BLIGHTED HUSK',
-    hp:100,atk:20,mnd:0.7,mxd:1.2,spd:1500,rgn:1,ddc:0,crc:0,crd:1.5,arm:5,mth:0,acc:0,ctr:0,
+    hp:100,atk:20,mnd:0.7,mxd:1.2,spd:2000,rgn:1,ddc:0,crc:0,crd:1.5,arm:5,mth:0,acc:0,ctr:0,
     rewards:{hp:10,atk:10,old:200},
     vicReq:2,
     img:'attached_assets/img/creature/9blighted_husk.png'},
