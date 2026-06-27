@@ -384,7 +384,7 @@ const CREATURES = [
     vicReq:2,
     img:'attached_assets/img/creature/6mudborn.png'},
   {id:'corpse_crawler',name:'CORPSE CRAWLER',
-    hp:80,atk:20,mnd:0.7,mxd:1.2,spd:3000,rgn:1,ddc:0,crc:0,crd:1.5,arm:5,mth:0,acc:0,ctr:0,
+    hp:70,atk:20,mnd:0.7,mxd:1.2,spd:3000,rgn:1,ddc:0,crc:0,crd:1.5,arm:5,mth:0,acc:0,ctr:0,
     rewards:{hp:20,arm:1,old:80},
     vicReq:2,
     img:'attached_assets/img/creature/7corpse_crawler.png'},

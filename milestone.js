@@ -36,7 +36,7 @@ function mScale(level){ return level > 0 ? Math.pow(2, level - 1) : 0; }
 // ── MILESTONE TICK ────────────────────────────────────
 // Called every second from gameLoop
 // Updates M.Coin counts and generates Blood Coin
-function milestoneTick(){
+function milestoneTick(dt=1){
   if(!S.lifetimeEarned) S.lifetimeEarned = {old:0};
   if(!S.sessionEarned) S.sessionEarned = {bronze:0,silver:0,gold:0,plat:0};
   if(!S.mCoins) S.mCoins = {old:0,bronze:0,silver:0,gold:0,plat:0};
@@ -61,16 +61,16 @@ function milestoneTick(){
   // where scale doubles per milestone level (1,2,4,8...).
   // Plat → Gold → Silver → Bronze → Old → Blood. Process top→down.
   const totalPlat   = S.mCoins.plat   + S.mAccum.plat;
-  S.mAccum.gold   += totalPlat   * mScale(S.mCoins.plat);
+  S.mAccum.gold   += totalPlat   * mScale(S.mCoins.plat)   * dt;
 
   const totalGold   = S.mCoins.gold   + S.mAccum.gold;
-  S.mAccum.silver += totalGold   * mScale(S.mCoins.gold);
+  S.mAccum.silver += totalGold   * mScale(S.mCoins.gold)   * dt;
 
   const totalSilver = S.mCoins.silver + S.mAccum.silver;
-  S.mAccum.bronze += totalSilver * mScale(S.mCoins.silver);
+  S.mAccum.bronze += totalSilver * mScale(S.mCoins.silver) * dt;
 
   const totalBronze = S.mCoins.bronze + S.mAccum.bronze;
-  S.mAccum.old    += totalBronze * mScale(S.mCoins.bronze);
+  S.mAccum.old    += totalBronze * mScale(S.mCoins.bronze) * dt;
 
   const totalOld    = S.mCoins.old    + S.mAccum.old;
 
@@ -83,8 +83,8 @@ function milestoneTick(){
     const gained = bloodQty
       * (typeof masteryGainMult==='function' ? masteryGainMult('blood') : 1)
       * bloodGainMult();   // diminishing-gain throttle past the reference caps
-    S.bloodPending = (S.bloodPending || 0) + gained;
-    S.bloodLifetime = (S.bloodLifetime || 0) + gained;
+    S.bloodPending = (S.bloodPending || 0) + gained * dt;
+    S.bloodLifetime = (S.bloodLifetime || 0) + gained * dt;
   }
 }
 
