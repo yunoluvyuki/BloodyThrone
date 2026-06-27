@@ -39,7 +39,6 @@ function unlockNextCreature(){
   const c=getCreature(id);
   if(c){
     addLog(`<span style="color:var(--green)">◆ A new enemy has stepped forward: <b>${c.name}</b>.</span>`);
-    toast(`New foe: ${c.name}`,3000);
   }
   renderBattle();
 }
